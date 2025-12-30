@@ -27,35 +27,21 @@
             "group": "Link de pagamento",
             "icon": "link",
             "pages": [
-              "pages/payment-links/reference",
-              "pages/payment-links/create",
-              "pages/payment-links/list",
-              "pages/payment-links/get",
-              "pages/payment-links/update",
-              "pages/payment-links/delete"
+              "pages/payment-links/reference"
             ]
           },
           {
             "group": "Produtos",
             "icon": "package",
             "pages": [
-              "pages/products/reference",
-              "pages/products/create",
-              "pages/products/list",
-              "pages/products/get",
-              "pages/products/update",
-              "pages/products/delete",
-              "pages/products/update-stock"
+              "pages/products/reference"
             ]
           },
           {
             "group": "Cupom",
             "icon": "tag",
             "pages": [
-              "pages/coupon/reference",
-              "pages/coupon/create",
-              "pages/coupon/list",
-              "pages/coupon/validate"
+              "pages/coupon/reference"
             ]
           },
           {
