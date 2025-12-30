@@ -44,8 +44,7 @@
               "pages/products/list",
               "pages/products/get",
               "pages/products/update",
-              "pages/products/delete",
-              "pages/products/update-stock"
+              "pages/products/delete"
             ]
           },
           {
