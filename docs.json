@@ -8,80 +8,54 @@
     "dark": "#5B21B6"
   },
   "favicon": "/favicon.ico",
-  "navigation": {
-    "tabs": [
-      {
-        "tab": "Guides",
-        "groups": [
-          {
-            "group": "Getting started",
-            "pages": [
-              "index",
-              "quickstart",
-              "development"
-            ]
-          },
-          {
-            "group": "Customization",
-            "pages": [
-              "essentials/settings",
-              "essentials/navigation"
-            ]
-          },
-          {
-            "group": "Writing content",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "AI tools",
-            "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "API reference",
-        "groups": [
-          {
-            "group": "API documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
-          },
-          {
-            "group": "Endpoint examples",
-            "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
-            ]
-          }
-        ]
-      }
-    ],
-    "global": {
-      "anchors": [
+  "navigation": [
+    {
+      "group": "Início",
+      "pages": [
+        "index",
+        "quickstart"
+      ]
+    },
+    {
+      "group": "Guides",
+      "pages": [
+        "guides/authentication",
         {
-          "anchor": "GitHub",
-          "href": "https://github.com/anthonymengottii/upay_sistema",
-          "icon": "github"
-        },
-        {
-          "anchor": "Status",
-          "href": "https://status.upay.com.br",
-          "icon": "circle-check"
+          "group": "Funcionalidades",
+          "pages": [
+            "guides/features/payment-links",
+            "guides/features/products",
+            "guides/features/coupons",
+            "guides/features/webhooks"
+          ]
         }
       ]
+    },
+    {
+      "group": "Referência da API",
+      "pages": [
+        "api-reference/authentication",
+        "api-reference/payment-links",
+        "api-reference/products",
+        "api-reference/coupons",
+        "api-reference/transactions",
+        "api-reference/webhooks"
+      ]
     }
+  ],
+  "global": {
+    "anchors": [
+      {
+        "anchor": "GitHub",
+        "href": "https://github.com/anthonymengottii/upay_sistema",
+        "icon": "github"
+      },
+      {
+        "anchor": "Status",
+        "href": "https://status.upay.com.br",
+        "icon": "circle-check"
+      }
+    ]
   },
   "logo": {
     "light": "/logo/light.png",

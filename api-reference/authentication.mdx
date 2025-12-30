@@ -1,0 +1,74 @@
+---
+title: "Autenticação"
+api: "https://api.upay-sistema.onrender.com"
+---
+
+## Autenticação
+
+A UPay Gateway API usa autenticação baseada em **Bearer Token** (API Key). Todas as requisições autenticadas devem incluir o header `Authorization` com sua API Key.
+
+<Note>
+  Para obter sua API Key, acesse o [Dashboard UPay](https://upay-sistema.onrender.com) → Configurações → Credenciais de API.
+</Note>
+
+## Header de Autenticação
+
+```
+Authorization: Bearer SUA_API_KEY_AQUI
+```
+
+## Exemplo
+
+<RequestExample>
+
+```bash
+curl -X GET "https://api.upay-sistema.onrender.com/api/payment-links" \
+  -H "Authorization: Bearer sua_api_key_aqui" \
+  -H "Content-Type: application/json"
+```
+
+</RequestExample>
+
+## Respostas de Erro
+
+### 401 Unauthorized
+
+Token inválido ou ausente:
+
+```json
+{
+  "error": "Unauthorized",
+  "message": "Token inválido ou expirado"
+}
+```
+
+### 403 Forbidden
+
+Token válido, mas sem permissão:
+
+```json
+{
+  "error": "Forbidden",
+  "message": "Você não tem permissão para acessar este recurso"
+}
+```
+
+## Permissões
+
+As API Keys podem ter diferentes permissões:
+
+- `paymentLinks:read` - Ler links de pagamento
+- `paymentLinks:write` - Criar/editar links de pagamento
+- `products:read` - Ler produtos
+- `products:write` - Criar/editar produtos
+- `coupons:read` - Ler cupons
+- `coupons:write` - Criar/editar cupons
+- `transactions:read` - Ler transações
+- `transactions:write` - Criar transações
+- `webhooks:read` - Ler webhooks
+- `webhooks:write` - Criar/editar webhooks
+
+<Card title="Guia de Autenticação" icon="key" href="/guides/authentication">
+  Aprenda mais sobre autenticação e segurança
+</Card>
+

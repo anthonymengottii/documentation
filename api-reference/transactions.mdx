@@ -1,0 +1,108 @@
+---
+title: "Transações"
+api: "https://api.upay-sistema.onrender.com"
+---
+
+## Transações
+
+Consulte e gerencie transações de pagamento.
+
+## Listar Transações
+
+<RequestExample>
+
+```bash
+curl -X GET "https://api.upay-sistema.onrender.com/api/v1/transactions?page=1&limit=20" \
+  -H "Authorization: Bearer SUA_API_KEY"
+```
+
+</RequestExample>
+
+<ResponseField name="success" type="boolean">
+  Indica se a requisição foi bem-sucedida
+</ResponseField>
+<ResponseField name="data" type="array">
+  Lista de transações
+</ResponseField>
+<ResponseField name="pagination" type="object">
+  Informações de paginação
+</ResponseField>
+
+## Obter Transação
+
+<RequestExample>
+
+```bash
+curl -X GET "https://api.upay-sistema.onrender.com/api/v1/transactions/{id}" \
+  -H "Authorization: Bearer SUA_API_KEY"
+```
+
+</RequestExample>
+
+## Criar Transação
+
+<RequestExample>
+
+```bash
+curl -X POST "https://api.upay-sistema.onrender.com/api/v1/transactions" \
+  -H "Authorization: Bearer SUA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "paymentLinkId": "550e8400-e29b-41d4-a716-446655440000",
+    "amountCents": 19900,
+    "paymentMethod": "pix",
+    "client": {
+      "name": "João Silva",
+      "email": "joao@example.com",
+      "document": "12345678900"
+    }
+  }'
+```
+
+</RequestExample>
+
+<ParamField body="paymentLinkId" type="string">
+  ID do link de pagamento (opcional)
+</ParamField>
+<ParamField body="product" type="string">
+  ID do produto (opcional)
+</ParamField>
+<ParamField body="amountCents" type="number" required>
+  Valor em centavos
+</ParamField>
+<ParamField body="paymentMethod" type="enum" required>
+  "pix", "credit_card", "debit_card" ou "boleto"
+</ParamField>
+<ParamField body="client" type="object" required>
+  Dados do cliente (name, email, document, phone, address)
+</ParamField>
+<ParamField body="installments" type="number">
+  Número de parcelas (apenas para cartão)
+</ParamField>
+
+## Status de Transação
+
+Os possíveis status de uma transação são:
+
+- `PENDING` - Aguardando pagamento
+- `PROCESSING` - Processando pagamento
+- `COMPLETED` - Pagamento confirmado
+- `FAILED` - Pagamento falhou
+- `CANCELLED` - Pagamento cancelado
+- `REFUNDED` - Pagamento reembolsado
+
+## Filtros
+
+Você pode filtrar transações usando query parameters:
+
+- `status` - Filtrar por status
+- `paymentMethod` - Filtrar por método de pagamento
+- `startDate` - Data inicial (ISO 8601)
+- `endDate` - Data final (ISO 8601)
+- `page` - Número da página
+- `limit` - Itens por página
+
+<Card title="Dashboard" icon="chart-line" href="https://upay-sistema.onrender.com">
+  Visualize transações no Dashboard
+</Card>
+

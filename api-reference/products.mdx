@@ -1,0 +1,132 @@
+---
+title: "Produtos"
+api: "https://api.upay-sistema.onrender.com"
+---
+
+## Produtos
+
+Gerencie seu catálogo de produtos que podem ser associados a links de pagamento.
+
+<Note>
+  Para um guia completo sobre Produtos, consulte [Products Guide](/guides/features/products).
+</Note>
+
+## Listar Produtos
+
+<RequestExample>
+
+```bash
+curl -X GET "https://api.upay-sistema.onrender.com/api/products?page=1&limit=20" \
+  -H "Authorization: Bearer SUA_API_KEY"
+```
+
+</RequestExample>
+
+<ResponseField name="success" type="boolean">
+  Indica se a requisição foi bem-sucedida
+</ResponseField>
+<ResponseField name="data" type="array">
+  Lista de produtos
+</ResponseField>
+<ResponseField name="pagination" type="object">
+  Informações de paginação
+</ResponseField>
+
+## Criar Produto
+
+<RequestExample>
+
+```bash
+curl -X POST "https://api.upay-sistema.onrender.com/api/products" \
+  -H "Authorization: Bearer SUA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Curso de JavaScript",
+    "description": "Curso completo de JavaScript",
+    "priceCents": 19900,
+    "currency": "BRL",
+    "stockQuantity": 100,
+    "stockEnabled": true
+  }'
+```
+
+</RequestExample>
+
+<ParamField body="name" type="string" required>
+  Nome do produto (máx. 255 caracteres)
+</ParamField>
+<ParamField body="description" type="string">
+  Descrição detalhada do produto
+</ParamField>
+<ParamField body="priceCents" type="number">
+  Preço em centavos (ex: 19900 = R$ 199,00)
+</ParamField>
+<ParamField body="currency" type="string">
+  Moeda (padrão: "BRL")
+</ParamField>
+<ParamField body="stockQuantity" type="number">
+  Quantidade em estoque
+</ParamField>
+<ParamField body="stockEnabled" type="boolean">
+  Ativar controle de estoque (padrão: false)
+</ParamField>
+<ParamField body="status" type="enum">
+  "ACTIVE" ou "INACTIVE" (padrão: "ACTIVE")
+</ParamField>
+
+## Obter Produto
+
+<RequestExample>
+
+```bash
+curl -X GET "https://api.upay-sistema.onrender.com/api/products/{id}" \
+  -H "Authorization: Bearer SUA_API_KEY"
+```
+
+</RequestExample>
+
+## Atualizar Produto
+
+<RequestExample>
+
+```bash
+curl -X PATCH "https://api.upay-sistema.onrender.com/api/products/{id}" \
+  -H "Authorization: Bearer SUA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "priceCents": 17900
+  }'
+```
+
+</RequestExample>
+
+## Atualizar Estoque
+
+<RequestExample>
+
+```bash
+curl -X PATCH "https://api.upay-sistema.onrender.com/api/products/{id}/stock" \
+  -H "Authorization: Bearer SUA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "stockQuantity": 150
+  }'
+```
+
+</RequestExample>
+
+## Deletar Produto
+
+<RequestExample>
+
+```bash
+curl -X DELETE "https://api.upay-sistema.onrender.com/api/products/{id}" \
+  -H "Authorization: Bearer SUA_API_KEY"
+```
+
+</RequestExample>
+
+<Card title="Guia Completo" icon="box" href="/guides/features/products">
+  Aprenda mais sobre Produtos
+</Card>
+

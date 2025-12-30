@@ -1,0 +1,280 @@
+---
+title: "Links de Pagamento"
+description: "Crie e gerencie links de pagamento personalizados com a UPay Gateway API"
+---
+
+## 🔗 Visão Geral
+
+Os **Links de Pagamento** são URLs personalizadas que você pode criar e compartilhar com seus clientes para receber pagamentos. Cada link pode ser configurado com valores, métodos de pagamento, produtos e muito mais.
+
+## ✨ Funcionalidades
+
+- ✅ **Slug único**: Cada link tem um identificador único e personalizável
+- ✅ **Múltiplos métodos de pagamento**: PIX, Cartão de Crédito/Débito, Boleto
+- ✅ **Produtos**: Associe produtos do seu catálogo ao link
+- ✅ **Controle de estoque**: Configure quantidade limitada de vendas
+- ✅ **Parcelamento**: Configure parcelamento até 12x
+- ✅ **Validade**: Defina data de expiração para o link
+- ✅ **Meta Pixel**: Integre com Meta Pixel para rastreamento
+- ✅ **URL de redirecionamento**: Configure para onde redirecionar após pagamento
+
+## 🚀 Criando seu Primeiro Link
+
+### Requisição Básica
+
+```bash
+curl -X POST "https://api.upay-sistema.onrender.com/api/payment-links" \
+  -H "Authorization: Bearer SUA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Produto Premium",
+    "description": "Acesso completo à plataforma",
+    "amountCents": 9900,
+    "currency": "BRL",
+    "settings": {
+      "pixEnabled": true,
+      "creditCardEnabled": true,
+      "maxInstallments": 12
+    }
+  }'
+```
+
+### Resposta
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "slug": "produto-premium-abc123",
+    "title": "Produto Premium",
+    "description": "Acesso completo à plataforma",
+    "amount": 99.00,
+    "amountCents": 9900,
+    "currency": "BRL",
+    "status": "ACTIVE",
+    "url": "https://upay-sistema.onrender.com/checkout/produto-premium-abc123",
+    "createdAt": "2025-12-30T00:00:00.000Z",
+    "updatedAt": "2025-12-30T00:00:00.000Z"
+  }
+}
+```
+
+## 📋 Campos Disponíveis
+
+### Campos Obrigatórios
+
+- `title` (string): Título do link de pagamento (máx. 255 caracteres)
+
+### Campos Opcionais
+
+- `description` (string): Descrição detalhada (máx. 1000 caracteres)
+- `amountCents` (number): Valor em centavos (ex: 9900 = R$ 99,00)
+- `currency` (string): Moeda (padrão: "BRL")
+- `expiresAt` (string): Data de expiração no formato ISO 8601
+- `redirectUrl` (string): URL para redirecionar após pagamento
+- `productDescription` (string): Descrição do produto
+- `stockQuantity` (number): Quantidade em estoque (0 = ilimitado)
+- `stockEnabled` (boolean): Ativar controle de estoque
+- `metaPixelCode` (string): Código do Meta Pixel
+- `status` (enum): "ACTIVE" ou "INACTIVE" (padrão: "ACTIVE")
+
+### Configurações de Pagamento (`settings`)
+
+```json
+{
+  "settings": {
+    "pixEnabled": true,              // Habilitar PIX
+    "boletoEnabled": false,          // Habilitar Boleto
+    "creditCardEnabled": true,       // Habilitar Cartão
+    "maxInstallments": 12,           // Máximo de parcelas
+    "interestFreeInstallments": 3,  // Parcelas sem juros
+    "interestRate": 2.5,            // Taxa de juros (%)
+    "requirePhone": true,           // Exigir telefone
+    "requireAddress": true           // Exigir endereço
+  }
+}
+```
+
+### Associando Produtos
+
+```json
+{
+  "products": [
+    {
+      "productId": "550e8400-e29b-41d4-a716-446655440000",
+      "quantity": 2
+    }
+  ]
+}
+```
+
+<Note>
+  Quando produtos são associados, o valor total é calculado automaticamente baseado nos preços dos produtos e quantidades.
+</Note>
+
+## 📖 Exemplos Completos
+
+### Link Simples com PIX e Cartão
+
+```javascript
+const response = await fetch('https://api.upay-sistema.onrender.com/api/payment-links', {
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${apiKey}`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    title: 'Curso Online',
+    description: 'Acesso completo ao curso por 1 ano',
+    amountCents: 19900, // R$ 199,00
+    currency: 'BRL',
+    settings: {
+      pixEnabled: true,
+      creditCardEnabled: true,
+      maxInstallments: 6,
+      interestFreeInstallments: 3
+    }
+  })
+});
+```
+
+### Link com Produtos e Estoque
+
+```javascript
+const response = await fetch('https://api.upay-sistema.onrender.com/api/payment-links', {
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${apiKey}`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    title: 'Pacote Premium',
+    description: 'Inclui 3 produtos do catálogo',
+    products: [
+      { productId: 'produto-1-id', quantity: 1 },
+      { productId: 'produto-2-id', quantity: 2 }
+    ],
+    stockQuantity: 50,
+    stockEnabled: true,
+    settings: {
+      pixEnabled: true,
+      creditCardEnabled: true,
+      boletoEnabled: true
+    }
+  })
+});
+```
+
+### Link com Expiração e Redirecionamento
+
+```javascript
+const expiresAt = new Date();
+expiresAt.setDate(expiresAt.getDate() + 30); // Expira em 30 dias
+
+const response = await fetch('https://api.upay-sistema.onrender.com/api/payment-links', {
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${apiKey}`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    title: 'Oferta Especial',
+    description: 'Válido apenas este mês',
+    amountCents: 9900,
+    expiresAt: expiresAt.toISOString(),
+    redirectUrl: 'https://meusite.com.br/obrigado',
+    settings: {
+      pixEnabled: true,
+      creditCardEnabled: true
+    }
+  })
+});
+```
+
+## 🔍 Listando Links
+
+### Listar Todos os Links
+
+```bash
+curl -X GET "https://api.upay-sistema.onrender.com/api/payment-links?page=1&limit=20" \
+  -H "Authorization: Bearer SUA_API_KEY"
+```
+
+### Buscar Link Específico
+
+```bash
+curl -X GET "https://api.upay-sistema.onrender.com/api/payment-links/{id}" \
+  -H "Authorization: Bearer SUA_API_KEY"
+```
+
+## ✏️ Atualizando um Link
+
+```bash
+curl -X PATCH "https://api.upay-sistema.onrender.com/api/payment-links/{id}" \
+  -H "Authorization: Bearer SUA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Novo Título",
+    "status": "INACTIVE"
+  }'
+```
+
+<Note>
+  Você pode atualizar apenas os campos que desejar. Campos não enviados permanecerão inalterados.
+</Note>
+
+## 🗑️ Deletando um Link
+
+```bash
+curl -X DELETE "https://api.upay-sistema.onrender.com/api/payment-links/{id}" \
+  -H "Authorization: Bearer SUA_API_KEY"
+```
+
+<Warning>
+  A exclusão é permanente e não pode ser desfeita. Certifique-se de que realmente deseja deletar o link.
+</Warning>
+
+## 🔗 URL do Checkout
+
+Após criar um link, você receberá uma URL no formato:
+
+```
+https://upay-sistema.onrender.com/checkout/{slug}
+```
+
+Esta URL pode ser compartilhada diretamente com seus clientes.
+
+## 📊 Status do Link
+
+- `ACTIVE`: Link ativo e disponível para pagamentos
+- `INACTIVE`: Link desativado (não aceita novos pagamentos)
+
+## 🎯 Casos de Uso
+
+### E-commerce
+Crie links para produtos específicos com controle de estoque e múltiplos métodos de pagamento.
+
+### Assinaturas
+Configure links recorrentes com valores e parcelamento adequados.
+
+### Doações
+Crie links simples para receber doações via PIX ou cartão.
+
+### Cursos Online
+Associe produtos (cursos) aos links e controle o acesso.
+
+## 📚 Próximos Passos
+
+<CardGroup cols={2}>
+  <Card title="Referência da API" icon="code" href="/api-reference/payment-links">
+    Veja todos os endpoints disponíveis
+  </Card>
+  <Card title="Produtos" icon="box" href="/guides/features/products">
+    Aprenda a gerenciar produtos
+  </Card>
+  <Card title="Webhooks" icon="bell" href="/guides/features/webhooks">
+    Configure notificações em tempo real
+  </Card>
+</CardGroup>
+

@@ -1,0 +1,157 @@
+---
+title: "Cupons"
+api: "https://api.upay-sistema.onrender.com"
+---
+
+## Cupons
+
+Crie e gerencie cupons de desconto para aplicar em pagamentos.
+
+<Note>
+  Para um guia completo sobre Cupons, consulte [Coupons Guide](/guides/features/coupons).
+</Note>
+
+## Listar Cupons
+
+<RequestExample>
+
+```bash
+curl -X GET "https://api.upay-sistema.onrender.com/api/coupons?page=1&limit=20" \
+  -H "Authorization: Bearer SUA_API_KEY"
+```
+
+</RequestExample>
+
+## Criar Cupom
+
+<RequestExample>
+
+```bash
+curl -X POST "https://api.upay-sistema.onrender.com/api/coupons" \
+  -H "Authorization: Bearer SUA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "code": "DESCONTO10",
+    "discountType": "PERCENTAGE",
+    "discountValue": 10,
+    "description": "10% de desconto"
+  }'
+```
+
+</RequestExample>
+
+<ParamField body="code" type="string" required>
+  Código do cupom (único, máx. 50 caracteres)
+</ParamField>
+<ParamField body="discountType" type="enum" required>
+  "PERCENTAGE" ou "FIXED"
+</ParamField>
+<ParamField body="discountValue" type="number" required>
+  Para PERCENTAGE: valor percentual (ex: 10 = 10%)
+  Para FIXED: valor em centavos (ex: 5000 = R$ 50,00)
+</ParamField>
+<ParamField body="description" type="string">
+  Descrição do cupom
+</ParamField>
+<ParamField body="minPurchaseAmount" type="number">
+  Valor mínimo de compra em centavos
+</ParamField>
+<ParamField body="maxDiscountAmount" type="number">
+  Valor máximo de desconto em centavos (apenas para PERCENTAGE)
+</ParamField>
+<ParamField body="maxUses" type="number">
+  Limite total de usos (null = ilimitado)
+</ParamField>
+<ParamField body="maxUsesPerUser" type="number">
+  Limite de usos por usuário (null = ilimitado)
+</ParamField>
+<ParamField body="validFrom" type="string">
+  Data de início (ISO 8601)
+</ParamField>
+<ParamField body="validUntil" type="string">
+  Data de fim (ISO 8601)
+</ParamField>
+<ParamField body="productIds" type="array">
+  IDs dos produtos aplicáveis (vazio = todos)
+</ParamField>
+<ParamField body="status" type="enum">
+  "ACTIVE" ou "INACTIVE" (padrão: "ACTIVE")
+</ParamField>
+
+## Validar Cupom (Público)
+
+<Note>
+  Este endpoint é **público** e não requer autenticação. Use-o no checkout para validar cupons.
+</Note>
+
+<RequestExample>
+
+```bash
+curl -X POST "https://api.upay-sistema.onrender.com/api/coupons/validate" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "code": "DESCONTO10",
+    "amount": 10000
+  }'
+```
+
+</RequestExample>
+
+<ParamField body="code" type="string" required>
+  Código do cupom
+</ParamField>
+<ParamField body="amount" type="number" required>
+  Valor da compra em centavos
+</ParamField>
+
+<ResponseField name="success" type="boolean">
+  Indica se a validação foi bem-sucedida
+</ResponseField>
+<ResponseField name="valid" type="boolean">
+  Indica se o cupom é válido
+</ResponseField>
+<ResponseField name="data" type="object">
+  Dados do cupom e desconto calculado (se válido)
+</ResponseField>
+
+## Obter Cupom
+
+<RequestExample>
+
+```bash
+curl -X GET "https://api.upay-sistema.onrender.com/api/coupons/{id}" \
+  -H "Authorization: Bearer SUA_API_KEY"
+```
+
+</RequestExample>
+
+## Atualizar Cupom
+
+<RequestExample>
+
+```bash
+curl -X PATCH "https://api.upay-sistema.onrender.com/api/coupons/{id}" \
+  -H "Authorization: Bearer SUA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "status": "INACTIVE"
+  }'
+```
+
+</RequestExample>
+
+## Deletar Cupom
+
+<RequestExample>
+
+```bash
+curl -X DELETE "https://api.upay-sistema.onrender.com/api/coupons/{id}" \
+  -H "Authorization: Bearer SUA_API_KEY"
+```
+
+</RequestExample>
+
+<Card title="Guia Completo" icon="ticket" href="/guides/features/coupons">
+  Aprenda mais sobre Cupons
+</Card>
+

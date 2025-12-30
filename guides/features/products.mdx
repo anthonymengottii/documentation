@@ -1,0 +1,286 @@
+---
+title: "Produtos"
+description: "Gerencie seu catálogo de produtos e integre com links de pagamento"
+---
+
+## 📦 Visão Geral
+
+O sistema de **Produtos** permite que você gerencie um catálogo completo de produtos que podem ser associados a links de pagamento. Isso facilita a criação de links recorrentes e o controle de estoque centralizado.
+
+## ✨ Funcionalidades
+
+- ✅ **CRUD Completo**: Criar, ler, atualizar e deletar produtos
+- ✅ **Controle de Estoque**: Gerencie quantidade disponível
+- ✅ **Preços**: Defina preços em centavos
+- ✅ **Descrições**: Adicione descrições detalhadas
+- ✅ **Status**: Ative ou desative produtos
+- ✅ **Associação com Links**: Use produtos em múltiplos links de pagamento
+
+## 🚀 Criando um Produto
+
+### Requisição Básica
+
+```bash
+curl -X POST "https://api.upay-sistema.onrender.com/api/products" \
+  -H "Authorization: Bearer SUA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Curso de JavaScript",
+    "description": "Curso completo de JavaScript do zero ao avançado",
+    "priceCents": 19900,
+    "currency": "BRL",
+    "stockQuantity": 100,
+    "stockEnabled": true
+  }'
+```
+
+### Resposta
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "Curso de JavaScript",
+    "description": "Curso completo de JavaScript do zero ao avançado",
+    "price": 199.00,
+    "priceCents": 19900,
+    "currency": "BRL",
+    "stockQuantity": 100,
+    "stockEnabled": true,
+    "status": "ACTIVE",
+    "createdAt": "2025-12-30T00:00:00.000Z",
+    "updatedAt": "2025-12-30T00:00:00.000Z"
+  }
+}
+```
+
+## 📋 Campos Disponíveis
+
+### Campos Obrigatórios
+
+- `name` (string): Nome do produto (máx. 255 caracteres)
+
+### Campos Opcionais
+
+- `description` (string): Descrição detalhada do produto
+- `priceCents` (number): Preço em centavos (ex: 19900 = R$ 199,00)
+- `currency` (string): Moeda (padrão: "BRL")
+- `stockQuantity` (number): Quantidade em estoque
+- `stockEnabled` (boolean): Ativar controle de estoque (padrão: false)
+- `status` (enum): "ACTIVE" ou "INACTIVE" (padrão: "ACTIVE")
+
+## 📖 Exemplos Completos
+
+### Produto Simples
+
+```javascript
+const response = await fetch('https://api.upay-sistema.onrender.com/api/products', {
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${apiKey}`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    name: 'E-book de Marketing Digital',
+    description: 'Guia completo com estratégias de marketing digital',
+    priceCents: 4900, // R$ 49,00
+    currency: 'BRL'
+  })
+});
+```
+
+### Produto com Estoque
+
+```javascript
+const response = await fetch('https://api.upay-sistema.onrender.com/api/products', {
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${apiKey}`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    name: 'Camiseta Personalizada',
+    description: 'Camiseta 100% algodão com estampa personalizada',
+    priceCents: 7900, // R$ 79,00
+    currency: 'BRL',
+    stockQuantity: 50,
+    stockEnabled: true
+  })
+});
+```
+
+### Produto Digital (Sem Estoque)
+
+```javascript
+const response = await fetch('https://api.upay-sistema.onrender.com/api/products', {
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${apiKey}`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    name: 'Acesso Premium',
+    description: 'Acesso completo à plataforma por 1 ano',
+    priceCents: 29900, // R$ 299,00
+    currency: 'BRL',
+    stockEnabled: false // Produto digital, sem limite de estoque
+  })
+});
+```
+
+## 🔍 Listando Produtos
+
+### Listar Todos os Produtos
+
+```bash
+curl -X GET "https://api.upay-sistema.onrender.com/api/products?page=1&limit=20" \
+  -H "Authorization: Bearer SUA_API_KEY"
+```
+
+### Buscar Produto Específico
+
+```bash
+curl -X GET "https://api.upay-sistema.onrender.com/api/products/{id}" \
+  -H "Authorization: Bearer SUA_API_KEY"
+```
+
+### Filtrar por Status
+
+```bash
+curl -X GET "https://api.upay-sistema.onrender.com/api/products?status=ACTIVE" \
+  -H "Authorization: Bearer SUA_API_KEY"
+```
+
+## ✏️ Atualizando um Produto
+
+### Atualização Completa (PUT)
+
+```bash
+curl -X PUT "https://api.upay-sistema.onrender.com/api/products/{id}" \
+  -H "Authorization: Bearer SUA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Curso de JavaScript - Atualizado",
+    "description": "Nova descrição",
+    "priceCents": 17900,
+    "stockQuantity": 80
+  }'
+```
+
+### Atualização Parcial (PATCH)
+
+```bash
+curl -X PATCH "https://api.upay-sistema.onrender.com/api/products/{id}" \
+  -H "Authorization: Bearer SUA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "priceCents": 17900
+  }'
+```
+
+<Note>
+  Use PATCH para atualizar apenas campos específicos. Campos não enviados permanecerão inalterados.
+</Note>
+
+## 📦 Atualizando Estoque
+
+### Atualizar Estoque Específico
+
+```bash
+curl -X PATCH "https://api.upay-sistema.onrender.com/api/products/{id}/stock" \
+  -H "Authorization: Bearer SUA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "stockQuantity": 150
+  }'
+```
+
+### Exemplo em JavaScript
+
+```javascript
+const response = await fetch(`https://api.upay-sistema.onrender.com/api/products/${productId}/stock`, {
+  method: 'PATCH',
+  headers: {
+    'Authorization': `Bearer ${apiKey}`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    stockQuantity: 150
+  })
+});
+```
+
+## 🗑️ Deletando um Produto
+
+```bash
+curl -X DELETE "https://api.upay-sistema.onrender.com/api/products/{id}" \
+  -H "Authorization: Bearer SUA_API_KEY"
+```
+
+<Warning>
+  A exclusão é permanente. Produtos associados a links de pagamento ativos não devem ser deletados.
+</Warning>
+
+## 🔗 Associando Produtos a Links de Pagamento
+
+Ao criar ou atualizar um link de pagamento, você pode associar produtos:
+
+```javascript
+const response = await fetch('https://api.upay-sistema.onrender.com/api/payment-links', {
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${apiKey}`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    title: 'Pacote Completo',
+    products: [
+      { productId: 'produto-1-id', quantity: 1 },
+      { productId: 'produto-2-id', quantity: 2 }
+    ],
+    settings: {
+      pixEnabled: true,
+      creditCardEnabled: true
+    }
+  })
+});
+```
+
+<Note>
+  Quando produtos são associados, o valor total do link é calculado automaticamente baseado nos preços dos produtos e quantidades.
+</Note>
+
+## 📊 Status do Produto
+
+- `ACTIVE`: Produto ativo e disponível para uso
+- `INACTIVE`: Produto desativado (não aparece em listagens, mas mantém histórico)
+
+## 🎯 Casos de Uso
+
+### E-commerce
+Gerencie um catálogo completo de produtos físicos com controle de estoque.
+
+### Cursos Online
+Crie produtos para cada curso e associe a links de pagamento.
+
+### Assinaturas
+Produtos digitais sem controle de estoque para assinaturas recorrentes.
+
+### Pacotes
+Combine múltiplos produtos em um único link de pagamento.
+
+## 📚 Próximos Passos
+
+<CardGroup cols={2}>
+  <Card title="Referência da API" icon="code" href="/api-reference/products">
+    Veja todos os endpoints disponíveis
+  </Card>
+  <Card title="Payment Links" icon="link" href="/guides/features/payment-links">
+    Aprenda a associar produtos a links
+  </Card>
+  <Card title="Cupons" icon="ticket" href="/guides/features/coupons">
+    Aplique descontos aos produtos
+  </Card>
+</CardGroup>
+

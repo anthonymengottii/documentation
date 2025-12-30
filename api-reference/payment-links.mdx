@@ -1,0 +1,133 @@
+---
+title: "Payment Links"
+api: "https://api.upay-sistema.onrender.com"
+---
+
+## Payment Links
+
+Gerencie links de pagamento personalizados que podem ser compartilhados com seus clientes.
+
+<Note>
+  Para um guia completo sobre Payment Links, consulte [Payment Links Guide](/guides/features/payment-links).
+</Note>
+
+## Listar Links de Pagamento
+
+<RequestExample>
+
+```bash
+curl -X GET "https://api.upay-sistema.onrender.com/api/payment-links?page=1&limit=20" \
+  -H "Authorization: Bearer SUA_API_KEY"
+```
+
+</RequestExample>
+
+<ResponseField name="success" type="boolean">
+  Indica se a requisição foi bem-sucedida
+</ResponseField>
+<ResponseField name="data" type="array">
+  Lista de links de pagamento
+</ResponseField>
+<ResponseField name="pagination" type="object">
+  Informações de paginação (page, limit, total)
+</ResponseField>
+
+## Criar Link de Pagamento
+
+<RequestExample>
+
+```bash
+curl -X POST "https://api.upay-sistema.onrender.com/api/payment-links" \
+  -H "Authorization: Bearer SUA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Produto Premium",
+    "description": "Acesso completo à plataforma",
+    "amountCents": 9900,
+    "currency": "BRL",
+    "settings": {
+      "pixEnabled": true,
+      "creditCardEnabled": true,
+      "maxInstallments": 12
+    }
+  }'
+```
+
+</RequestExample>
+
+<ParamField body="title" type="string" required>
+  Título do link de pagamento (máx. 255 caracteres)
+</ParamField>
+<ParamField body="description" type="string">
+  Descrição detalhada (máx. 1000 caracteres)
+</ParamField>
+<ParamField body="amountCents" type="number">
+  Valor em centavos (ex: 9900 = R$ 99,00)
+</ParamField>
+<ParamField body="currency" type="string">
+  Moeda (padrão: "BRL")
+</ParamField>
+<ParamField body="settings" type="object">
+  Configurações de pagamento (pixEnabled, creditCardEnabled, maxInstallments, etc.)
+</ParamField>
+<ParamField body="products" type="array">
+  Array de produtos associados [{ productId, quantity }]
+</ParamField>
+<ParamField body="stockQuantity" type="number">
+  Quantidade em estoque
+</ParamField>
+<ParamField body="stockEnabled" type="boolean">
+  Ativar controle de estoque
+</ParamField>
+<ParamField body="expiresAt" type="string">
+  Data de expiração (ISO 8601)
+</ParamField>
+<ParamField body="redirectUrl" type="string">
+  URL para redirecionar após pagamento
+</ParamField>
+<ParamField body="status" type="enum">
+  "ACTIVE" ou "INACTIVE" (padrão: "ACTIVE")
+</ParamField>
+
+## Obter Link de Pagamento
+
+<RequestExample>
+
+```bash
+curl -X GET "https://api.upay-sistema.onrender.com/api/payment-links/{id}" \
+  -H "Authorization: Bearer SUA_API_KEY"
+```
+
+</RequestExample>
+
+## Atualizar Link de Pagamento
+
+<RequestExample>
+
+```bash
+curl -X PATCH "https://api.upay-sistema.onrender.com/api/payment-links/{id}" \
+  -H "Authorization: Bearer SUA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Novo Título",
+    "status": "INACTIVE"
+  }'
+```
+
+</RequestExample>
+
+## Deletar Link de Pagamento
+
+<RequestExample>
+
+```bash
+curl -X DELETE "https://api.upay-sistema.onrender.com/api/payment-links/{id}" \
+  -H "Authorization: Bearer SUA_API_KEY"
+```
+
+</RequestExample>
+
+<Card title="Guia Completo" icon="link" href="/guides/features/payment-links">
+  Aprenda mais sobre Payment Links
+</Card>
+
