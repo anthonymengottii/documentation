@@ -30,7 +30,7 @@ Veja como é fácil:
 
 ```javascript
 // Exemplo de criação de link de pagamento
-const response = await fetch('https://api.upay-sistema.onrender.com/api/payment-links', {
+const response = await fetch('https://api.upay-sistema.onrender.com/api/v1/payment-links', {
   method: 'POST',
   headers: {
     'Authorization': `Bearer ${apiKey}`,
@@ -54,16 +54,16 @@ Nossa API foi construída com princípios fundamentais que facilitam a integraç
 ### 1. **Baseada em intenção**: Cada endpoint representa exatamente o que você lê
 
 ```javascript
-POST /api/payment-links     // Cria um link de pagamento
-GET  /api/payment-links     // Lista links de pagamento
-GET  /api/payment-links/:id // Busca um link específico
+POST /api/v1/payment-links     // Cria um link de pagamento
+GET  /api/v1/payment-links     // Lista links de pagamento
+GET  /api/v1/payment-links/:id // Busca um link específico
 ```
 
 ### 2. **Idempotente**: Execute a mesma requisição quantas vezes precisar, sem efeitos colaterais
 
 ```javascript
 // Seguro para executar múltiplas vezes
-await fetch('/api/payment-links', {
+await fetch('/api/v1/payment-links', {
   method: 'POST',
   body: JSON.stringify({...})
 });

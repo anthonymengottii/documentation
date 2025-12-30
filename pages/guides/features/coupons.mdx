@@ -22,7 +22,7 @@ O sistema de **Cupons de Desconto** permite que você crie e gerencie cupons pro
 ### Requisição Básica - Desconto Percentual
 
 ```bash
-curl -X POST "https://api.upay-sistema.onrender.com/api/coupons" \
+curl -X POST "https://api.upay-sistema.onrender.com/api/v1/coupons" \
   -H "Authorization: Bearer SUA_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -36,7 +36,7 @@ curl -X POST "https://api.upay-sistema.onrender.com/api/coupons" \
 ### Requisição - Desconto Fixo
 
 ```bash
-curl -X POST "https://api.upay-sistema.onrender.com/api/coupons" \
+curl -X POST "https://api.upay-sistema.onrender.com/api/v1/coupons" \
   -H "Authorization: Bearer SUA_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -99,7 +99,7 @@ curl -X POST "https://api.upay-sistema.onrender.com/api/coupons" \
 ### Cupom Simples - 10% de Desconto
 
 ```javascript
-const response = await fetch('https://api.upay-sistema.onrender.com/api/coupons', {
+const response = await fetch('https://api.upay-sistema.onrender.com/api/v1/coupons', {
   method: 'POST',
   headers: {
     'Authorization': `Bearer ${apiKey}`,
@@ -121,7 +121,7 @@ const validFrom = new Date();
 const validUntil = new Date();
 validUntil.setDate(validUntil.getDate() + 30); // Válido por 30 dias
 
-const response = await fetch('https://api.upay-sistema.onrender.com/api/coupons', {
+const response = await fetch('https://api.upay-sistema.onrender.com/api/v1/coupons', {
   method: 'POST',
   headers: {
     'Authorization': `Bearer ${apiKey}`,
@@ -145,7 +145,7 @@ const response = await fetch('https://api.upay-sistema.onrender.com/api/coupons'
 ### Cupom para Produtos Específicos
 
 ```javascript
-const response = await fetch('https://api.upay-sistema.onrender.com/api/coupons', {
+const response = await fetch('https://api.upay-sistema.onrender.com/api/v1/coupons', {
   method: 'POST',
   headers: {
     'Authorization': `Bearer ${apiKey}`,
@@ -171,7 +171,7 @@ const response = await fetch('https://api.upay-sistema.onrender.com/api/coupons'
 O endpoint de validação é **público** e não requer autenticação. Use-o no checkout para validar cupons:
 
 ```bash
-curl -X POST "https://api.upay-sistema.onrender.com/api/coupons/validate" \
+curl -X POST "https://api.upay-sistema.onrender.com/api/v1/coupons/validate" \
   -H "Content-Type: application/json" \
   -d '{
     "code": "DESCONTO10",
@@ -210,7 +210,7 @@ curl -X POST "https://api.upay-sistema.onrender.com/api/coupons/validate" \
 
 ```javascript
 async function validateCoupon(code, amount) {
-  const response = await fetch('https://api.upay-sistema.onrender.com/api/coupons/validate', {
+  const response = await fetch('https://api.upay-sistema.onrender.com/api/v1/coupons/validate', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -239,21 +239,21 @@ async function validateCoupon(code, amount) {
 ### Listar Todos os Cupons
 
 ```bash
-curl -X GET "https://api.upay-sistema.onrender.com/api/coupons?page=1&limit=20" \
+curl -X GET "https://api.upay-sistema.onrender.com/api/v1/coupons?page=1&limit=20" \
   -H "Authorization: Bearer SUA_API_KEY"
 ```
 
 ### Buscar Cupom Específico
 
 ```bash
-curl -X GET "https://api.upay-sistema.onrender.com/api/coupons/{id}" \
+curl -X GET "https://api.upay-sistema.onrender.com/api/v1/coupons/{id}" \
   -H "Authorization: Bearer SUA_API_KEY"
 ```
 
 ## ✏️ Atualizando um Cupom
 
 ```bash
-curl -X PATCH "https://api.upay-sistema.onrender.com/api/coupons/{id}" \
+curl -X PATCH "https://api.upay-sistema.onrender.com/api/v1/coupons/{id}" \
   -H "Authorization: Bearer SUA_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -269,7 +269,7 @@ curl -X PATCH "https://api.upay-sistema.onrender.com/api/coupons/{id}" \
 ## 🗑️ Deletando um Cupom
 
 ```bash
-curl -X DELETE "https://api.upay-sistema.onrender.com/api/coupons/{id}" \
+curl -X DELETE "https://api.upay-sistema.onrender.com/api/v1/coupons/{id}" \
   -H "Authorization: Bearer SUA_API_KEY"
 ```
 

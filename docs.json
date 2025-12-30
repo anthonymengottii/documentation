@@ -68,6 +68,14 @@
             ]
           },
           {
+            "group": "Saldo",
+            "icon": "wallet",
+            "pages": [
+              "pages/balance/reference",
+              "pages/balance/get"
+            ]
+          },
+          {
             "group": "Webhooks",
             "icon": "zap",
             "pages": [

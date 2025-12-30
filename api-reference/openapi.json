@@ -1010,7 +1010,7 @@
         "type": "apiKey",
         "in": "header",
         "name": "X-API-Key",
-        "description": "Chave de API obtida através do endpoint /api/credentials"
+        "description": "Chave de API obtida através do endpoint /api/credentials. Também aceita formato Bearer Token: Authorization: Bearer <api_key>"
       }
     },
     "schemas": {

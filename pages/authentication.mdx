@@ -42,16 +42,24 @@ A UPay Gateway API usa autenticação baseada em **API Keys** (Bearer Token) par
 
 ### Header de Autenticação
 
-Todas as requisições autenticadas devem incluir o header `Authorization` com o formato:
+A API aceita autenticação em dois formatos:
 
+**Formato 1: Bearer Token (Recomendado)**
 ```
 Authorization: Bearer SUA_API_KEY_AQUI
 ```
 
+**Formato 2: X-API-Key Header**
+```
+X-API-Key: SUA_API_KEY_AQUI
+```
+
+Ambos os formatos são aceitos. Recomendamos o uso do formato Bearer Token por ser mais padrão.
+
 ### Exemplo com cURL
 
 ```bash
-curl -X GET "https://api.upay-sistema.onrender.com/api/payment-links" \
+curl -X GET "https://api.upay-sistema.onrender.com/api/v1/payment-links" \
   -H "Authorization: Bearer sua_api_key_aqui" \
   -H "Content-Type: application/json"
 ```
@@ -61,7 +69,7 @@ curl -X GET "https://api.upay-sistema.onrender.com/api/payment-links" \
 ```javascript
 const apiKey = 'sua_api_key_aqui';
 
-const response = await fetch('https://api.upay-sistema.onrender.com/api/payment-links', {
+const response = await fetch('https://api.upay-sistema.onrender.com/api/v1/payment-links', {
   method: 'GET',
   headers: {
     'Authorization': `Bearer ${apiKey}`,
@@ -84,7 +92,7 @@ headers = {
 }
 
 response = requests.get(
-    'https://api.upay-sistema.onrender.com/api/payment-links',
+    'https://api.upay-sistema.onrender.com/api/v1/payment-links',
     headers=headers
 )
 

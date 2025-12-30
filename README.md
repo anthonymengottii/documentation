@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="logo/light.png" alt="UPay Gateway API" width="200" />
+</div>
+
 # UPay Gateway API - Documentação
 
 Documentação pública da API UPay Gateway - Plataforma completa de pagamentos.
