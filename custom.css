@@ -17,7 +17,7 @@
   background: #a8a8a8;
 }
 
-/* Scrollbar customizada para modo escuro */
+/* Scrollbar customizada para modo escuro - cores compatíveis com tema roxo */
 html[data-theme="dark"] ::-webkit-scrollbar,
 .dark ::-webkit-scrollbar,
 [data-theme="dark"] ::-webkit-scrollbar {
@@ -28,20 +28,20 @@ html[data-theme="dark"] ::-webkit-scrollbar,
 html[data-theme="dark"] ::-webkit-scrollbar-track,
 .dark ::-webkit-scrollbar-track,
 [data-theme="dark"] ::-webkit-scrollbar-track {
-  background: #1a1a1a;
+  background: #1e1b24; /* Fundo escuro com tom roxo sutil */
 }
 
 html[data-theme="dark"] ::-webkit-scrollbar-thumb,
 .dark ::-webkit-scrollbar-thumb,
 [data-theme="dark"] ::-webkit-scrollbar-thumb {
-  background: #4a4a4a;
+  background: #5B21B6; /* Roxo escuro (#5B21B6) - cor dark do tema */
   border-radius: 5px;
 }
 
 html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover,
 .dark ::-webkit-scrollbar-thumb:hover,
 [data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
-  background: #5a5a5a;
+  background: #9747FF; /* Roxo primário (#9747FF) - cor principal */
 }
 
 /* Firefox - modo claro */
@@ -50,11 +50,11 @@ html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover,
   scrollbar-color: #c1c1c1 #f1f1f1;
 }
 
-/* Firefox - modo escuro */
+/* Firefox - modo escuro - cores compatíveis com tema roxo */
 html[data-theme="dark"] *,
 .dark *,
 [data-theme="dark"] * {
   scrollbar-width: thin;
-  scrollbar-color: #4a4a4a #1a1a1a;
+  scrollbar-color: #5B21B6 #1e1b24; /* Thumb roxo escuro, track fundo escuro com tom roxo */
 }
 
