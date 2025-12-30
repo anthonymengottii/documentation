@@ -1,94 +1,753 @@
 {
-  "openapi": "3.1.0",
+  "openapi": "3.0.3",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
+    "title": "UPay Gateway API",
+    "version": "2.18.0",
+    "description": "Documentação completa da API pública do UPay Gateway. Todas as rotas requerem autenticação via API Key.",
+    "contact": {
+      "email": "suporte@upay.com.br"
+    },
     "license": {
       "name": "MIT"
-    },
-    "version": "1.0.0"
+    }
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
+      "url": "https://api.upay-sistema.onrender.com",
+      "description": "Produção"
+    },
+    {
+      "url": "http://localhost:3001",
+      "description": "Desenvolvimento Local"
     }
   ],
   "security": [
     {
-      "bearerAuth": []
+      "apiKeyAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Transações",
+      "description": "Gerenciamento de transações de pagamento"
+    },
+    {
+      "name": "Payment Links",
+      "description": "Gerenciamento de links de pagamento"
+    },
+    {
+      "name": "Produtos",
+      "description": "Gerenciamento de produtos do catálogo"
+    },
+    {
+      "name": "Cupons",
+      "description": "Gerenciamento de cupons de desconto"
+    },
+    {
+      "name": "Webhooks",
+      "description": "Gerenciamento de webhooks e assinaturas"
+    },
+    {
+      "name": "Saldo",
+      "description": "Consulta de saldo e movimentações"
     }
   ],
   "paths": {
-    "/plants": {
+    "/api/v1/transactions": {
       "get": {
-        "description": "Returns all plants from the system that the user has access to",
+        "tags": ["Transações"],
+        "summary": "Listar transações",
+        "description": "Lista todas as transações do usuário autenticado com paginação",
+        "security": [{"apiKeyAuth": []}],
         "parameters": [
           {
             "name": "limit",
             "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
+            "description": "Número de itens por página",
+            "schema": {"type": "integer", "minimum": 1, "maximum": 100, "default": 20}
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "description": "Cursor para paginação",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "description": "Campo para ordenação",
+            "schema": {"type": "string", "enum": ["createdAt", "amountCents", "status"]}
           }
         ],
         "responses": {
           "200": {
-            "description": "Plant response",
+            "description": "Lista de transações",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "transactions": {"type": "array", "items": {"$ref": "#/components/schemas/Transaction"}},
+                    "pagination": {"$ref": "#/components/schemas/Pagination"}
+                  }
+                }
+              }
+            }
+          },
+          "401": {"$ref": "#/components/responses/Unauthorized"},
+          "403": {"$ref": "#/components/responses/Forbidden"}
+        }
+      },
+      "post": {
+        "tags": ["Transações"],
+        "summary": "Criar transação",
+        "description": "Cria uma nova transação de pagamento",
+        "security": [{"apiKeyAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/CreateTransactionRequest"}
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Transação criada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "transaction": {"$ref": "#/components/schemas/Transaction"}
+                  }
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "401": {"$ref": "#/components/responses/Unauthorized"},
+          "403": {"$ref": "#/components/responses/Forbidden"}
+        }
+      }
+    },
+    "/api/v1/transactions/{id}": {
+      "get": {
+        "tags": ["Transações"],
+        "summary": "Obter transação",
+        "description": "Obtém detalhes de uma transação específica",
+        "security": [{"apiKeyAuth": []}],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string", "format": "uuid"}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes da transação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "transaction": {"$ref": "#/components/schemas/Transaction"}
+                  }
+                }
+              }
+            }
+          },
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      }
+    },
+    "/api/v1/payment-links": {
+      "get": {
+        "tags": ["Payment Links"],
+        "summary": "Listar payment links",
+        "description": "Lista todos os payment links do usuário",
+        "security": [{"apiKeyAuth": []}],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {"type": "integer", "minimum": 1, "maximum": 100, "default": 20}
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {"type": "string"}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de payment links",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "paymentLinks": {"type": "array", "items": {"$ref": "#/components/schemas/PaymentLink"}},
+                    "pagination": {"$ref": "#/components/schemas/Pagination"}
+                  }
+                }
+              }
+            }
+          },
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      },
+      "post": {
+        "tags": ["Payment Links"],
+        "summary": "Criar payment link",
+        "description": "Cria um novo link de pagamento",
+        "security": [{"apiKeyAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/CreatePaymentLinkRequest"}
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Payment link criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "paymentLink": {"$ref": "#/components/schemas/PaymentLink"}
+                  }
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      }
+    },
+    "/api/v1/payment-links/{id}": {
+      "get": {
+        "tags": ["Payment Links"],
+        "summary": "Obter payment link",
+        "description": "Obtém detalhes de um payment link específico",
+        "security": [{"apiKeyAuth": []}],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string", "format": "uuid"}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes do payment link",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "paymentLink": {"$ref": "#/components/schemas/PaymentLink"}
+                  }
+                }
+              }
+            }
+          },
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      },
+      "patch": {
+        "tags": ["Payment Links"],
+        "summary": "Atualizar payment link",
+        "description": "Atualiza um payment link existente",
+        "security": [{"apiKeyAuth": []}],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string", "format": "uuid"}
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/UpdatePaymentLinkRequest"}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Payment link atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "paymentLink": {"$ref": "#/components/schemas/PaymentLink"}
+                  }
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      },
+      "delete": {
+        "tags": ["Payment Links"],
+        "summary": "Deletar payment link",
+        "description": "Remove um payment link permanentemente",
+        "security": [{"apiKeyAuth": []}],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string", "format": "uuid"}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Payment link deletado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"}
+                  }
+                }
+              }
+            }
+          },
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      }
+    },
+    "/api/v1/products": {
+      "get": {
+        "tags": ["Produtos"],
+        "summary": "Listar produtos",
+        "description": "Lista todos os produtos do catálogo",
+        "security": [{"apiKeyAuth": []}],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {"type": "integer", "minimum": 1, "maximum": 100, "default": 20}
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {"type": "string"}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de produtos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "products": {"type": "array", "items": {"$ref": "#/components/schemas/Product"}},
+                    "pagination": {"$ref": "#/components/schemas/Pagination"}
+                  }
+                }
+              }
+            }
+          },
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      },
+      "post": {
+        "tags": ["Produtos"],
+        "summary": "Criar produto",
+        "description": "Cria um novo produto no catálogo",
+        "security": [{"apiKeyAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/CreateProductRequest"}
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Produto criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "product": {"$ref": "#/components/schemas/Product"}
+                  }
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      }
+    },
+    "/api/v1/products/{id}": {
+      "get": {
+        "tags": ["Produtos"],
+        "summary": "Obter produto",
+        "description": "Obtém detalhes de um produto específico",
+        "security": [{"apiKeyAuth": []}],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string", "format": "uuid"}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes do produto",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "product": {"$ref": "#/components/schemas/Product"}
+                  }
+                }
+              }
+            }
+          },
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      },
+      "patch": {
+        "tags": ["Produtos"],
+        "summary": "Atualizar produto",
+        "description": "Atualiza um produto existente",
+        "security": [{"apiKeyAuth": []}],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string", "format": "uuid"}
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/UpdateProductRequest"}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Produto atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "product": {"$ref": "#/components/schemas/Product"}
+                  }
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      },
+      "delete": {
+        "tags": ["Produtos"],
+        "summary": "Deletar produto",
+        "description": "Remove um produto permanentemente",
+        "security": [{"apiKeyAuth": []}],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string", "format": "uuid"}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Produto deletado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"}
+                  }
+                }
+              }
+            }
+          },
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      }
+    },
+    "/api/v1/coupons": {
+      "get": {
+        "tags": ["Cupons"],
+        "summary": "Listar cupons",
+        "description": "Lista todos os cupons do usuário",
+        "security": [{"apiKeyAuth": []}],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {"type": "integer", "minimum": 1, "maximum": 100, "default": 20}
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {"type": "string"}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de cupons",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "coupons": {"type": "array", "items": {"$ref": "#/components/schemas/Coupon"}},
+                    "pagination": {"$ref": "#/components/schemas/Pagination"}
+                  }
+                }
+              }
+            }
+          },
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      },
+      "post": {
+        "tags": ["Cupons"],
+        "summary": "Criar cupom",
+        "description": "Cria um novo cupom de desconto",
+        "security": [{"apiKeyAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/CreateCouponRequest"}
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Cupom criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "coupon": {"$ref": "#/components/schemas/Coupon"}
+                  }
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      }
+    },
+    "/api/v1/coupons/{id}": {
+      "get": {
+        "tags": ["Cupons"],
+        "summary": "Obter cupom",
+        "description": "Obtém detalhes de um cupom específico",
+        "security": [{"apiKeyAuth": []}],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string", "format": "uuid"}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes do cupom",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "coupon": {"$ref": "#/components/schemas/Coupon"}
+                  }
+                }
+              }
+            }
+          },
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      },
+      "patch": {
+        "tags": ["Cupons"],
+        "summary": "Atualizar cupom",
+        "description": "Atualiza um cupom existente",
+        "security": [{"apiKeyAuth": []}],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string", "format": "uuid"}
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/UpdateCouponRequest"}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cupom atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "coupon": {"$ref": "#/components/schemas/Coupon"}
+                  }
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      },
+      "delete": {
+        "tags": ["Cupons"],
+        "summary": "Deletar cupom",
+        "description": "Remove um cupom permanentemente",
+        "security": [{"apiKeyAuth": []}],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string", "format": "uuid"}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cupom deletado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"}
+                  }
+                }
+              }
+            }
+          },
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      }
+    },
+    "/api/v1/coupons/validate": {
+      "post": {
+        "tags": ["Cupons"],
+        "summary": "Validar cupom",
+        "description": "Valida um cupom de desconto (endpoint público, usado no checkout)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["code", "amount"],
+                "properties": {
+                  "code": {"type": "string", "description": "Código do cupom"},
+                  "amount": {"type": "integer", "minimum": 1, "description": "Valor da compra em centavos"},
+                  "productIds": {
+                    "type": "array",
+                    "items": {"type": "string", "format": "uuid"},
+                    "default": [],
+                    "description": "IDs dos produtos no carrinho"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cupom válido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "valid": {"type": "boolean"},
+                    "discountAmount": {"type": "integer", "description": "Valor do desconto em centavos"},
+                    "finalAmount": {"type": "integer", "description": "Valor final após desconto"},
+                    "coupon": {"$ref": "#/components/schemas/Coupon"}
                   }
                 }
               }
             }
           },
           "400": {
-            "description": "Unexpected error",
+            "description": "Cupom inválido",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "type": "object",
+                  "properties": {
+                    "valid": {"type": "boolean"},
+                    "message": {"type": "string"}
+                  }
                 }
               }
             }
@@ -96,121 +755,569 @@
         }
       }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
+    "/api/v1/balance": {
+      "get": {
+        "tags": ["Saldo"],
+        "summary": "Obter saldo",
+        "description": "Obtém o saldo atual e movimentações recentes",
+        "security": [{"apiKeyAuth": []}],
+        "responses": {
+          "200": {
+            "description": "Saldo obtido com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "balance": {
+                      "type": "object",
+                      "properties": {
+                        "current": {"type": "integer", "description": "Saldo atual em centavos"},
+                        "currency": {"type": "string", "example": "BRL"},
+                        "lastUpdated": {"type": "string", "format": "date-time"}
+                      }
+                    },
+                    "recentEntries": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {"type": "string"},
+                          "type": {"type": "string", "enum": ["CREDIT", "DEBIT"]},
+                          "reason": {"type": "string"},
+                          "amount": {"type": "integer"},
+                          "createdAt": {"type": "string", "format": "date-time"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      }
+    },
+    "/api/v1/webhooks": {
+      "get": {
+        "tags": ["Webhooks"],
+        "summary": "Obter informações de webhook",
+        "description": "Obtém informações sobre webhooks configurados",
+        "security": [{"apiKeyAuth": []}],
+        "responses": {
+          "200": {
+            "description": "Informações de webhook",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "webhooks": {
+                      "type": "object",
+                      "properties": {
+                        "url": {"type": "string"},
+                        "events": {"type": "array", "items": {"type": "string"}},
+                        "secret": {"type": "string"}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      }
+    },
+    "/api/v1/webhooks/subscriptions": {
+      "get": {
+        "tags": ["Webhooks"],
+        "summary": "Listar assinaturas de webhook",
+        "description": "Lista todas as assinaturas de webhook do usuário",
+        "security": [{"apiKeyAuth": []}],
+        "responses": {
+          "200": {
+            "description": "Lista de assinaturas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "subscriptions": {
+                      "type": "array",
+                      "items": {"$ref": "#/components/schemas/WebhookSubscription"}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      },
+      "post": {
+        "tags": ["Webhooks"],
+        "summary": "Criar assinatura de webhook",
+        "description": "Cria uma nova assinatura de webhook",
+        "security": [{"apiKeyAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/CreateWebhookSubscriptionRequest"}
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Assinatura criada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "subscription": {"$ref": "#/components/schemas/WebhookSubscription"}
+                  }
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      }
+    },
+    "/api/v1/webhooks/subscriptions/{id}": {
+      "put": {
+        "tags": ["Webhooks"],
+        "summary": "Atualizar assinatura de webhook",
+        "description": "Atualiza uma assinatura de webhook existente",
+        "security": [{"apiKeyAuth": []}],
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "ID of plant to delete",
             "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "schema": {"type": "string", "format": "uuid"}
           }
         ],
-        "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "webhooks": {
-    "/plant/webhook": {
-      "post": {
-        "description": "Information about a new plant added to the store",
         "requestBody": {
-          "description": "Plant added to the store",
+          "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
+              "schema": {"$ref": "#/components/schemas/UpdateWebhookSubscriptionRequest"}
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Return a 200 status to indicate that the data was received successfully"
+            "description": "Assinatura atualizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "subscription": {"$ref": "#/components/schemas/WebhookSubscription"}
+                  }
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      },
+      "delete": {
+        "tags": ["Webhooks"],
+        "summary": "Deletar assinatura de webhook",
+        "description": "Remove uma assinatura de webhook",
+        "security": [{"apiKeyAuth": []}],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string", "format": "uuid"}
           }
+        ],
+        "responses": {
+          "200": {
+            "description": "Assinatura removida com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"}
+                  }
+                }
+              }
+            }
+          },
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      }
+    },
+    "/api/v1/webhooks/events": {
+      "get": {
+        "tags": ["Webhooks"],
+        "summary": "Listar eventos de webhook",
+        "description": "Lista eventos de webhook com paginação",
+        "security": [{"apiKeyAuth": []}],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {"type": "integer", "minimum": 1, "maximum": 100, "default": 20}
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {"type": "string"}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de eventos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "events": {
+                      "type": "array",
+                      "items": {"$ref": "#/components/schemas/WebhookEvent"}
+                    },
+                    "pagination": {"$ref": "#/components/schemas/Pagination"}
+                  }
+                }
+              }
+            }
+          },
+          "401": {"$ref": "#/components/responses/Unauthorized"}
         }
       }
     }
   },
   "components": {
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-Key",
+        "description": "Chave de API obtida através do endpoint /api/credentials"
+      }
+    },
     "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
+      "Transaction": {
         "type": "object",
         "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
-          },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
-          }
+          "id": {"type": "string", "format": "uuid"},
+          "displayId": {"type": "string", "nullable": true},
+          "product": {"type": "string", "nullable": true},
+          "amountCents": {"type": "integer", "nullable": true},
+          "status": {"type": "string"},
+          "paymentMethod": {"type": "string"},
+          "client": {"type": "object"},
+          "createdAt": {"type": "string", "format": "date-time"},
+          "updatedAt": {"type": "string", "format": "date-time"}
         }
       },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          }
-        ]
+      "CreateTransactionRequest": {
+        "type": "object",
+        "required": ["product", "amountCents", "paymentMethod", "clientEmail", "clientName"],
+        "properties": {
+          "product": {"type": "string"},
+          "amountCents": {"type": "integer", "minimum": 1},
+          "paymentMethod": {"type": "string", "enum": ["PIX", "CREDIT_CARD", "BOLETO"]},
+          "clientEmail": {"type": "string", "format": "email"},
+          "clientName": {"type": "string"},
+          "paymentLinkId": {"type": "string", "format": "uuid"},
+          "installments": {"type": "integer", "minimum": 1, "maximum": 12},
+          "dueDate": {"type": "string", "format": "date-time"}
+        }
       },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
+      "PaymentLink": {
         "type": "object",
         "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
+          "id": {"type": "string", "format": "uuid"},
+          "slug": {"type": "string"},
+          "url": {"type": "string"},
+          "title": {"type": "string"},
+          "description": {"type": "string", "nullable": true},
+          "amountCents": {"type": "integer", "nullable": true},
+          "currency": {"type": "string"},
+          "status": {"type": "string"},
+          "settings": {"type": "object"},
+          "createdAt": {"type": "string", "format": "date-time"},
+          "updatedAt": {"type": "string", "format": "date-time"}
+        }
+      },
+      "CreatePaymentLinkRequest": {
+        "type": "object",
+        "required": ["title"],
+        "properties": {
+          "title": {"type": "string", "minLength": 1, "maxLength": 255},
+          "description": {"type": "string", "maxLength": 1000},
+          "amountCents": {"type": "integer", "minimum": 1},
+          "currency": {"type": "string", "default": "BRL"},
+          "expiresAt": {"type": "string", "format": "date-time"},
+          "redirectUrl": {"type": "string", "format": "uri"},
+          "settings": {
+            "type": "object",
+            "properties": {
+              "pixEnabled": {"type": "boolean"},
+              "boletoEnabled": {"type": "boolean"},
+              "creditCardEnabled": {"type": "boolean"},
+              "maxInstallments": {"type": "integer", "minimum": 1, "maximum": 12},
+              "interestFreeInstallments": {"type": "integer", "minimum": 0},
+              "interestRate": {"type": "number"},
+              "requirePhone": {"type": "boolean"},
+              "requireAddress": {"type": "boolean"}
+            }
           },
-          "message": {
-            "type": "string"
-          }
+          "products": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "productId": {"type": "string", "format": "uuid"},
+                "quantity": {"type": "integer", "minimum": 1}
+              }
+            }
+          },
+          "stockQuantity": {"type": "integer", "minimum": 0},
+          "stockEnabled": {"type": "boolean"},
+          "status": {"type": "string", "enum": ["ACTIVE", "INACTIVE"], "default": "ACTIVE"}
+        }
+      },
+      "UpdatePaymentLinkRequest": {
+        "type": "object",
+        "properties": {
+          "title": {"type": "string", "minLength": 1, "maxLength": 255},
+          "description": {"type": "string", "maxLength": 1000},
+          "amountCents": {"type": "integer", "minimum": 1},
+          "status": {"type": "string", "enum": ["ACTIVE", "INACTIVE"]},
+          "expiresAt": {"type": "string", "format": "date-time"},
+          "redirectUrl": {"type": "string", "format": "uri"}
+        }
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string", "format": "uuid"},
+          "name": {"type": "string"},
+          "description": {"type": "string", "nullable": true},
+          "priceCents": {"type": "integer"},
+          "currency": {"type": "string"},
+          "stockQuantity": {"type": "integer", "nullable": true},
+          "stockEnabled": {"type": "boolean"},
+          "status": {"type": "string"},
+          "createdAt": {"type": "string", "format": "date-time"},
+          "updatedAt": {"type": "string", "format": "date-time"}
+        }
+      },
+      "CreateProductRequest": {
+        "type": "object",
+        "required": ["name", "priceCents"],
+        "properties": {
+          "name": {"type": "string", "minLength": 1, "maxLength": 255},
+          "description": {"type": "string"},
+          "priceCents": {"type": "integer", "minimum": 1},
+          "currency": {"type": "string", "default": "BRL"},
+          "stockQuantity": {"type": "integer", "minimum": 0},
+          "stockEnabled": {"type": "boolean", "default": false},
+          "status": {"type": "string", "enum": ["ACTIVE", "INACTIVE"], "default": "ACTIVE"}
+        }
+      },
+      "UpdateProductRequest": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string", "minLength": 1, "maxLength": 255},
+          "description": {"type": "string"},
+          "priceCents": {"type": "integer", "minimum": 1},
+          "stockQuantity": {"type": "integer", "minimum": 0},
+          "status": {"type": "string", "enum": ["ACTIVE", "INACTIVE"]}
+        }
+      },
+      "Coupon": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string", "format": "uuid"},
+          "code": {"type": "string"},
+          "discountType": {"type": "string", "enum": ["PERCENTAGE", "FIXED"]},
+          "discountValue": {"type": "number"},
+          "description": {"type": "string", "nullable": true},
+          "minPurchaseCents": {"type": "integer", "nullable": true},
+          "maxDiscountCents": {"type": "integer", "nullable": true},
+          "usageLimit": {"type": "integer", "nullable": true},
+          "perUserLimit": {"type": "integer", "nullable": true},
+          "validFrom": {"type": "string", "format": "date-time", "nullable": true},
+          "validUntil": {"type": "string", "format": "date-time", "nullable": true},
+          "status": {"type": "string"},
+          "createdAt": {"type": "string", "format": "date-time"},
+          "updatedAt": {"type": "string", "format": "date-time"}
+        }
+      },
+      "CreateCouponRequest": {
+        "type": "object",
+        "required": ["code", "discountType", "discountValue"],
+        "properties": {
+          "code": {"type": "string", "minLength": 3, "maxLength": 50},
+          "discountType": {"type": "string", "enum": ["PERCENTAGE", "FIXED"]},
+          "discountValue": {"type": "number", "minimum": 0},
+          "description": {"type": "string", "maxLength": 500},
+          "minPurchaseCents": {"type": "integer", "minimum": 0},
+          "maxDiscountCents": {"type": "integer", "minimum": 0},
+          "usageLimit": {"type": "integer", "minimum": 1},
+          "perUserLimit": {"type": "integer", "minimum": 1},
+          "validFrom": {"type": "string", "format": "date-time"},
+          "validUntil": {"type": "string", "format": "date-time"},
+          "productIds": {
+            "type": "array",
+            "items": {"type": "string", "format": "uuid"}
+          },
+          "status": {"type": "string", "enum": ["ACTIVE", "INACTIVE"], "default": "ACTIVE"}
+        }
+      },
+      "UpdateCouponRequest": {
+        "type": "object",
+        "properties": {
+          "code": {"type": "string", "minLength": 3, "maxLength": 50},
+          "discountType": {"type": "string", "enum": ["PERCENTAGE", "FIXED"]},
+          "discountValue": {"type": "number", "minimum": 0},
+          "description": {"type": "string", "maxLength": 500},
+          "status": {"type": "string", "enum": ["ACTIVE", "INACTIVE"]}
+        }
+      },
+      "WebhookSubscription": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string", "format": "uuid"},
+          "url": {"type": "string", "format": "uri"},
+          "events": {"type": "array", "items": {"type": "string"}},
+          "isActive": {"type": "boolean"},
+          "lastTriggeredAt": {"type": "string", "format": "date-time", "nullable": true},
+          "createdAt": {"type": "string", "format": "date-time"},
+          "updatedAt": {"type": "string", "format": "date-time"}
+        }
+      },
+      "CreateWebhookSubscriptionRequest": {
+        "type": "object",
+        "required": ["url", "events"],
+        "properties": {
+          "url": {"type": "string", "format": "uri"},
+          "events": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "transaction.created",
+                "transaction.updated",
+                "transaction.completed",
+                "transaction.failed",
+                "payment_link.created",
+                "payment_link.updated",
+                "balance.updated"
+              ]
+            }
+          },
+          "isActive": {"type": "boolean", "default": true}
+        }
+      },
+      "UpdateWebhookSubscriptionRequest": {
+        "type": "object",
+        "properties": {
+          "url": {"type": "string", "format": "uri"},
+          "events": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "isActive": {"type": "boolean"}
+        }
+      },
+      "WebhookEvent": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string", "format": "uuid"},
+          "event": {"type": "string"},
+          "payload": {"type": "object"},
+          "status": {"type": "string"},
+          "createdAt": {"type": "string", "format": "date-time"}
+        }
+      },
+      "Pagination": {
+        "type": "object",
+        "properties": {
+          "limit": {"type": "integer"},
+          "cursor": {"type": "string", "nullable": true},
+          "hasMore": {"type": "boolean"},
+          "nextCursor": {"type": "string", "nullable": true}
         }
       }
     },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
+    "responses": {
+      "BadRequest": {
+        "description": "Requisição inválida",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {"type": "string"},
+                "errors": {"type": "array", "items": {"type": "object"}}
+              }
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Não autorizado - API Key inválida ou ausente",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {"type": "string"}
+              }
+            }
+          }
+        }
+      },
+      "Forbidden": {
+        "description": "Acesso negado - Permissão insuficiente",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {"type": "string"}
+              }
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Recurso não encontrado",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {"type": "string"}
+              }
+            }
+          }
+        }
       }
     }
   }
