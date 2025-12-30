@@ -1,43 +1,76 @@
-# Mintlify Starter Kit
+# UPay Gateway API - Documentação
 
-Use the starter kit to get your docs deployed and ready to customize.
+Documentação pública da API UPay Gateway - Plataforma completa de pagamentos.
 
-Click the green **Use this template** button at the top of this repo to copy the Mintlify starter kit. The starter kit contains examples with
+## 🚀 Sobre
 
-- Guide pages
-- Navigation
-- Customizations
-- API reference pages
-- Use of popular components
+Esta é a documentação oficial da **UPay Gateway API**, uma plataforma completa de pagamentos que permite processar transações via PIX, cartão de crédito/débito e boleto bancário.
 
-**[Follow the full quickstart guide](https://starter.mintlify.com/quickstart)**
+## 📚 Recursos
 
-## Development
+- **Links de Pagamento**: Crie links personalizados com configurações flexíveis
+- **Produtos**: Gerencie seu catálogo de produtos
+- **Cupons**: Sistema completo de cupons de desconto
+- **Webhooks**: Receba notificações em tempo real
+- **Transações**: Consulte e gerencie todas as transações
 
-Install the [Mintlify CLI](https://www.npmjs.com/package/mint) to preview your documentation changes locally. To install, use the following command:
+## 🛠️ Desenvolvimento Local
 
-```
+Para visualizar a documentação localmente:
+
+### Pré-requisitos
+
+- Node.js 18+ instalado
+- npm ou yarn
+
+### Instalação
+
+1. Instale o Mintlify CLI globalmente:
+
+```bash
 npm i -g mint
 ```
 
-Run the following command at the root of your documentation, where your `docs.json` is located:
+2. Navegue até a pasta da documentação:
 
+```bash
+cd documentation
 ```
+
+3. Inicie o servidor de desenvolvimento:
+
+```bash
 mint dev
 ```
 
-View your local preview at `http://localhost:3000`.
+4. Acesse a documentação em `http://localhost:3000`
 
-## Publishing changes
+## 📝 Estrutura
 
-Install our GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app) to propagate changes from your repo to your deployment. Changes are deployed to production automatically after pushing to the default branch.
+```
+documentation/
+├── docs.json          # Configuração principal do Mintlify
+├── index.mdx          # Página inicial
+├── quickstart.mdx     # Guia de início rápido
+├── guides/            # Guias e tutoriais
+├── api-reference/     # Referência da API
+└── images/            # Imagens e assets
+```
 
-## Need help?
+## 🚀 Publicação
 
-### Troubleshooting
+As alterações são publicadas automaticamente quando você faz push para a branch `main` do repositório, desde que o GitHub App do Mintlify esteja configurado.
 
-- If your dev environment isn't running: Run `mint update` to ensure you have the most recent version of the CLI.
-- If a page loads as a 404: Make sure you are running in a folder with a valid `docs.json`.
+## 📖 Links Úteis
 
-### Resources
-- [Mintlify documentation](https://mintlify.com/docs)
+- **API Base URL**: `https://api.upay-sistema.onrender.com`
+- **Dashboard**: [https://upay-sistema.onrender.com](https://upay-sistema.onrender.com)
+- **GitHub**: [https://github.com/anthonymengottii/upay_sistema](https://github.com/anthonymengottii/upay_sistema)
+
+## 🤝 Contribuindo
+
+Contribuições são bem-vindas! Por favor, abra uma issue ou pull request no repositório principal.
+
+## 📄 Licença
+
+MIT License
