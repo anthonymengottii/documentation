@@ -20,6 +20,8 @@
               "pages/introduction",
               "pages/quickstart",
               "pages/authentication",
+              "pages/guides/features/payment-links",
+              "pages/guides/features/coupons",
               "pages/guides/features/webhooks"
             ]
           },
