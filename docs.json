@@ -8,54 +8,56 @@
     "dark": "#5B21B6"
   },
   "favicon": "/favicon.ico",
-  "navigation": [
-    {
-      "group": "Início",
-      "pages": [
-        "index",
-        "quickstart"
-      ]
-    },
-    {
-      "group": "Guides",
-      "pages": [
-        "guides/authentication",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentação",
+        "groups": [
+          {
+            "group": "Início",
+            "pages": [
+              "index",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/authentication",
+              "guides/features/payment-links",
+              "guides/features/products",
+              "guides/features/coupons",
+              "guides/features/webhooks"
+            ]
+          },
+          {
+            "group": "Referência da API",
+            "pages": [
+              "api-reference/authentication",
+              "api-reference/payment-links",
+              "api-reference/products",
+              "api-reference/coupons",
+              "api-reference/transactions",
+              "api-reference/webhooks"
+            ]
+          }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
         {
-          "group": "Funcionalidades",
-          "pages": [
-            "guides/features/payment-links",
-            "guides/features/products",
-            "guides/features/coupons",
-            "guides/features/webhooks"
-          ]
+          "anchor": "GitHub",
+          "href": "https://github.com/anthonymengottii/upay_sistema",
+          "icon": "github"
+        },
+        {
+          "anchor": "Status",
+          "href": "https://status.upay.com.br",
+          "icon": "circle-check"
         }
       ]
-    },
-    {
-      "group": "Referência da API",
-      "pages": [
-        "api-reference/authentication",
-        "api-reference/payment-links",
-        "api-reference/products",
-        "api-reference/coupons",
-        "api-reference/transactions",
-        "api-reference/webhooks"
-      ]
     }
-  ],
-  "global": {
-    "anchors": [
-      {
-        "anchor": "GitHub",
-        "href": "https://github.com/anthonymengottii/upay_sistema",
-        "icon": "github"
-      },
-      {
-        "anchor": "Status",
-        "href": "https://status.upay.com.br",
-        "icon": "circle-check"
-      }
-    ]
   },
   "logo": {
     "light": "/logo/light.png",
