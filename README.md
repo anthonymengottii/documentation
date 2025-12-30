@@ -6,6 +6,8 @@ Documentação pública da API UPay Gateway - Plataforma completa de pagamentos.
 
 Esta é a documentação oficial da **UPay Gateway API**, uma plataforma completa de pagamentos que permite processar transações via PIX, cartão de crédito/débito e boleto bancário.
 
+A documentação cobre desde guias de início rápido até referências detalhadas da API, ajudando você a integrar pagamentos na sua aplicação de forma rápida e eficiente.
+
 ## 📚 Recursos
 
 - **Links de Pagamento**: Crie links personalizados com configurações flexíveis
@@ -14,52 +16,62 @@ Esta é a documentação oficial da **UPay Gateway API**, uma plataforma complet
 - **Webhooks**: Receba notificações em tempo real
 - **Transações**: Consulte e gerencie todas as transações
 
-## 🛠️ Desenvolvimento Local
+## 🚀 Quick Start
 
-Para visualizar a documentação localmente:
+Esta documentação é construída com Mintlify.
 
-### Pré-requisitos
-
-- Node.js 18+ instalado
-- npm ou yarn
-
-### Instalação
-
-1. Instale o Mintlify CLI globalmente:
+### 1. Preview Local
 
 ```bash
-npm i -g mint
+# Instale o Mintlify CLI
+npm i -g mintlify
+
+# Inicie o servidor de desenvolvimento
+mintlify dev
 ```
 
-2. Navegue até a pasta da documentação:
+### 2. Acesse `http://localhost:3000` para ver sua documentação
+
+## 📚 Estrutura da Documentação
+
+```
+.
+├── api-reference/  # Contém documentação e referência dos endpoints da API
+├── images/         # Armazena todas as imagens e capturas de tela
+├── logo/           # Logos da marca para temas claro e escuro
+├── pages/          # Conteúdo principal da documentação
+│   ├── guides/     # Guias e tutoriais
+│   ├── index.mdx   # Página inicial
+│   └── quickstart.mdx # Guia de início rápido
+├── docs.json       # Arquivo de configuração do Mintlify
+├── favicon.ico     # Ícone do site
+└── README.md       # Visão geral do projeto e instruções de setup
+```
+
+## 🔧 Desenvolvimento Local
+
+### 1. Instale as dependências
 
 ```bash
-cd documentation
+mintlify install
 ```
 
-3. Inicie o servidor de desenvolvimento:
+### 2. Inicie o servidor de desenvolvimento
 
 ```bash
-mint dev
+mintlify dev
 ```
 
-4. Acesse a documentação em `http://localhost:3000`
+### Troubleshooting
 
-## 📝 Estrutura
+- Se o Mintlify dev não estiver rodando, tente `mintlify install` para reinstalar as dependências
+- Para erros 404, certifique-se de estar em um diretório com `docs.json`
 
-```
-documentation/
-├── docs.json          # Configuração principal do Mintlify
-├── index.mdx          # Página inicial
-├── quickstart.mdx     # Guia de início rápido
-├── guides/            # Guias e tutoriais
-├── api-reference/     # Referência da API
-└── images/            # Imagens e assets
-```
+## 🚀 Deploy
 
-## 🚀 Publicação
+As alterações são automaticamente publicadas quando mescladas na branch `main`, através da integração do Mintlify com GitHub.
 
-As alterações são publicadas automaticamente quando você faz push para a branch `main` do repositório, desde que o GitHub App do Mintlify esteja configurado.
+Veja a [Documentação do GitHub App do Mintlify](https://mintlify.com/docs) para mais informações.
 
 ## 📖 Links Úteis
 
@@ -67,9 +79,10 @@ As alterações são publicadas automaticamente quando você faz push para a bra
 - **Dashboard**: [https://upay-sistema.onrender.com](https://upay-sistema.onrender.com)
 - **GitHub**: [https://github.com/anthonymengottii/upay_sistema](https://github.com/anthonymengottii/upay_sistema)
 
-## 🤝 Contribuindo
+## 💪 Suporte
 
-Contribuições são bem-vindas! Por favor, abra uma issue ou pull request no repositório principal.
+- Entre em contato: [suporte@upay.com.br](mailto:suporte@upay.com.br)
+- Reporte problemas no GitHub
 
 ## 📄 Licença
 

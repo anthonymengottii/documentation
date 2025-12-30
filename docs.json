@@ -16,18 +16,18 @@
           {
             "group": "Início",
             "pages": [
-              "index",
-              "quickstart"
+              "pages/index",
+              "pages/quickstart"
             ]
           },
           {
             "group": "Guides",
             "pages": [
-              "guides/authentication",
-              "guides/features/payment-links",
-              "guides/features/products",
-              "guides/features/coupons",
-              "guides/features/webhooks"
+              "pages/guides/authentication",
+              "pages/guides/features/payment-links",
+              "pages/guides/features/products",
+              "pages/guides/features/coupons",
+              "pages/guides/features/webhooks"
             ]
           },
           {
