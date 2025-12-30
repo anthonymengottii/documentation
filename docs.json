@@ -61,14 +61,23 @@
             "group": "Transações",
             "icon": "file-text",
             "pages": [
-              "pages/transactions/reference"
+              "pages/transactions/reference",
+              "pages/transactions/list",
+              "pages/transactions/create",
+              "pages/transactions/get"
             ]
           },
           {
             "group": "Webhooks",
             "icon": "zap",
             "pages": [
-              "pages/webhooks/reference"
+              "pages/webhooks/reference",
+              "pages/webhooks/get",
+              "pages/webhooks/subscriptions-list",
+              "pages/webhooks/subscriptions-create",
+              "pages/webhooks/subscriptions-update",
+              "pages/webhooks/subscriptions-delete",
+              "pages/webhooks/events"
             ]
           }
         ]
