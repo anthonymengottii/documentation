@@ -28,7 +28,7 @@
       "description": "Gerenciamento de transações de pagamento"
     },
     {
-      "name": "Payment Links",
+      "name": "Links de Pagamento",
       "description": "Gerenciamento de links de pagamento"
     },
     {
@@ -165,9 +165,9 @@
     },
     "/api/v1/payment-links": {
       "get": {
-        "tags": ["Payment Links"],
-        "summary": "Listar payment links",
-        "description": "Lista todos os payment links do usuário",
+        "tags": ["Links de Pagamento"],
+        "summary": "Listar links de pagamento",
+        "description": "Lista todos os links de pagamento do usuário",
         "security": [{"apiKeyAuth": []}],
         "parameters": [
           {
@@ -183,7 +183,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Lista de payment links",
+            "description": "Lista de links de pagamento",
             "content": {
               "application/json": {
                 "schema": {
@@ -201,8 +201,8 @@
         }
       },
       "post": {
-        "tags": ["Payment Links"],
-        "summary": "Criar payment link",
+        "tags": ["Links de Pagamento"],
+        "summary": "Criar link de pagamento",
         "description": "Cria um novo link de pagamento",
         "security": [{"apiKeyAuth": []}],
         "requestBody": {
@@ -215,7 +215,7 @@
         },
         "responses": {
           "201": {
-            "description": "Payment link criado com sucesso",
+            "description": "Link de pagamento criado com sucesso",
             "content": {
               "application/json": {
                 "schema": {
@@ -235,9 +235,9 @@
     },
     "/api/v1/payment-links/{id}": {
       "get": {
-        "tags": ["Payment Links"],
-        "summary": "Obter payment link",
-        "description": "Obtém detalhes de um payment link específico",
+        "tags": ["Links de Pagamento"],
+        "summary": "Obter link de pagamento",
+        "description": "Obtém detalhes de um link de pagamento específico",
         "security": [{"apiKeyAuth": []}],
         "parameters": [
           {
@@ -249,7 +249,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Detalhes do payment link",
+            "description": "Detalhes do link de pagamento",
             "content": {
               "application/json": {
                 "schema": {
@@ -267,9 +267,9 @@
         }
       },
       "patch": {
-        "tags": ["Payment Links"],
-        "summary": "Atualizar payment link",
-        "description": "Atualiza um payment link existente",
+        "tags": ["Links de Pagamento"],
+        "summary": "Atualizar link de pagamento",
+        "description": "Atualiza um link de pagamento existente",
         "security": [{"apiKeyAuth": []}],
         "parameters": [
           {
@@ -289,7 +289,7 @@
         },
         "responses": {
           "200": {
-            "description": "Payment link atualizado com sucesso",
+            "description": "Link de pagamento atualizado com sucesso",
             "content": {
               "application/json": {
                 "schema": {
@@ -308,9 +308,9 @@
         }
       },
       "delete": {
-        "tags": ["Payment Links"],
-        "summary": "Deletar payment link",
-        "description": "Remove um payment link permanentemente",
+        "tags": ["Links de Pagamento"],
+        "summary": "Deletar link de pagamento",
+        "description": "Remove um link de pagamento permanentemente",
         "security": [{"apiKeyAuth": []}],
         "parameters": [
           {
@@ -322,7 +322,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Payment link deletado com sucesso",
+            "description": "Link de pagamento deletado com sucesso",
             "content": {
               "application/json": {
                 "schema": {
