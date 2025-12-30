@@ -14,20 +14,20 @@
         "tab": "Documentação",
         "groups": [
           {
-            "group": "Início",
+            "group": "Comece aqui",
             "pages": [
-              "pages/index",
-              "pages/quickstart"
+              "pages/introduction",
+              "pages/quickstart",
+              "pages/guides/authentication",
+              "pages/guides/features/webhooks"
             ]
           },
           {
-            "group": "Guides",
+            "group": "Funcionalidades",
             "pages": [
-              "pages/guides/authentication",
               "pages/guides/features/payment-links",
               "pages/guides/features/products",
-              "pages/guides/features/coupons",
-              "pages/guides/features/webhooks"
+              "pages/guides/features/coupons"
             ]
           },
           {
