@@ -14,70 +14,56 @@
         "tab": "Documentação",
         "groups": [
           {
-            "group": "Comece aqui",
+            "group": "Introdução",
             "pages": [
               "pages/introduction",
               "pages/quickstart",
-              "pages/guides/authentication",
+              "pages/authentication",
               "pages/guides/features/webhooks"
             ]
           },
           {
-            "group": "Funcionalidades",
+            "group": "Payment Links",
             "pages": [
-              "pages/guides/features/payment-links",
-              "pages/guides/features/products",
-              "pages/guides/features/coupons"
+              "pages/payment-links/reference",
+              "pages/payment-links/create",
+              "pages/payment-links/list",
+              "pages/payment-links/get",
+              "pages/payment-links/update",
+              "pages/payment-links/delete"
             ]
           },
           {
-            "group": "Referência da API",
+            "group": "Produtos",
             "pages": [
-              "api-reference/authentication",
-              {
-                "group": "Payment Links",
-                "pages": [
-                  "api-reference/payment-links/reference",
-                  "api-reference/payment-links/create",
-                  "api-reference/payment-links/list",
-                  "api-reference/payment-links/get",
-                  "api-reference/payment-links/update",
-                  "api-reference/payment-links/delete"
-                ]
-              },
-              {
-                "group": "Produtos",
-                "pages": [
-                  "api-reference/products/reference",
-                  "api-reference/products/create",
-                  "api-reference/products/list",
-                  "api-reference/products/get",
-                  "api-reference/products/update",
-                  "api-reference/products/delete",
-                  "api-reference/products/update-stock"
-                ]
-              },
-              {
-                "group": "Cupom",
-                "pages": [
-                  "api-reference/coupons/reference",
-                  "api-reference/coupons/create",
-                  "api-reference/coupons/list",
-                  "api-reference/coupons/validate"
-                ]
-              },
-              {
-                "group": "Transações",
-                "pages": [
-                  "api-reference/transactions/reference"
-                ]
-              },
-              {
-                "group": "Webhooks",
-                "pages": [
-                  "api-reference/webhooks/reference"
-                ]
-              }
+              "pages/products/reference",
+              "pages/products/create",
+              "pages/products/list",
+              "pages/products/get",
+              "pages/products/update",
+              "pages/products/delete",
+              "pages/products/update-stock"
+            ]
+          },
+          {
+            "group": "Cupom",
+            "pages": [
+              "pages/coupon/reference",
+              "pages/coupon/create",
+              "pages/coupon/list",
+              "pages/coupon/validate"
+            ]
+          },
+          {
+            "group": "Transações",
+            "pages": [
+              "pages/transactions/reference"
+            ]
+          },
+          {
+            "group": "Webhooks",
+            "pages": [
+              "pages/webhooks/reference"
             ]
           }
         ]
