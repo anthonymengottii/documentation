@@ -23,7 +23,7 @@
             ]
           },
           {
-            "group": "Payment Links",
+            "group": "Link de pagamento",
             "pages": [
               "pages/payment-links/reference",
               "pages/payment-links/create",
@@ -67,8 +67,12 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "Referência da API",
+        "openapi": "openapi.yaml"
       }
-    ],
+    ]
   },
   "logo": {
     "light": "/logo/light.png",
