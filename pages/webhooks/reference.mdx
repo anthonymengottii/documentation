@@ -14,11 +14,12 @@ Configure webhooks para receber notificações em tempo real sobre eventos impor
 
 ## Endpoints Disponíveis
 
-- **GET** `/api/webhooks/subscriptions` - Listar assinaturas de webhook
-- **POST** `/api/webhooks/subscriptions` - Criar nova assinatura
-- **PUT** `/api/webhooks/subscriptions/:id` - Atualizar assinatura
-- **DELETE** `/api/webhooks/subscriptions/:id` - Deletar assinatura
-- **GET** `/api/webhooks/events` - Listar eventos de webhook
+- **GET** `/api/v1/webhooks` - [Obter informações de webhook](/api-reference/api/v1/webhooks/get)
+- **GET** `/api/v1/webhooks/subscriptions` - [Listar assinaturas de webhook](/api-reference/api/v1/webhooks/subscriptions/get)
+- **POST** `/api/v1/webhooks/subscriptions` - [Criar nova assinatura](/api-reference/api/v1/webhooks/subscriptions/post)
+- **PUT** `/api/v1/webhooks/subscriptions/{id}` - [Atualizar assinatura](/api-reference/api/v1/webhooks/subscriptions/{id}/put)
+- **DELETE** `/api/v1/webhooks/subscriptions/{id}` - [Deletar assinatura](/api-reference/api/v1/webhooks/subscriptions/{id}/delete)
+- **GET** `/api/v1/webhooks/events` - [Listar eventos de webhook](/api-reference/api/v1/webhooks/events/get)
 
 ## Autenticação
 
