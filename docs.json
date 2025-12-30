@@ -67,10 +67,6 @@
             ]
           }
         ]
-      },
-      {
-        "tab": "Referência da API",
-        "openapi": "openapi.yaml"
       }
     ]
   },
