@@ -9,9 +9,9 @@ path: "/api/coupons"
 
 Cria um novo cupom de desconto.
 
-<RequestExample>
+<CodeGroup>
 
-```bash
+```bash cURL
 curl -X POST "https://api.upay-sistema.onrender.com/api/coupons" \
   -H "Authorization: Bearer SUA_API_KEY" \
   -H "Content-Type: application/json" \
@@ -23,7 +23,44 @@ curl -X POST "https://api.upay-sistema.onrender.com/api/coupons" \
   }'
 ```
 
-</RequestExample>
+```javascript JavaScript
+const response = await fetch('https://api.upay-sistema.onrender.com/api/coupons', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer SUA_API_KEY',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    code: 'DESCONTO10',
+    discountType: 'PERCENTAGE',
+    discountValue: 10,
+    description: '10% de desconto'
+  })
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+url = "https://api.upay-sistema.onrender.com/api/coupons"
+headers = {
+    "Authorization": "Bearer SUA_API_KEY",
+    "Content-Type": "application/json"
+}
+payload = {
+    "code": "DESCONTO10",
+    "discountType": "PERCENTAGE",
+    "discountValue": 10,
+    "description": "10% de desconto"
+}
+
+response = requests.post(url, json=payload, headers=headers)
+data = response.json()
+```
+
+</CodeGroup>
 
 <ParamField body="code" type="string" required>
   Código do cupom (único, máx. 50 caracteres)
@@ -63,10 +100,48 @@ curl -X POST "https://api.upay-sistema.onrender.com/api/coupons" \
   "ACTIVE" ou "INACTIVE" (padrão: "ACTIVE")
 </ParamField>
 
-<ResponseField name="success" type="boolean">
-  Indica se a requisição foi bem-sucedida
+<ResponseField name="message" type="string">
+  Mensagem de sucesso
 </ResponseField>
 <ResponseField name="data" type="object">
   Dados do cupom criado
 </ResponseField>
+<ResponseField name="data.id" type="string">
+  ID único do cupom
+</ResponseField>
+<ResponseField name="data.code" type="string">
+  Código do cupom
+</ResponseField>
+<ResponseField name="data.discountType" type="string">
+  Tipo de desconto: "PERCENTAGE" ou "FIXED"
+</ResponseField>
+<ResponseField name="data.discountValue" type="number">
+  Valor do desconto
+</ResponseField>
+<ResponseField name="data.status" type="string">
+  Status do cupom: "ACTIVE" ou "INACTIVE"
+</ResponseField>
+
+<ResponseExample>
+
+```json
+{
+  "message": "Cupom criado com sucesso",
+  "data": {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "code": "DESCONTO10",
+    "discountType": "PERCENTAGE",
+    "discountValue": 10,
+    "description": "10% de desconto",
+    "minPurchaseCents": null,
+    "maxDiscountCents": null,
+    "usageLimit": null,
+    "perUserLimit": null,
+    "status": "ACTIVE",
+    "createdAt": "2025-01-15T10:30:00.000Z"
+  }
+}
+```
+
+</ResponseExample>
 
