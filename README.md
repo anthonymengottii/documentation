@@ -205,7 +205,4 @@ Este projeto está licenciado sob a [MIT License](LICENSE).
   <p>
     <strong>UPay Gateway API</strong> - Simplificando pagamentos online
   </p>
-  <p>
-    Desenvolvido com ❤️ pela equipe UPay
-  </p>
 </div>
