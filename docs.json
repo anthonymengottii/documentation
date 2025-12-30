@@ -69,20 +69,6 @@
         ]
       }
     ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "GitHub",
-          "href": "https://github.com/anthonymengottii/upay_sistema",
-          "icon": "github"
-        },
-        {
-          "anchor": "Status",
-          "href": "https://status.upay.com.br",
-          "icon": "circle-check"
-        }
-      ]
-    }
   },
   "logo": {
     "light": "/logo/light.png",

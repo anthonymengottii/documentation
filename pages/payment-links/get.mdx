@@ -1,0 +1,31 @@
+---
+title: "GET Obter Link de Pagamento"
+description: "Obtém detalhes de um link de pagamento específico"
+method: "GET"
+path: "/api/payment-links/:id"
+---
+
+## Obter Link de Pagamento
+
+Retorna os detalhes completos de um link de pagamento específico.
+
+<RequestExample>
+
+```bash
+curl -X GET "https://api.upay-sistema.onrender.com/api/payment-links/{id}" \
+  -H "Authorization: Bearer SUA_API_KEY"
+```
+
+</RequestExample>
+
+<ParamField path="id" type="string" required>
+  ID único do link de pagamento
+</ParamField>
+
+<ResponseField name="success" type="boolean">
+  Indica se a requisição foi bem-sucedida
+</ResponseField>
+<ResponseField name="data" type="object">
+  Dados completos do link de pagamento
+</ResponseField>
+

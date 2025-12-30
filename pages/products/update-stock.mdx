@@ -1,0 +1,38 @@
+---
+title: "PATCH Atualizar Estoque"
+description: "Atualiza a quantidade em estoque de um produto"
+method: "PATCH"
+path: "/api/products/:id/stock"
+---
+
+## Atualizar Estoque
+
+Atualiza a quantidade em estoque de um produto específico.
+
+<RequestExample>
+
+```bash
+curl -X PATCH "https://api.upay-sistema.onrender.com/api/products/{id}/stock" \
+  -H "Authorization: Bearer SUA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "stockQuantity": 150
+  }'
+```
+
+</RequestExample>
+
+<ParamField path="id" type="string" required>
+  ID único do produto
+</ParamField>
+<ParamField body="stockQuantity" type="number" required>
+  Nova quantidade em estoque
+</ParamField>
+
+<ResponseField name="success" type="boolean">
+  Indica se a requisição foi bem-sucedida
+</ResponseField>
+<ResponseField name="data" type="object">
+  Dados atualizados do produto com novo estoque
+</ResponseField>
+

@@ -1,0 +1,48 @@
+---
+title: "PATCH Atualizar Produto"
+description: "Atualiza um produto existente"
+method: "PATCH"
+path: "/api/products/:id"
+---
+
+## Atualizar Produto
+
+Atualiza um ou mais campos de um produto existente.
+
+<RequestExample>
+
+```bash
+curl -X PATCH "https://api.upay-sistema.onrender.com/api/products/{id}" \
+  -H "Authorization: Bearer SUA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "priceCents": 17900
+  }'
+```
+
+</RequestExample>
+
+<ParamField path="id" type="string" required>
+  ID único do produto
+</ParamField>
+<ParamField body="name" type="string">
+  Novo nome (opcional)
+</ParamField>
+<ParamField body="priceCents" type="number">
+  Novo preço em centavos (opcional)
+</ParamField>
+<ParamField body="status" type="enum">
+  Novo status: "ACTIVE" ou "INACTIVE" (opcional)
+</ParamField>
+
+<Note>
+  Você pode atualizar apenas os campos que desejar. Campos não enviados permanecerão inalterados.
+</Note>
+
+<ResponseField name="success" type="boolean">
+  Indica se a requisição foi bem-sucedida
+</ResponseField>
+<ResponseField name="data" type="object">
+  Dados atualizados do produto
+</ResponseField>
+
