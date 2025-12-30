@@ -15,10 +15,6 @@
     {
       "url": "https://api.upay-sistema.onrender.com",
       "description": "Produção"
-    },
-    {
-      "url": "http://localhost:3001",
-      "description": "Desenvolvimento Local"
     }
   ],
   "security": [
