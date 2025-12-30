@@ -1,0 +1,37 @@
+---
+title: "Referência"
+description: "Documentação completa da API de Produtos"
+icon: "book"
+---
+
+## Produtos
+
+Gerencie seu catálogo de produtos que podem ser associados a links de pagamento.
+
+<Note>
+  Para um guia completo sobre Produtos, consulte [Products Guide](/pages/guides/features/products).
+</Note>
+
+## Endpoints Disponíveis
+
+- **POST** `/api/products` - Criar um novo produto
+- **GET** `/api/products` - Listar produtos
+- **GET** `/api/products/:id` - Obter produto específico
+- **PATCH** `/api/products/:id` - Atualizar produto
+- **DELETE** `/api/products/:id` - Deletar produto
+- **PATCH** `/api/products/:id/stock` - Atualizar estoque
+
+## Autenticação
+
+Todos os endpoints requerem autenticação via Bearer Token (API Key).
+
+```
+Authorization: Bearer SUA_API_KEY
+```
+
+## Base URL
+
+```
+https://api.upay-sistema.onrender.com
+```
+

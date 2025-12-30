@@ -1,0 +1,35 @@
+---
+title: "DELETE Deletar Link de Pagamento"
+description: "Remove um link de pagamento permanentemente"
+method: "DELETE"
+path: "/api/payment-links/:id"
+---
+
+## Deletar Link de Pagamento
+
+Remove permanentemente um link de pagamento.
+
+<RequestExample>
+
+```bash
+curl -X DELETE "https://api.upay-sistema.onrender.com/api/payment-links/{id}" \
+  -H "Authorization: Bearer SUA_API_KEY"
+```
+
+</RequestExample>
+
+<ParamField path="id" type="string" required>
+  ID único do link de pagamento
+</ParamField>
+
+<Warning>
+  A exclusão é permanente e não pode ser desfeita. Certifique-se de que realmente deseja deletar o link.
+</Warning>
+
+<ResponseField name="success" type="boolean">
+  Indica se a requisição foi bem-sucedida
+</ResponseField>
+<ResponseField name="message" type="string">
+  Mensagem de confirmação
+</ResponseField>
+

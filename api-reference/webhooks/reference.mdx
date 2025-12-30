@@ -1,0 +1,36 @@
+---
+title: "Referência"
+description: "Documentação completa da API de Webhooks"
+icon: "book"
+---
+
+## Webhooks
+
+Configure webhooks para receber notificações em tempo real sobre eventos importantes.
+
+<Note>
+  Para um guia completo sobre Webhooks, consulte [Webhooks Guide](/pages/guides/features/webhooks).
+</Note>
+
+## Endpoints Disponíveis
+
+- **GET** `/api/webhooks/subscriptions` - Listar assinaturas de webhook
+- **POST** `/api/webhooks/subscriptions` - Criar nova assinatura
+- **PUT** `/api/webhooks/subscriptions/:id` - Atualizar assinatura
+- **DELETE** `/api/webhooks/subscriptions/:id` - Deletar assinatura
+- **GET** `/api/webhooks/events` - Listar eventos de webhook
+
+## Autenticação
+
+Todos os endpoints requerem autenticação via Bearer Token (API Key).
+
+```
+Authorization: Bearer SUA_API_KEY
+```
+
+## Base URL
+
+```
+https://api.upay-sistema.onrender.com
+```
+
