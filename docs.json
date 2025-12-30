@@ -15,6 +15,7 @@
         "groups": [
           {
             "group": "Introdução",
+            "icon": "book",
             "pages": [
               "pages/introduction",
               "pages/quickstart",
@@ -24,6 +25,7 @@
           },
           {
             "group": "Link de pagamento",
+            "icon": "link",
             "pages": [
               "pages/payment-links/reference",
               "pages/payment-links/create",
@@ -35,6 +37,7 @@
           },
           {
             "group": "Produtos",
+            "icon": "package",
             "pages": [
               "pages/products/reference",
               "pages/products/create",
@@ -47,6 +50,7 @@
           },
           {
             "group": "Cupom",
+            "icon": "tag",
             "pages": [
               "pages/coupon/reference",
               "pages/coupon/create",
@@ -56,12 +60,14 @@
           },
           {
             "group": "Transações",
+            "icon": "file-text",
             "pages": [
               "pages/transactions/reference"
             ]
           },
           {
             "group": "Webhooks",
+            "icon": "zap",
             "pages": [
               "pages/webhooks/reference"
             ]
