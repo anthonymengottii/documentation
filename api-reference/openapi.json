@@ -695,17 +695,17 @@
       "post": {
         "tags": ["Cupons"],
         "summary": "Validar cupom",
-        "description": "Valida um cupom de desconto (endpoint público, usado no checkout)",
+        "description": "Valida um cupom de desconto (endpoint público, usado no checkout). Este endpoint possui rate limiting avançado: 10 requisições por minuto por IP e 5 requisições por 5 minutos por sessão/device. Respostas unificadas para prevenir enumeração de cupons.",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["code", "amount"],
+                "required": ["code", "amountCents"],
                 "properties": {
                   "code": {"type": "string", "description": "Código do cupom"},
-                  "amount": {"type": "integer", "minimum": 1, "description": "Valor da compra em centavos"},
+                  "amountCents": {"type": "integer", "minimum": 1, "description": "Valor da compra em centavos"},
                   "productIds": {
                     "type": "array",
                     "items": {"type": "string", "format": "uuid"},
@@ -1117,6 +1117,8 @@
           "currency": {"type": "string"},
           "stockQuantity": {"type": "integer", "nullable": true},
           "stockEnabled": {"type": "boolean"},
+          "isDigital": {"type": "boolean", "description": "Indica se o produto é digital (não requer estoque físico)"},
+          "imageUrl": {"type": "string", "nullable": true, "format": "uri"},
           "status": {"type": "string"},
           "createdAt": {"type": "string", "format": "date-time"},
           "updatedAt": {"type": "string", "format": "date-time"}
@@ -1130,8 +1132,10 @@
           "description": {"type": "string"},
           "priceCents": {"type": "integer", "minimum": 1},
           "currency": {"type": "string", "default": "BRL"},
-          "stockQuantity": {"type": "integer", "minimum": 0},
+          "stockQuantity": {"type": "integer", "minimum": 0, "nullable": true},
           "stockEnabled": {"type": "boolean", "default": false},
+          "isDigital": {"type": "boolean", "default": false, "description": "Indica se o produto é digital (não requer estoque físico)"},
+          "imageUrl": {"type": "string", "format": "uri", "nullable": true},
           "status": {"type": "string", "enum": ["ACTIVE", "INACTIVE"], "default": "ACTIVE"}
         }
       },
@@ -1141,7 +1145,10 @@
           "name": {"type": "string", "minLength": 1, "maxLength": 255},
           "description": {"type": "string"},
           "priceCents": {"type": "integer", "minimum": 1},
-          "stockQuantity": {"type": "integer", "minimum": 0},
+          "stockQuantity": {"type": "integer", "minimum": 0, "nullable": true},
+          "stockEnabled": {"type": "boolean"},
+          "isDigital": {"type": "boolean", "description": "Indica se o produto é digital (não requer estoque físico)"},
+          "imageUrl": {"type": "string", "format": "uri", "nullable": true},
           "status": {"type": "string", "enum": ["ACTIVE", "INACTIVE"]}
         }
       },
