@@ -50,34 +50,6 @@ A **UPay Gateway API** é uma solução completa de processamento de pagamentos 
    - [Referência Completa da API](/api-reference/openapi.json)
    - [Exemplos de Código](/pages/introduction)
 
-### Para Contribuidores da Documentação
-
-Esta documentação é construída com [Mintlify](https://mintlify.com), uma plataforma moderna para documentação técnica.
-
-#### Pré-requisitos
-
-- Node.js 16+ instalado
-- npm ou yarn
-
-#### Instalação e Desenvolvimento Local
-
-```bash
-# Clone o repositório
-git clone https://github.com/anthonymengottii/documentation.git
-cd documentation
-
-# Instale o Mintlify CLI globalmente
-npm install -g mintlify
-
-# Instale as dependências do projeto
-mintlify install
-
-# Inicie o servidor de desenvolvimento
-mintlify dev
-```
-
-A documentação estará disponível em `http://localhost:3000` com hot-reload ativado.
-
 ## 📚 Estrutura do Projeto
 
 ```
@@ -101,20 +73,6 @@ documentation/
 └── README.md               # Este arquivo
 ```
 
-## 🔧 Desenvolvimento
-
-### Comandos Úteis
-
-```bash
-# Iniciar servidor de desenvolvimento
-mintlify dev
-
-# Validar configuração
-mintlify validate
-
-# Build para produção (local)
-mintlify build
-```
 
 ### Adicionando Novo Conteúdo
 
@@ -129,17 +87,7 @@ mintlify build
 - Mantenha consistência com o tom e estilo da documentação
 - Inclua exemplos de código quando relevante
 
-## 🚀 Deploy
-
-O deploy é **automático** através da integração do Mintlify com GitHub:
-
-1. Faça push para a branch `main`
-2. O Mintlify detecta as alterações automaticamente
-3. A documentação é atualizada em alguns minutos
-
 **URL da Documentação**: [https://docs.upay.com.br](https://docs.upay.com.br)
-
-> **Nota**: Certifique-se de que todas as alterações foram testadas localmente antes de fazer push.
 
 ## 📖 Recursos da API
 
