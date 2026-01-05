@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "UPay Gateway API",
-    "version": "2.18.0",
+    "version": "2.19.0",
     "description": "Documentação completa da API pública do UPay Gateway. Todas as rotas requerem autenticação via API Key.",
     "contact": {
       "email": "suporte@upay.com.br"
