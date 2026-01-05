@@ -14,16 +14,33 @@ Crie e gerencie cupons de desconto para aplicar em pagamentos.
 
 ## Endpoints Disponíveis
 
+### Endpoint Público
+
+- **POST** `/api/coupons/validate` - [Validar cupom (público)](/pages/coupon/validate) - Não requer autenticação
+
+### Endpoints Privados (API v1)
+
 - **POST** `/api/v1/coupons` - [Criar um novo cupom](/pages/coupon/create)
 - **GET** `/api/v1/coupons` - [Listar cupons](/pages/coupon/list)
 - **GET** `/api/v1/coupons/{id}` - [Obter cupom específico](/pages/coupon/get)
 - **PATCH** `/api/v1/coupons/{id}` - [Atualizar cupom](/pages/coupon/update)
 - **DELETE** `/api/v1/coupons/{id}` - [Deletar cupom](/pages/coupon/delete)
-- **POST** `/api/v1/coupons/validate` - [Validar cupom (público)](/pages/coupon/validate)
+
+### Endpoints Privados (Dashboard)
+
+- **GET** `/api/coupons` - Listar cupons
+- **POST** `/api/coupons` - Criar cupom
+- **GET** `/api/coupons/{id}` - Obter cupom
+- **PATCH** `/api/coupons/{id}` - Atualizar cupom
+- **DELETE** `/api/coupons/{id}` - Deletar cupom
 
 ## Autenticação
 
-Todos os endpoints requerem autenticação via Bearer Token (API Key), exceto `/api/v1/coupons/validate` que é público.
+### Endpoint Público
+`/api/coupons/validate` não requer autenticação. Apenas rate limiting por IP.
+
+### Endpoints API v1
+Requerem autenticação via Bearer Token (API Key):
 
 ```
 Authorization: Bearer SUA_API_KEY

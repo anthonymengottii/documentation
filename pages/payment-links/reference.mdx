@@ -14,18 +14,54 @@ Gerencie links de pagamento personalizados que podem ser compartilhados com seus
 
 ## Endpoints Disponíveis
 
+### Endpoints Públicos (Checkout)
+
+Estes endpoints são públicos e não requerem autenticação. São usados no checkout público:
+
+- **GET** `/api/payment-links/public/slug/{slug}` - Obter informações de um link de pagamento público
+- **POST** `/api/payment-links/public/slug/{slug}/start` - Iniciar checkout (cria transação PENDING sem dados do cliente)
+- **POST** `/api/payment-links/public/slug/{slug}/checkout` - Criar checkout completo com dados do cliente
+- **GET** `/api/payment-links/public/transactions/{id}/status` - Consultar status de uma transação (público)
+- **GET** `/api/payment-links/public/transactions/{id}/sync-status` - Sincronizar status consultando Pagar.me diretamente
+
+### Endpoints Privados (API v1)
+
+Estes endpoints requerem autenticação via API Key:
+
 - **POST** `/api/v1/payment-links` - [Criar um novo link de pagamento](/pages/payment-links/create)
 - **GET** `/api/v1/payment-links` - [Listar links de pagamento](/pages/payment-links/list)
 - **GET** `/api/v1/payment-links/{id}` - [Obter link de pagamento específico](/pages/payment-links/get)
 - **PATCH** `/api/v1/payment-links/{id}` - [Atualizar link de pagamento](/pages/payment-links/update)
 - **DELETE** `/api/v1/payment-links/{id}` - [Deletar link de pagamento](/pages/payment-links/delete)
 
+### Endpoints Privados (Dashboard)
+
+Estes endpoints requerem autenticação via Bearer Token (JWT):
+
+- **GET** `/api/payment-links` - Listar links de pagamento
+- **POST** `/api/payment-links` - Criar link de pagamento
+- **GET** `/api/payment-links/{id}` - Obter link de pagamento
+- **PATCH** `/api/payment-links/{id}` - Atualizar link de pagamento
+- **PUT** `/api/payment-links/{id}` - Atualizar link de pagamento (alias)
+- **DELETE** `/api/payment-links/{id}` - Deletar link de pagamento
+
 ## Autenticação
 
-Todos os endpoints requerem autenticação via Bearer Token (API Key).
+### Endpoints Públicos
+Não requerem autenticação. Apenas rate limiting por IP.
+
+### Endpoints API v1
+Requerem autenticação via Bearer Token (API Key):
 
 ```
 Authorization: Bearer SUA_API_KEY
+```
+
+### Endpoints Dashboard
+Requerem autenticação via Bearer Token (JWT):
+
+```
+Authorization: Bearer SEU_JWT_TOKEN
 ```
 
 ## Base URL

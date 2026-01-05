@@ -203,7 +203,7 @@
       "post": {
         "tags": ["Links de Pagamento"],
         "summary": "Criar link de pagamento",
-        "description": "Cria um novo link de pagamento",
+        "description": "Cria um novo link de pagamento. É necessário fornecer pelo menos amountCents OU products (ou ambos).",
         "security": [{"apiKeyAuth": []}],
         "requestBody": {
           "required": true,
@@ -222,7 +222,7 @@
                   "type": "object",
                   "properties": {
                     "message": {"type": "string"},
-                    "paymentLink": {"$ref": "#/components/schemas/PaymentLink"}
+                    "data": {"$ref": "#/components/schemas/PaymentLink"}
                   }
                 }
               }
@@ -269,7 +269,7 @@
       "patch": {
         "tags": ["Links de Pagamento"],
         "summary": "Atualizar link de pagamento",
-        "description": "Atualiza um link de pagamento existente",
+        "description": "Atualiza um link de pagamento existente. É necessário fornecer pelo menos amountCents OU products (ou ambos).",
         "security": [{"apiKeyAuth": []}],
         "parameters": [
           {
@@ -343,18 +343,32 @@
       "get": {
         "tags": ["Produtos"],
         "summary": "Listar produtos",
-        "description": "Lista todos os produtos do catálogo",
+        "description": "Lista todos os produtos do catálogo do usuário autenticado",
         "security": [{"apiKeyAuth": []}],
         "parameters": [
           {
+            "name": "page",
+            "in": "query",
+            "description": "Número da página",
+            "schema": {"type": "integer", "minimum": 1, "default": 1}
+          },
+          {
             "name": "limit",
             "in": "query",
+            "description": "Número de itens por página",
             "schema": {"type": "integer", "minimum": 1, "maximum": 100, "default": 20}
           },
           {
-            "name": "cursor",
+            "name": "search",
             "in": "query",
+            "description": "Buscar por nome ou descrição",
             "schema": {"type": "string"}
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filtrar por status",
+            "schema": {"type": "string", "enum": ["ACTIVE", "INACTIVE"]}
           }
         ],
         "responses": {
@@ -366,8 +380,16 @@
                   "type": "object",
                   "properties": {
                     "message": {"type": "string"},
-                    "products": {"type": "array", "items": {"$ref": "#/components/schemas/Product"}},
-                    "pagination": {"$ref": "#/components/schemas/Pagination"}
+                  "products": {"type": "array", "items": {"$ref": "#/components/schemas/Product"}},
+                  "pagination": {
+                    "type": "object",
+                    "properties": {
+                      "page": {"type": "integer"},
+                      "limit": {"type": "integer"},
+                      "total": {"type": "integer"},
+                      "totalPages": {"type": "integer"}
+                    }
+                  }
                   }
                 }
               }
@@ -519,18 +541,26 @@
       "get": {
         "tags": ["Cupons"],
         "summary": "Listar cupons",
-        "description": "Lista todos os cupons do usuário",
+        "description": "Lista todos os cupons do usuário autenticado",
         "security": [{"apiKeyAuth": []}],
         "parameters": [
           {
+            "name": "page",
+            "in": "query",
+            "description": "Número da página",
+            "schema": {"type": "integer", "minimum": 1, "default": 1}
+          },
+          {
             "name": "limit",
             "in": "query",
+            "description": "Número de itens por página",
             "schema": {"type": "integer", "minimum": 1, "maximum": 100, "default": 20}
           },
           {
-            "name": "cursor",
+            "name": "includeInactive",
             "in": "query",
-            "schema": {"type": "string"}
+            "description": "Incluir cupons inativos",
+            "schema": {"type": "boolean", "default": false}
           }
         ],
         "responses": {
@@ -543,7 +573,15 @@
                   "properties": {
                     "message": {"type": "string"},
                     "coupons": {"type": "array", "items": {"$ref": "#/components/schemas/Coupon"}},
-                    "pagination": {"$ref": "#/components/schemas/Pagination"}
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "page": {"type": "integer"},
+                        "limit": {"type": "integer"},
+                        "total": {"type": "integer"},
+                        "totalPages": {"type": "integer"}
+                      }
+                    }
                   }
                 }
               }
@@ -691,11 +729,12 @@
         }
       }
     },
-    "/api/v1/coupons/validate": {
+    "/api/coupons/validate": {
       "post": {
         "tags": ["Cupons"],
         "summary": "Validar cupom",
         "description": "Valida um cupom de desconto (endpoint público, usado no checkout). Este endpoint possui rate limiting avançado: 10 requisições por minuto por IP e 5 requisições por 5 minutos por sessão/device. Respostas unificadas para prevenir enumeração de cupons.",
+        "security": [],
         "requestBody": {
           "required": true,
           "content": {
@@ -1047,13 +1086,17 @@
         "properties": {
           "id": {"type": "string", "format": "uuid"},
           "slug": {"type": "string"},
-          "url": {"type": "string"},
           "title": {"type": "string"},
           "description": {"type": "string", "nullable": true},
-          "amountCents": {"type": "integer", "nullable": true},
-          "currency": {"type": "string"},
-          "status": {"type": "string"},
-          "settings": {"type": "object"},
+          "amount": {"type": "integer", "nullable": true, "description": "Valor em centavos (null se usar products)"},
+          "currency": {"type": "string", "default": "BRL"},
+          "status": {"type": "string", "enum": ["ACTIVE", "INACTIVE"]},
+          "expiresAt": {"type": "string", "format": "date-time", "nullable": true},
+          "redirectUrl": {"type": "string", "format": "uri", "nullable": true},
+          "settings": {"type": "object", "nullable": true},
+          "salesCount": {"type": "integer", "default": 0},
+          "timesUsed": {"type": "integer", "default": 0},
+          "metaPixelCode": {"type": "string", "nullable": true, "description": "Código do Meta Pixel para rastreamento"},
           "createdAt": {"type": "string", "format": "date-time"},
           "updatedAt": {"type": "string", "format": "date-time"}
         }
@@ -1063,11 +1106,12 @@
         "required": ["title"],
         "properties": {
           "title": {"type": "string", "minLength": 1, "maxLength": 255},
-          "description": {"type": "string", "maxLength": 1000},
-          "amountCents": {"type": "integer", "minimum": 1},
+          "description": {"type": "string", "maxLength": 1000, "nullable": true},
+          "amountCents": {"type": "integer", "minimum": 1, "description": "Valor fixo em centavos (opcional se products for fornecido)"},
           "currency": {"type": "string", "default": "BRL"},
-          "expiresAt": {"type": "string", "format": "date-time"},
-          "redirectUrl": {"type": "string", "format": "uri"},
+          "expiresAt": {"type": "string", "format": "date-time", "nullable": true},
+          "redirectUrl": {"type": "string", "format": "uri", "nullable": true},
+          "productDescription": {"type": "string", "maxLength": 1000, "nullable": true},
           "settings": {
             "type": "object",
             "properties": {
@@ -1083,29 +1127,64 @@
           },
           "products": {
             "type": "array",
+            "description": "Lista de produtos associados ao link (opcional se amountCents for fornecido)",
             "items": {
               "type": "object",
+              "required": ["productId", "quantity"],
               "properties": {
                 "productId": {"type": "string", "format": "uuid"},
                 "quantity": {"type": "integer", "minimum": 1}
               }
             }
           },
-          "stockQuantity": {"type": "integer", "minimum": 0},
+          "stockQuantity": {"type": "integer", "minimum": 0, "nullable": true},
           "stockEnabled": {"type": "boolean"},
+          "metaPixelCode": {"type": "string", "nullable": true, "description": "Código do Meta Pixel para rastreamento"},
           "status": {"type": "string", "enum": ["ACTIVE", "INACTIVE"], "default": "ACTIVE"}
-        }
+        },
+        "description": "É necessário fornecer pelo menos amountCents OU products (ou ambos)"
       },
       "UpdatePaymentLinkRequest": {
         "type": "object",
         "properties": {
           "title": {"type": "string", "minLength": 1, "maxLength": 255},
-          "description": {"type": "string", "maxLength": 1000},
-          "amountCents": {"type": "integer", "minimum": 1},
+          "description": {"type": "string", "maxLength": 1000, "nullable": true},
+          "amountCents": {"type": "integer", "minimum": 1, "description": "Valor fixo em centavos (opcional se products for fornecido)"},
+          "currency": {"type": "string"},
           "status": {"type": "string", "enum": ["ACTIVE", "INACTIVE"]},
-          "expiresAt": {"type": "string", "format": "date-time"},
-          "redirectUrl": {"type": "string", "format": "uri"}
-        }
+          "expiresAt": {"type": "string", "format": "date-time", "nullable": true},
+          "redirectUrl": {"type": "string", "format": "uri", "nullable": true},
+          "productDescription": {"type": "string", "maxLength": 1000, "nullable": true},
+          "settings": {
+            "type": "object",
+            "properties": {
+              "pixEnabled": {"type": "boolean"},
+              "boletoEnabled": {"type": "boolean"},
+              "creditCardEnabled": {"type": "boolean"},
+              "maxInstallments": {"type": "integer", "minimum": 1, "maximum": 12},
+              "interestFreeInstallments": {"type": "integer", "minimum": 0},
+              "interestRate": {"type": "number"},
+              "requirePhone": {"type": "boolean"},
+              "requireAddress": {"type": "boolean"}
+            }
+          },
+          "products": {
+            "type": "array",
+            "description": "Lista de produtos associados ao link (opcional se amountCents for fornecido)",
+            "items": {
+              "type": "object",
+              "required": ["productId", "quantity"],
+              "properties": {
+                "productId": {"type": "string", "format": "uuid"},
+                "quantity": {"type": "integer", "minimum": 1}
+              }
+            }
+          },
+          "stockQuantity": {"type": "integer", "minimum": 0, "nullable": true},
+          "stockEnabled": {"type": "boolean"},
+          "metaPixelCode": {"type": "string", "nullable": true, "description": "Código do Meta Pixel para rastreamento"}
+        },
+        "description": "É necessário fornecer pelo menos amountCents OU products (ou ambos)"
       },
       "Product": {
         "type": "object",
@@ -1113,26 +1192,26 @@
           "id": {"type": "string", "format": "uuid"},
           "name": {"type": "string"},
           "description": {"type": "string", "nullable": true},
-          "priceCents": {"type": "integer"},
-          "currency": {"type": "string"},
-          "stockQuantity": {"type": "integer", "nullable": true},
-          "stockEnabled": {"type": "boolean"},
+          "price": {"type": "integer", "description": "Preço em centavos"},
+          "currency": {"type": "string", "default": "BRL"},
+          "stockQuantity": {"type": "integer", "nullable": true, "description": "Quantidade em estoque (null = ilimitado)"},
+          "stockEnabled": {"type": "boolean", "description": "Indica se o controle de estoque está habilitado"},
           "isDigital": {"type": "boolean", "description": "Indica se o produto é digital (não requer estoque físico)"},
           "imageUrl": {"type": "string", "nullable": true, "format": "uri"},
-          "status": {"type": "string"},
+          "status": {"type": "string", "enum": ["ACTIVE", "INACTIVE"]},
           "createdAt": {"type": "string", "format": "date-time"},
           "updatedAt": {"type": "string", "format": "date-time"}
         }
       },
       "CreateProductRequest": {
         "type": "object",
-        "required": ["name", "priceCents"],
+        "required": ["name", "price"],
         "properties": {
           "name": {"type": "string", "minLength": 1, "maxLength": 255},
-          "description": {"type": "string"},
-          "priceCents": {"type": "integer", "minimum": 1},
+          "description": {"type": "string", "maxLength": 1000, "nullable": true},
+          "price": {"type": "integer", "minimum": 1, "description": "Preço em centavos"},
           "currency": {"type": "string", "default": "BRL"},
-          "stockQuantity": {"type": "integer", "minimum": 0, "nullable": true},
+          "stockQuantity": {"type": "integer", "minimum": 0, "nullable": true, "description": "Quantidade em estoque (obrigatório se stockEnabled = true)"},
           "stockEnabled": {"type": "boolean", "default": false},
           "isDigital": {"type": "boolean", "default": false, "description": "Indica se o produto é digital (não requer estoque físico)"},
           "imageUrl": {"type": "string", "format": "uri", "nullable": true},
@@ -1143,9 +1222,9 @@
         "type": "object",
         "properties": {
           "name": {"type": "string", "minLength": 1, "maxLength": 255},
-          "description": {"type": "string"},
-          "priceCents": {"type": "integer", "minimum": 1},
-          "stockQuantity": {"type": "integer", "minimum": 0, "nullable": true},
+          "description": {"type": "string", "maxLength": 1000, "nullable": true},
+          "price": {"type": "integer", "minimum": 1, "description": "Preço em centavos"},
+          "stockQuantity": {"type": "integer", "minimum": 0, "nullable": true, "description": "Quantidade em estoque (obrigatório se stockEnabled = true)"},
           "stockEnabled": {"type": "boolean"},
           "isDigital": {"type": "boolean", "description": "Indica se o produto é digital (não requer estoque físico)"},
           "imageUrl": {"type": "string", "format": "uri", "nullable": true},
