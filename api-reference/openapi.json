@@ -448,9 +448,9 @@
         "responses": {
           "200": {
             "description": "Detalhes do produto",
-            "content": {
-              "application/json": {
-                "schema": {
+          "content": {
+            "application/json": {
+              "schema": {
                   "type": "object",
                   "properties": {
                     "message": {"type": "string"},
@@ -580,13 +580,13 @@
                         "limit": {"type": "integer"},
                         "total": {"type": "integer"},
                         "totalPages": {"type": "integer"}
-                      }
-                    }
-                  }
                 }
               }
             }
-          },
+          }
+        }
+      }
+    },
           "401": {"$ref": "#/components/responses/Unauthorized"}
         }
       },
@@ -670,7 +670,7 @@
           }
         ],
         "requestBody": {
-          "required": true,
+            "required": true,
           "content": {
             "application/json": {
               "schema": {"$ref": "#/components/schemas/UpdateCouponRequest"}
@@ -682,7 +682,7 @@
             "description": "Cupom atualizado com sucesso",
             "content": {
               "application/json": {
-                "schema": {
+            "schema": {
                   "type": "object",
                   "properties": {
                     "message": {"type": "string"},
@@ -823,14 +823,14 @@
                           "reason": {"type": "string"},
                           "amount": {"type": "integer"},
                           "createdAt": {"type": "string", "format": "date-time"}
-                        }
-                      }
-                    }
-                  }
                 }
               }
             }
-          },
+          }
+        }
+      }
+    }
+  },
           "401": {"$ref": "#/components/responses/Unauthorized"}
         }
       }
@@ -850,7 +850,7 @@
                   "type": "object",
                   "properties": {
                     "message": {"type": "string"},
-                    "webhooks": {
+  "webhooks": {
                       "type": "object",
                       "properties": {
                         "url": {"type": "string"},
@@ -910,9 +910,9 @@
         "responses": {
           "201": {
             "description": "Assinatura criada com sucesso",
-            "content": {
-              "application/json": {
-                "schema": {
+          "content": {
+            "application/json": {
+              "schema": {
                   "type": "object",
                   "properties": {
                     "message": {"type": "string"},
@@ -959,11 +959,11 @@
                   "properties": {
                     "message": {"type": "string"},
                     "subscription": {"$ref": "#/components/schemas/WebhookSubscription"}
-                  }
-                }
-              }
-            }
-          },
+          }
+        }
+      }
+    }
+  },
           "400": {"$ref": "#/components/responses/BadRequest"},
           "404": {"$ref": "#/components/responses/NotFound"},
           "401": {"$ref": "#/components/responses/Unauthorized"}
@@ -988,8 +988,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
+        "type": "object",
+        "properties": {
                     "message": {"type": "string"}
                   }
                 }
@@ -1025,8 +1025,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
+            "type": "object",
+            "properties": {
                     "message": {"type": "string"},
                     "events": {
                       "type": "array",
@@ -1367,8 +1367,8 @@
         "content": {
           "application/json": {
             "schema": {
-              "type": "object",
-              "properties": {
+        "type": "object",
+        "properties": {
                 "message": {"type": "string"}
               }
             }
@@ -1384,10 +1384,10 @@
               "properties": {
                 "message": {"type": "string"}
               }
-            }
           }
         }
-      },
+      }
+    },
       "NotFound": {
         "description": "Recurso não encontrado",
         "content": {
