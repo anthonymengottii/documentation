@@ -1,0 +1,126 @@
+---
+title: "Listar Clientes"
+description: "Lista todos os clientes do usuário autenticado"
+openapi: "GET /api/v1/clients"
+---
+
+## Listar Clientes
+
+Retorna uma lista paginada de clientes vinculados ao usuário autenticado pela API Key.
+
+<Warning>
+  Requer permissão `clients:read` na API Key.
+</Warning>
+
+## Parâmetros de Query
+
+| Parâmetro | Tipo | Descrição | Padrão |
+|-----------|------|-----------|--------|
+| `page` | integer | Número da página | `1` |
+| `limit` | integer | Itens por página (máx: 100) | `20` |
+| `orderBy` | string | Campo para ordenação (`createdAt`, `updatedAt`, `name`, `email`) | `createdAt` |
+| `orderDirection` | string | Direção da ordenação (`asc` ou `desc`) | `desc` |
+| `name` | string | Filtrar por nome (busca parcial, case-insensitive) | - |
+| `email` | string | Filtrar por email (busca parcial, case-insensitive) | - |
+
+## Exemplo de Requisição
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET "https://api.upay-sistema.onrender.com/api/v1/clients?page=1&limit=20&orderBy=createdAt&orderDirection=desc" \
+  -H "Authorization: Bearer SUA_API_KEY" \
+  -H "Content-Type: application/json"
+```
+
+```javascript JavaScript SDK
+const clients = await upay.clients.list({
+  page: 1,
+  limit: 20,
+  orderBy: 'createdAt',
+  orderDirection: 'desc'
+});
+
+console.log(clients.data); // Array de clientes
+console.log(clients.pagination); // Informações de paginação
+```
+
+```python Python SDK
+clients = upay.clients.list(
+    page=1,
+    limit=20,
+    order_by='createdAt',
+    order_direction='desc'
+)
+
+print(clients['data'])  # Lista de clientes
+print(clients['pagination'])  # Informações de paginação
+```
+
+```php PHP SDK
+$clients = $upay->clients->list([
+    'page' => 1,
+    'limit' => 20,
+    'orderBy' => 'createdAt',
+    'orderDirection' => 'desc'
+]);
+
+print_r($clients['data']); // Array de clientes
+print_r($clients['pagination']); // Informações de paginação
+```
+
+</CodeGroup>
+
+## Exemplo de Resposta
+
+```json
+{
+  "message": "Clientes obtidos com sucesso",
+  "clients": [
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440000",
+      "name": "João Silva",
+      "email": "joao@example.com",
+      "document": "12345678900",
+      "phone": "+5511999999999",
+      "createdAt": "2025-01-15T10:30:00Z",
+      "updatedAt": "2025-01-15T10:30:00Z"
+    }
+  ],
+  "pagination": {
+    "total": 1,
+    "page": 1,
+    "limit": 20,
+    "orderBy": "createdAt",
+    "orderDirection": "desc"
+  }
+}
+```
+
+## Filtros
+
+### Filtrar por Nome
+
+```bash
+GET /api/v1/clients?name=João
+```
+
+### Filtrar por Email
+
+```bash
+GET /api/v1/clients?email=joao@example.com
+```
+
+### Combinar Filtros
+
+```bash
+GET /api/v1/clients?name=João&email=example.com&page=1&limit=10
+```
+
+## Códigos de Status
+
+| Código | Descrição |
+|--------|-----------|
+| `200` | Sucesso |
+| `401` | Não autenticado (API Key inválida) |
+| `403` | Sem permissão (`clients:read`) |

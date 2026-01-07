@@ -1,0 +1,299 @@
+---
+title: "SDKs Oficiais"
+description: "Bibliotecas oficiais para integração rápida com a API UPay"
+icon: "code"
+---
+
+## SDKs Oficiais
+
+Para facilitar a integração da API UPay em seu sistema, disponibilizamos SDKs oficiais em múltiplas linguagens. Todos os SDKs são mantidos oficialmente e incluem suporte completo para todos os recursos da API.
+
+<Note>
+  Todos os SDKs são open-source e estão disponíveis no repositório [upay-sdks](https://github.com/anthonymengottii/upay-sdks).
+</Note>
+
+## SDKs Disponíveis
+
+### JavaScript/TypeScript
+
+SDK oficial para Node.js e navegadores, com suporte completo a TypeScript.
+
+<CodeGroup>
+
+```bash npm
+npm install @upay/sdk
+```
+
+```bash yarn
+yarn add @upay/sdk
+```
+
+```bash pnpm
+pnpm add @upay/sdk
+```
+
+</CodeGroup>
+
+**Exemplo de uso:**
+
+```typescript
+import UpayClient from '@upay/sdk';
+
+const upay = new UpayClient({
+  apiKey: 'sua_api_key_aqui',
+  baseUrl: 'https://api.upay-sistema.onrender.com'
+});
+
+// Listar clientes
+const clients = await upay.clients.list();
+
+// Criar um cliente
+const client = await upay.clients.create({
+  name: 'João Silva',
+  email: 'joao@example.com',
+  document: '12345678900',
+  phone: '+5511999999999'
+});
+
+// Criar um link de pagamento
+const paymentLink = await upay.paymentLinks.create({
+  title: 'Produto XYZ',
+  amount: 5000, // R$ 50,00 em centavos
+  status: 'ACTIVE'
+});
+```
+
+**Recursos:**
+- ✅ TypeScript com tipos completos
+- ✅ Suporte a Node.js e navegadores
+- ✅ Verificação de assinatura de webhooks
+- ✅ Tratamento de erros robusto
+- ✅ Suporte a todos os recursos da API
+
+### Python
+
+SDK oficial para Python 3.8+, com suporte completo a type hints.
+
+<CodeGroup>
+
+```bash pip
+pip install upay-sdk
+```
+
+</CodeGroup>
+
+**Exemplo de uso:**
+
+```python
+from upay import UpayClient
+
+upay = UpayClient(
+    api_key='sua_api_key_aqui',
+    base_url='https://api.upay-sistema.onrender.com'
+)
+
+# Listar clientes
+clients = upay.clients.list()
+
+# Criar um cliente
+client = upay.clients.create({
+    'name': 'João Silva',
+    'email': 'joao@example.com',
+    'document': '12345678900',
+    'phone': '+5511999999999'
+})
+
+# Criar um link de pagamento
+payment_link = upay.payment_links.create({
+    'title': 'Produto XYZ',
+    'amount': 5000,  # R$ 50,00 em centavos
+    'status': 'ACTIVE'
+})
+```
+
+**Recursos:**
+- ✅ Type hints completos
+- ✅ Suporte a Python 3.8+
+- ✅ Verificação de assinatura de webhooks
+- ✅ Tratamento de erros robusto
+- ✅ Suporte a todos os recursos da API
+
+### PHP
+
+SDK oficial para PHP 8.0+, com suporte a PSR-4 autoloading.
+
+<CodeGroup>
+
+```bash composer
+composer require upay/upay-php
+```
+
+</CodeGroup>
+
+**Exemplo de uso:**
+
+```php
+<?php
+
+require_once 'vendor/autoload.php';
+
+use Upay\UpayClient;
+
+$upay = new UpayClient(
+    apiKey: 'sua_api_key_aqui',
+    baseUrl: 'https://api.upay-sistema.onrender.com'
+);
+
+// Listar clientes
+$clients = $upay->clients->list();
+
+// Criar um cliente
+$client = $upay->clients->create([
+    'name' => 'João Silva',
+    'email' => 'joao@example.com',
+    'document' => '12345678900',
+    'phone' => '+5511999999999'
+]);
+
+// Criar um link de pagamento
+$paymentLink = $upay->paymentLinks->create([
+    'title' => 'Produto XYZ',
+    'amount' => 5000, // R$ 50,00 em centavos
+    'status' => 'ACTIVE'
+]);
+```
+
+**Recursos:**
+- ✅ PSR-4 autoloading
+- ✅ Suporte a PHP 8.0+
+- ✅ Verificação de assinatura de webhooks
+- ✅ Tratamento de erros robusto
+- ✅ Suporte a todos os recursos da API
+
+### Java
+
+SDK oficial para Java 11+, com suporte a Maven.
+
+<CodeGroup>
+
+```xml pom.xml
+<dependency>
+    <groupId>com.upay</groupId>
+    <artifactId>upay-java</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
+</CodeGroup>
+
+**Exemplo de uso:**
+
+```java
+import com.upay.sdk.UpayClient;
+import com.upay.sdk.resources.PaymentLinksResource;
+
+UpayClient upay = new UpayClient(
+    "sua_api_key_aqui",
+    "https://api.upay-sistema.onrender.com",
+    "v1",
+    30
+);
+
+// Listar clientes
+Map<String, Object> clients = upay.clients.list();
+
+// Criar um cliente
+Map<String, Object> clientData = new HashMap<>();
+clientData.put("name", "João Silva");
+clientData.put("email", "joao@example.com");
+clientData.put("document", "12345678900");
+clientData.put("phone", "+5511999999999");
+
+Map<String, Object> client = upay.clients.create(clientData);
+
+// Criar um link de pagamento
+Map<String, Object> linkData = new HashMap<>();
+linkData.put("title", "Produto XYZ");
+linkData.put("amount", 5000); // R$ 50,00 em centavos
+linkData.put("status", "ACTIVE");
+
+Map<String, Object> paymentLink = upay.paymentLinks.create(linkData);
+```
+
+**Recursos:**
+- ✅ Suporte a Java 11+
+- ✅ Maven/Gradle
+- ✅ Verificação de assinatura de webhooks
+- ✅ Tratamento de erros robusto
+- ✅ Suporte a todos os recursos da API
+
+## Recursos Suportados
+
+Todos os SDKs suportam os seguintes recursos da API:
+
+- ✅ **Links de Pagamento** - Criar, listar, obter, atualizar e deletar
+- ✅ **Transações** - Listar, obter e criar
+- ✅ **Produtos** - CRUD completo
+- ✅ **Cupons** - CRUD completo e validação
+- ✅ **Clientes** - Criar, listar e obter
+- ✅ **Webhooks** - Verificação de assinatura HMAC SHA256
+
+## Autenticação
+
+Todos os SDKs utilizam autenticação via API Key. Para obter sua API Key:
+
+1. Acesse o [Dashboard UPay](https://upay-sistema.onrender.com)
+2. Complete o processo de verificação (KYC)
+3. Gere sua API Key em **Configurações → Credenciais de API**
+
+## Verificação de Webhooks
+
+Todos os SDKs incluem utilitários para verificar a assinatura de webhooks:
+
+<CodeGroup>
+
+```typescript JavaScript
+const isValid = upay.verifyWebhookSignature(
+  payload,
+  signature,
+  webhookSecret
+);
+```
+
+```python Python
+is_valid = upay.verify_webhook_signature(
+    payload,
+    signature,
+    webhook_secret
+)
+```
+
+```php PHP
+$isValid = $upay->verifyWebhookSignature(
+    $payload,
+    $signature,
+    $webhookSecret
+);
+```
+
+```java Java
+boolean isValid = upay.verifyWebhookSignature(
+    payload,
+    signature,
+    webhookSecret
+);
+```
+
+</CodeGroup>
+
+## Contribuindo
+
+Os SDKs são open-source e aceitam contribuições! Acesse o repositório [upay-sdks](https://github.com/anthonymengottii/upay-sdks) para mais informações.
+
+## Suporte
+
+Para dúvidas sobre os SDKs:
+
+- **Documentação**: [GitHub Repository](https://github.com/anthonymengottii/upay-sdks)
+- **Issues**: [GitHub Issues](https://github.com/anthonymengottii/upay-sdks/issues)
+- **Email**: [suporte@upay.com.br](mailto:suporte@upay.com.br)

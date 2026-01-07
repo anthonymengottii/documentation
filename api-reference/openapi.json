@@ -46,6 +46,10 @@
     {
       "name": "Saldo",
       "description": "Consulta de saldo e movimentações"
+    },
+    {
+      "name": "Clientes",
+      "description": "Gerenciamento de clientes"
     }
   ],
   "paths": {
@@ -828,10 +832,164 @@
             }
           }
         }
-      }
-    }
-  },
+      },
           "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      }
+    },
+    "/api/v1/clients": {
+      "get": {
+        "tags": ["Clientes"],
+        "summary": "Listar clientes",
+        "description": "Lista todos os clientes do usuário autenticado com paginação e filtros",
+        "security": [{"apiKeyAuth": []}],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Número da página",
+            "schema": {"type": "integer", "minimum": 1, "default": 1}
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Número de itens por página",
+            "schema": {"type": "integer", "minimum": 1, "maximum": 100, "default": 20}
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "description": "Campo para ordenação",
+            "schema": {"type": "string", "enum": ["createdAt", "updatedAt", "name", "email"], "default": "createdAt"}
+          },
+          {
+            "name": "orderDirection",
+            "in": "query",
+            "description": "Direção da ordenação",
+            "schema": {"type": "string", "enum": ["asc", "desc"], "default": "desc"}
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Filtrar por nome (busca parcial)",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "description": "Filtrar por email (busca parcial)",
+            "schema": {"type": "string"}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de clientes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "clients": {"type": "array", "items": {"$ref": "#/components/schemas/Client"}},
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "total": {"type": "integer"},
+                        "page": {"type": "integer"},
+                        "limit": {"type": "integer"},
+                        "orderBy": {"type": "string"},
+                        "orderDirection": {"type": "string"}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {"$ref": "#/components/responses/Unauthorized"},
+          "403": {"$ref": "#/components/responses/Forbidden"}
+        }
+      },
+      "post": {
+        "tags": ["Clientes"],
+        "summary": "Criar cliente",
+        "description": "Cria um novo cliente vinculado ao usuário autenticado",
+        "security": [{"apiKeyAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/CreateClientRequest"}
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Cliente criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "client": {"$ref": "#/components/schemas/Client"}
+                  }
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "401": {"$ref": "#/components/responses/Unauthorized"},
+          "403": {"$ref": "#/components/responses/Forbidden"},
+          "409": {
+            "description": "Email já existe",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/clients/{id}": {
+      "get": {
+        "tags": ["Clientes"],
+        "summary": "Obter cliente",
+        "description": "Obtém detalhes de um cliente específico",
+        "security": [{"apiKeyAuth": []}],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID do cliente",
+            "schema": {"type": "string", "format": "uuid"}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cliente obtido com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "client": {"$ref": "#/components/schemas/Client"}
+                  }
+                }
+              }
+            }
+          },
+          "401": {"$ref": "#/components/responses/Unauthorized"},
+          "403": {"$ref": "#/components/responses/Forbidden"},
+          "404": {"$ref": "#/components/responses/NotFound"}
         }
       }
     },
@@ -1281,6 +1439,28 @@
           "status": {"type": "string", "enum": ["ACTIVE", "INACTIVE"]}
         }
       },
+      "Client": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string", "format": "uuid"},
+          "name": {"type": "string"},
+          "email": {"type": "string", "format": "email"},
+          "document": {"type": "string", "nullable": true},
+          "phone": {"type": "string", "nullable": true},
+          "createdAt": {"type": "string", "format": "date-time"},
+          "updatedAt": {"type": "string", "format": "date-time"}
+        }
+      },
+      "CreateClientRequest": {
+        "type": "object",
+        "required": ["name", "email"],
+        "properties": {
+          "name": {"type": "string", "minLength": 3, "maxLength": 255},
+          "email": {"type": "string", "format": "email"},
+          "document": {"type": "string", "minLength": 11, "maxLength": 20, "nullable": true},
+          "phone": {"type": "string", "minLength": 10, "maxLength": 20, "nullable": true}
+        }
+      },
       "WebhookSubscription": {
         "type": "object",
         "properties": {
@@ -1404,3 +1584,4 @@
     }
   }
 }
+  }}
