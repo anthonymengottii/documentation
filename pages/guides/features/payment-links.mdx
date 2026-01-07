@@ -23,7 +23,7 @@ Os **Links de Pagamento** são URLs personalizadas que você pode criar e compar
 ### Requisição Básica
 
 ```bash
-curl -X POST "https://api.upay-sistema.onrender.com/api/v1/payment-links" \
+curl -X POST "https://upay-sistema-api.onrender.com/api/v1/payment-links" \
   -H "Authorization: Bearer SUA_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -53,7 +53,7 @@ curl -X POST "https://api.upay-sistema.onrender.com/api/v1/payment-links" \
     "amountCents": 9900,
     "currency": "BRL",
     "status": "ACTIVE",
-    "url": "https://upay-sistema.onrender.com/checkout/produto-premium-abc123",
+    "url": "https://app.upaybr.com/checkout/produto-premium-abc123",
     "createdAt": "2025-12-30T00:00:00.000Z",
     "updatedAt": "2025-12-30T00:00:00.000Z"
   }
@@ -118,7 +118,7 @@ curl -X POST "https://api.upay-sistema.onrender.com/api/v1/payment-links" \
 ### Link Simples com PIX e Cartão
 
 ```javascript
-const response = await fetch('https://api.upay-sistema.onrender.com/api/v1/payment-links', {
+const response = await fetch('https://upay-sistema-api.onrender.com/api/v1/payment-links', {
   method: 'POST',
   headers: {
     'Authorization': `Bearer ${apiKey}`,
@@ -142,7 +142,7 @@ const response = await fetch('https://api.upay-sistema.onrender.com/api/v1/payme
 ### Link com Produtos e Estoque
 
 ```javascript
-const response = await fetch('https://api.upay-sistema.onrender.com/api/v1/payment-links', {
+const response = await fetch('https://upay-sistema-api.onrender.com/api/v1/payment-links', {
   method: 'POST',
   headers: {
     'Authorization': `Bearer ${apiKey}`,
@@ -172,7 +172,7 @@ const response = await fetch('https://api.upay-sistema.onrender.com/api/v1/payme
 const expiresAt = new Date();
 expiresAt.setDate(expiresAt.getDate() + 30); // Expira em 30 dias
 
-const response = await fetch('https://api.upay-sistema.onrender.com/api/v1/payment-links', {
+const response = await fetch('https://upay-sistema-api.onrender.com/api/v1/payment-links', {
   method: 'POST',
   headers: {
     'Authorization': `Bearer ${apiKey}`,
@@ -197,21 +197,21 @@ const response = await fetch('https://api.upay-sistema.onrender.com/api/v1/payme
 ### Listar Todos os Links
 
 ```bash
-curl -X GET "https://api.upay-sistema.onrender.com/api/v1/payment-links?page=1&limit=20" \
+curl -X GET "https://upay-sistema-api.onrender.com/api/v1/payment-links?page=1&limit=20" \
   -H "Authorization: Bearer SUA_API_KEY"
 ```
 
 ### Buscar Link Específico
 
 ```bash
-curl -X GET "https://api.upay-sistema.onrender.com/api/v1/payment-links/{id}" \
+curl -X GET "https://upay-sistema-api.onrender.com/api/v1/payment-links/{id}" \
   -H "Authorization: Bearer SUA_API_KEY"
 ```
 
 ## ✏️ Atualizando um Link
 
 ```bash
-curl -X PATCH "https://api.upay-sistema.onrender.com/api/v1/payment-links/{id}" \
+curl -X PATCH "https://upay-sistema-api.onrender.com/api/v1/payment-links/{id}" \
   -H "Authorization: Bearer SUA_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -227,7 +227,7 @@ curl -X PATCH "https://api.upay-sistema.onrender.com/api/v1/payment-links/{id}" 
 ## 🗑️ Deletando um Link
 
 ```bash
-curl -X DELETE "https://api.upay-sistema.onrender.com/api/v1/payment-links/{id}" \
+curl -X DELETE "https://upay-sistema-api.onrender.com/api/v1/payment-links/{id}" \
   -H "Authorization: Bearer SUA_API_KEY"
 ```
 
@@ -240,7 +240,7 @@ curl -X DELETE "https://api.upay-sistema.onrender.com/api/v1/payment-links/{id}"
 Após criar um link, você receberá uma URL no formato:
 
 ```
-https://upay-sistema.onrender.com/checkout/{slug}
+https://app.upaybr.com/checkout/{slug}
 ```
 
 Esta URL pode ser compartilhada diretamente com seus clientes.

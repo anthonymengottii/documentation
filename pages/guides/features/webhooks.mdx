@@ -21,7 +21,7 @@ description: "Configure webhooks para receber notificações em tempo real sobre
 ### Requisição Básica
 
 ```bash
-curl -X POST "https://api.upay-sistema.onrender.com/api/webhooks/subscriptions" \
+curl -X POST "https://https://upay-sistema-api.onrender.com//api/webhooks/subscriptions" \
   -H "Authorization: Bearer SUA_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -83,7 +83,7 @@ curl -X POST "https://api.upay-sistema.onrender.com/api/webhooks/subscriptions" 
 ## 📖 Exemplo Completo
 
 ```javascript
-const response = await fetch('https://api.upay-sistema.onrender.com/api/webhooks/subscriptions', {
+const response = await fetch('https://https://upay-sistema-api.onrender.com//api/webhooks/subscriptions', {
   method: 'POST',
   headers: {
     'Authorization': `Bearer ${apiKey}`,
@@ -109,21 +109,21 @@ console.log('Webhook Secret:', data.secret);
 ### Listar Todas as Assinaturas
 
 ```bash
-curl -X GET "https://api.upay-sistema.onrender.com/api/webhooks/subscriptions" \
+curl -X GET "https://https://upay-sistema-api.onrender.com//api/webhooks/subscriptions" \
   -H "Authorization: Bearer SUA_API_KEY"
 ```
 
 ### Listar Eventos Enviados
 
 ```bash
-curl -X GET "https://api.upay-sistema.onrender.com/api/webhooks/events?page=1&limit=20" \
+curl -X GET "https://https://upay-sistema-api.onrender.com//api/webhooks/events?page=1&limit=20" \
   -H "Authorization: Bearer SUA_API_KEY"
 ```
 
 ## ✏️ Atualizando uma Assinatura
 
 ```bash
-curl -X PUT "https://api.upay-sistema.onrender.com/api/webhooks/subscriptions/{id}" \
+curl -X PUT "https://https://upay-sistema-api.onrender.com//api/webhooks/subscriptions/{id}" \
   -H "Authorization: Bearer SUA_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -136,7 +136,7 @@ curl -X PUT "https://api.upay-sistema.onrender.com/api/webhooks/subscriptions/{i
 ## 🗑️ Deletando uma Assinatura
 
 ```bash
-curl -X DELETE "https://api.upay-sistema.onrender.com/api/webhooks/subscriptions/{id}" \
+curl -X DELETE "https://https://upay-sistema-api.onrender.com//api/webhooks/subscriptions/{id}" \
   -H "Authorization: Bearer SUA_API_KEY"
 ```
 

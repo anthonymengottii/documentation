@@ -4,7 +4,7 @@
   # UPay Gateway API - Documentação Pública
   
   [![Documentation](https://img.shields.io/badge/Documentation-Live-brightgreen)](https://docs.upay.com.br)
-  [![API Version](https://img.shields.io/badge/API-v1.0-blue)](https://api.upay-sistema.onrender.com)
+  [![API Version](https://img.shields.io/badge/API-v1.0-blue)](https://upay-sistema-api.onrender.com)
   [![License](https://img.shields.io/badge/License-MIT-purple)](LICENSE)
   
   **Documentação oficial e completa da API UPay Gateway**
@@ -36,13 +36,13 @@ A **UPay Gateway API** é uma solução completa de processamento de pagamentos 
 ### Para Desenvolvedores
 
 1. **Obtenha suas credenciais de API**
-   - Acesse o [Dashboard UPay](https://upay-sistema.onrender.com)
+   - Acesse o [Dashboard UPay](https://app.upaybr.com)
    - Complete o processo de verificação (KYC)
    - Gere sua API Key em **Configurações → Credenciais de API**
 
 2. **Faça sua primeira requisição**
    ```bash
-   curl -X GET "https://api.upay-sistema.onrender.com/api/v1/payment-links" \
+   curl -X GET "https://upay-sistema-api.onrender.com/api/v1/payment-links" \
      -H "Authorization: Bearer SUA_API_KEY" \
      -H "Content-Type: application/json"
    ```
@@ -121,8 +121,8 @@ Para mais detalhes, consulte a [documentação de autenticação](/pages/authent
 ### Documentação e Recursos
 
 - **Documentação Online**: [https://docs.upay.com.br](https://docs.upay.com.br)
-- **API Base URL**: `https://api.upay-sistema.onrender.com`
-- **Dashboard**: [https://upay-sistema.onrender.com](https://upay-sistema.onrender.com)
+- **API Base URL**: `https://upay-sistema-api.onrender.com`
+- **Dashboard**: [https://app.upaybr.com](https://app.upaybr.com)
 - **Status da API**: [Verificar Status](https://status.upay.com.br)
 
 ### Repositórios

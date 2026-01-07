@@ -21,7 +21,7 @@ O sistema de **Produtos** permite que você gerencie um catálogo completo de pr
 ### Requisição Básica
 
 ```bash
-curl -X POST "https://api.upay-sistema.onrender.com/api/v1/products" \
+curl -X POST "https://https://upay-sistema-api.onrender.com//api/v1/products" \
   -H "Authorization: Bearer SUA_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -75,7 +75,7 @@ curl -X POST "https://api.upay-sistema.onrender.com/api/v1/products" \
 ### Produto Simples
 
 ```javascript
-const response = await fetch('https://api.upay-sistema.onrender.com/api/v1/products', {
+const response = await fetch('https://https://upay-sistema-api.onrender.com//api/v1/products', {
   method: 'POST',
   headers: {
     'Authorization': `Bearer ${apiKey}`,
@@ -93,7 +93,7 @@ const response = await fetch('https://api.upay-sistema.onrender.com/api/v1/produ
 ### Produto com Estoque
 
 ```javascript
-const response = await fetch('https://api.upay-sistema.onrender.com/api/v1/products', {
+const response = await fetch('https://https://upay-sistema-api.onrender.com//api/v1/products', {
   method: 'POST',
   headers: {
     'Authorization': `Bearer ${apiKey}`,
@@ -113,7 +113,7 @@ const response = await fetch('https://api.upay-sistema.onrender.com/api/v1/produ
 ### Produto Digital (Sem Estoque)
 
 ```javascript
-const response = await fetch('https://api.upay-sistema.onrender.com/api/v1/products', {
+const response = await fetch('https://https://upay-sistema-api.onrender.com//api/v1/products', {
   method: 'POST',
   headers: {
     'Authorization': `Bearer ${apiKey}`,
@@ -134,21 +134,21 @@ const response = await fetch('https://api.upay-sistema.onrender.com/api/v1/produ
 ### Listar Todos os Produtos
 
 ```bash
-curl -X GET "https://api.upay-sistema.onrender.com/api/v1/products?page=1&limit=20" \
+curl -X GET "https://https://upay-sistema-api.onrender.com//api/v1/products?page=1&limit=20" \
   -H "Authorization: Bearer SUA_API_KEY"
 ```
 
 ### Buscar Produto Específico
 
 ```bash
-curl -X GET "https://api.upay-sistema.onrender.com/api/v1/products/{id}" \
+curl -X GET "https://https://upay-sistema-api.onrender.com//api/v1/products/{id}" \
   -H "Authorization: Bearer SUA_API_KEY"
 ```
 
 ### Filtrar por Status
 
 ```bash
-curl -X GET "https://api.upay-sistema.onrender.com/api/v1/products?status=ACTIVE" \
+curl -X GET "https://https://upay-sistema-api.onrender.com//api/v1/products?status=ACTIVE" \
   -H "Authorization: Bearer SUA_API_KEY"
 ```
 
@@ -157,7 +157,7 @@ curl -X GET "https://api.upay-sistema.onrender.com/api/v1/products?status=ACTIVE
 ### Atualização Completa (PUT)
 
 ```bash
-curl -X PUT "https://api.upay-sistema.onrender.com/api/v1/products/{id}" \
+curl -X PUT "https://https://upay-sistema-api.onrender.com//api/v1/products/{id}" \
   -H "Authorization: Bearer SUA_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -171,7 +171,7 @@ curl -X PUT "https://api.upay-sistema.onrender.com/api/v1/products/{id}" \
 ### Atualização Parcial (PATCH)
 
 ```bash
-curl -X PATCH "https://api.upay-sistema.onrender.com/api/v1/products/{id}" \
+curl -X PATCH "https://https://upay-sistema-api.onrender.com//api/v1/products/{id}" \
   -H "Authorization: Bearer SUA_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -188,7 +188,7 @@ curl -X PATCH "https://api.upay-sistema.onrender.com/api/v1/products/{id}" \
 ### Atualizar Estoque Específico
 
 ```bash
-curl -X PATCH "https://api.upay-sistema.onrender.com/api/v1/products/{id}/stock" \
+curl -X PATCH "https://https://upay-sistema-api.onrender.com//api/v1/products/{id}/stock" \
   -H "Authorization: Bearer SUA_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -199,7 +199,7 @@ curl -X PATCH "https://api.upay-sistema.onrender.com/api/v1/products/{id}/stock"
 ### Exemplo em JavaScript
 
 ```javascript
-const response = await fetch(`https://api.upay-sistema.onrender.com/api/v1/products/${productId}/stock`, {
+const response = await fetch(`https://https://upay-sistema-api.onrender.com//api/v1/products/${productId}/stock`, {
   method: 'PATCH',
   headers: {
     'Authorization': `Bearer ${apiKey}`,
@@ -214,7 +214,7 @@ const response = await fetch(`https://api.upay-sistema.onrender.com/api/v1/produ
 ## 🗑️ Deletando um Produto
 
 ```bash
-curl -X DELETE "https://api.upay-sistema.onrender.com/api/v1/products/{id}" \
+curl -X DELETE "https://https://upay-sistema-api.onrender.com//api/v1/products/{id}" \
   -H "Authorization: Bearer SUA_API_KEY"
 ```
 
@@ -227,7 +227,7 @@ curl -X DELETE "https://api.upay-sistema.onrender.com/api/v1/products/{id}" \
 Ao criar ou atualizar um link de pagamento, você pode associar produtos:
 
 ```javascript
-const response = await fetch('https://api.upay-sistema.onrender.com/api/payment-links', {
+const response = await fetch('https://https://upay-sistema-api.onrender.com//api/payment-links', {
   method: 'POST',
   headers: {
     'Authorization': `Bearer ${apiKey}`,

@@ -13,7 +13,7 @@
   },
   "servers": [
     {
-      "url": "https://api.upay-sistema.onrender.com",
+      "url": "https://upay-sistema-api.onrender.com",
       "description": "Produção"
     }
   ],

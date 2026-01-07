@@ -11,7 +11,7 @@ A UPay Gateway API usa autenticação baseada em **API Keys** (Bearer Token) par
 
 ### Passo 1: Acesse o Dashboard
 
-1. Faça login no [Dashboard UPay](https://upay-sistema.onrender.com)
+1. Faça login no [Dashboard UPay](https://app.upaybr.com)
 2. Complete o processo de KYC (Know Your Customer) se ainda não tiver feito
 3. Navegue até **Configurações → Credenciais de API**
 
@@ -59,7 +59,7 @@ Ambos os formatos são aceitos. Recomendamos o uso do formato Bearer Token por s
 ### Exemplo com cURL
 
 ```bash
-curl -X GET "https://api.upay-sistema.onrender.com/api/v1/payment-links" \
+curl -X GET "https://https://upay-sistema-api.onrender.com//api/v1/payment-links" \
   -H "Authorization: Bearer sua_api_key_aqui" \
   -H "Content-Type: application/json"
 ```
@@ -69,7 +69,7 @@ curl -X GET "https://api.upay-sistema.onrender.com/api/v1/payment-links" \
 ```javascript
 const apiKey = 'sua_api_key_aqui';
 
-const response = await fetch('https://api.upay-sistema.onrender.com/api/v1/payment-links', {
+const response = await fetch('https://https://upay-sistema-api.onrender.com//api/v1/payment-links', {
   method: 'GET',
   headers: {
     'Authorization': `Bearer ${apiKey}`,
@@ -92,7 +92,7 @@ headers = {
 }
 
 response = requests.get(
-    'https://api.upay-sistema.onrender.com/api/v1/payment-links',
+    'https://https://upay-sistema-api.onrender.com//api/v1/payment-links',
     headers=headers
 )
 
@@ -106,7 +106,7 @@ const axios = require('axios');
 
 const apiKey = 'sua_api_key_aqui';
 
-const response = await axios.get('https://api.upay-sistema.onrender.com/api/payment-links', {
+const response = await axios.get('https://https://upay-sistema-api.onrender.com//api/payment-links', {
   headers: {
     'Authorization': `Bearer ${apiKey}`,
     'Content-Type': 'application/json'
@@ -148,7 +148,7 @@ console.log(response.data);
 
 ```env
 UPAY_API_KEY=sua_api_key_aqui
-UPAY_API_URL=https://api.upay-sistema.onrender.com
+UPAY_API_URL=https://https://upay-sistema-api.onrender.com/
 ```
 
 #### Uso no código
