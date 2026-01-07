@@ -827,12 +827,14 @@
                           "reason": {"type": "string"},
                           "amount": {"type": "integer"},
                           "createdAt": {"type": "string", "format": "date-time"}
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
-          }
-        }
-      },
+          },
           "401": {"$ref": "#/components/responses/Unauthorized"}
         }
       }
@@ -1183,8 +1185,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
+            "type": "object",
+            "properties": {
                     "message": {"type": "string"},
                     "events": {
                       "type": "array",
