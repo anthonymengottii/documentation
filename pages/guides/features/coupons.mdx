@@ -219,7 +219,7 @@ curl -X POST "https://upay-sistema-api.onrender.com/api/v1/coupons/validate" \
 
 ```javascript
 async function validateCoupon(code, amount) {
-  const response = await fetch('https://https://upay-sistema-api.onrender.com//api/v1/coupons/validate', {
+  const response = await fetch('https://upay-sistema-api.onrender.com/api/v1/coupons/validate', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
