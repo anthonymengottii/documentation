@@ -55,28 +55,48 @@
   "paths": {
     "/api/v1/transactions": {
       "get": {
-        "tags": ["Transações"],
+        "tags": [
+          "Transações"
+        ],
         "summary": "Listar transações",
         "description": "Lista todas as transações do usuário autenticado com paginação",
-        "security": [{"apiKeyAuth": []}],
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "limit",
             "in": "query",
             "description": "Número de itens por página",
-            "schema": {"type": "integer", "minimum": 1, "maximum": 100, "default": 20}
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
           },
           {
             "name": "cursor",
             "in": "query",
             "description": "Cursor para paginação",
-            "schema": {"type": "string"}
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "orderBy",
             "in": "query",
             "description": "Campo para ordenação",
-            "schema": {"type": "string", "enum": ["createdAt", "amountCents", "status"]}
+            "schema": {
+              "type": "string",
+              "enum": [
+                "createdAt",
+                "amountCents",
+                "status"
+              ]
+            }
           }
         ],
         "responses": {
@@ -87,28 +107,49 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"},
-                    "transactions": {"type": "array", "items": {"$ref": "#/components/schemas/Transaction"}},
-                    "pagination": {"$ref": "#/components/schemas/Pagination"}
+                    "message": {
+                      "type": "string"
+                    },
+                    "transactions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Transaction"
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
                   }
                 }
               }
             }
           },
-          "401": {"$ref": "#/components/responses/Unauthorized"},
-          "403": {"$ref": "#/components/responses/Forbidden"}
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
         }
       },
       "post": {
-        "tags": ["Transações"],
+        "tags": [
+          "Transações"
+        ],
         "summary": "Criar transação",
         "description": "Cria uma nova transação de pagamento",
-        "security": [{"apiKeyAuth": []}],
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": {"$ref": "#/components/schemas/CreateTransactionRequest"}
+              "schema": {
+                "$ref": "#/components/schemas/CreateTransactionRequest"
+              }
             }
           }
         },
@@ -120,31 +161,50 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"},
-                    "transaction": {"$ref": "#/components/schemas/Transaction"}
+                    "message": {
+                      "type": "string"
+                    },
+                    "transaction": {
+                      "$ref": "#/components/schemas/Transaction"
+                    }
                   }
                 }
               }
             }
           },
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "401": {"$ref": "#/components/responses/Unauthorized"},
-          "403": {"$ref": "#/components/responses/Forbidden"}
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
         }
       }
     },
     "/api/v1/transactions/{id}": {
       "get": {
-        "tags": ["Transações"],
+        "tags": [
+          "Transações"
+        ],
         "summary": "Obter transação",
         "description": "Obtém detalhes de uma transação específica",
-        "security": [{"apiKeyAuth": []}],
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {"type": "string", "format": "uuid"}
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
           }
         ],
         "responses": {
@@ -155,34 +215,55 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"},
-                    "transaction": {"$ref": "#/components/schemas/Transaction"}
+                    "message": {
+                      "type": "string"
+                    },
+                    "transaction": {
+                      "$ref": "#/components/schemas/Transaction"
+                    }
                   }
                 }
               }
             }
           },
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "401": {"$ref": "#/components/responses/Unauthorized"}
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
         }
       }
     },
     "/api/v1/payment-links": {
       "get": {
-        "tags": ["Links de Pagamento"],
+        "tags": [
+          "Links de Pagamento"
+        ],
         "summary": "Listar links de pagamento",
         "description": "Lista todos os links de pagamento do usuário",
-        "security": [{"apiKeyAuth": []}],
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "limit",
             "in": "query",
-            "schema": {"type": "integer", "minimum": 1, "maximum": 100, "default": 20}
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
           },
           {
             "name": "cursor",
             "in": "query",
-            "schema": {"type": "string"}
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -193,27 +274,46 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"},
-                    "paymentLinks": {"type": "array", "items": {"$ref": "#/components/schemas/PaymentLink"}},
-                    "pagination": {"$ref": "#/components/schemas/Pagination"}
+                    "message": {
+                      "type": "string"
+                    },
+                    "paymentLinks": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/PaymentLink"
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
                   }
                 }
               }
             }
           },
-          "401": {"$ref": "#/components/responses/Unauthorized"}
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
         }
       },
       "post": {
-        "tags": ["Links de Pagamento"],
+        "tags": [
+          "Links de Pagamento"
+        ],
         "summary": "Criar link de pagamento",
         "description": "Cria um novo link de pagamento. É necessário fornecer pelo menos amountCents OU products (ou ambos).",
-        "security": [{"apiKeyAuth": []}],
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": {"$ref": "#/components/schemas/CreatePaymentLinkRequest"}
+              "schema": {
+                "$ref": "#/components/schemas/CreatePaymentLinkRequest"
+              }
             }
           }
         },
@@ -225,30 +325,47 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"},
-                    "data": {"$ref": "#/components/schemas/PaymentLink"}
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/PaymentLink"
+                    }
                   }
                 }
               }
             }
           },
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "401": {"$ref": "#/components/responses/Unauthorized"}
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
         }
       }
     },
     "/api/v1/payment-links/{id}": {
       "get": {
-        "tags": ["Links de Pagamento"],
+        "tags": [
+          "Links de Pagamento"
+        ],
         "summary": "Obter link de pagamento",
         "description": "Obtém detalhes de um link de pagamento específico",
-        "security": [{"apiKeyAuth": []}],
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {"type": "string", "format": "uuid"}
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
           }
         ],
         "responses": {
@@ -259,35 +376,54 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"},
-                    "paymentLink": {"$ref": "#/components/schemas/PaymentLink"}
+                    "message": {
+                      "type": "string"
+                    },
+                    "paymentLink": {
+                      "$ref": "#/components/schemas/PaymentLink"
+                    }
                   }
                 }
               }
             }
           },
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "401": {"$ref": "#/components/responses/Unauthorized"}
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
         }
       },
       "patch": {
-        "tags": ["Links de Pagamento"],
+        "tags": [
+          "Links de Pagamento"
+        ],
         "summary": "Atualizar link de pagamento",
         "description": "Atualiza um link de pagamento existente. É necessário fornecer pelo menos amountCents OU products (ou ambos).",
-        "security": [{"apiKeyAuth": []}],
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {"type": "string", "format": "uuid"}
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
           }
         ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": {"$ref": "#/components/schemas/UpdatePaymentLinkRequest"}
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePaymentLinkRequest"
+              }
             }
           }
         },
@@ -299,29 +435,48 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"},
-                    "paymentLink": {"$ref": "#/components/schemas/PaymentLink"}
+                    "message": {
+                      "type": "string"
+                    },
+                    "paymentLink": {
+                      "$ref": "#/components/schemas/PaymentLink"
+                    }
                   }
                 }
               }
             }
           },
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "401": {"$ref": "#/components/responses/Unauthorized"}
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
         }
       },
       "delete": {
-        "tags": ["Links de Pagamento"],
+        "tags": [
+          "Links de Pagamento"
+        ],
         "summary": "Deletar link de pagamento",
         "description": "Remove um link de pagamento permanentemente",
-        "security": [{"apiKeyAuth": []}],
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {"type": "string", "format": "uuid"}
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
           }
         ],
         "responses": {
@@ -332,47 +487,76 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"}
+                    "message": {
+                      "type": "string"
+                    }
                   }
                 }
               }
             }
           },
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "401": {"$ref": "#/components/responses/Unauthorized"}
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
         }
       }
     },
     "/api/v1/products": {
       "get": {
-        "tags": ["Produtos"],
+        "tags": [
+          "Produtos"
+        ],
         "summary": "Listar produtos",
         "description": "Lista todos os produtos do catálogo do usuário autenticado",
-        "security": [{"apiKeyAuth": []}],
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "page",
             "in": "query",
             "description": "Número da página",
-            "schema": {"type": "integer", "minimum": 1, "default": 1}
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
           },
           {
             "name": "limit",
             "in": "query",
             "description": "Número de itens por página",
-            "schema": {"type": "integer", "minimum": 1, "maximum": 100, "default": 20}
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
           },
           {
             "name": "search",
             "in": "query",
             "description": "Buscar por nome ou descrição",
-            "schema": {"type": "string"}
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "status",
             "in": "query",
             "description": "Filtrar por status",
-            "schema": {"type": "string", "enum": ["ACTIVE", "INACTIVE"]}
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ACTIVE",
+                "INACTIVE"
+              ]
+            }
           }
         ],
         "responses": {
@@ -383,35 +567,60 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"},
-                  "products": {"type": "array", "items": {"$ref": "#/components/schemas/Product"}},
-                  "pagination": {
-                    "type": "object",
-                    "properties": {
-                      "page": {"type": "integer"},
-                      "limit": {"type": "integer"},
-                      "total": {"type": "integer"},
-                      "totalPages": {"type": "integer"}
+                    "message": {
+                      "type": "string"
+                    },
+                    "products": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Product"
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "page": {
+                          "type": "integer"
+                        },
+                        "limit": {
+                          "type": "integer"
+                        },
+                        "total": {
+                          "type": "integer"
+                        },
+                        "totalPages": {
+                          "type": "integer"
+                        }
+                      }
                     }
-                  }
                   }
                 }
               }
             }
           },
-          "401": {"$ref": "#/components/responses/Unauthorized"}
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
         }
       },
       "post": {
-        "tags": ["Produtos"],
+        "tags": [
+          "Produtos"
+        ],
         "summary": "Criar produto",
         "description": "Cria um novo produto no catálogo",
-        "security": [{"apiKeyAuth": []}],
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": {"$ref": "#/components/schemas/CreateProductRequest"}
+              "schema": {
+                "$ref": "#/components/schemas/CreateProductRequest"
+              }
             }
           }
         },
@@ -423,69 +632,105 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"},
-                    "product": {"$ref": "#/components/schemas/Product"}
+                    "message": {
+                      "type": "string"
+                    },
+                    "product": {
+                      "$ref": "#/components/schemas/Product"
+                    }
                   }
                 }
               }
             }
           },
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "401": {"$ref": "#/components/responses/Unauthorized"}
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
         }
       }
     },
     "/api/v1/products/{id}": {
       "get": {
-        "tags": ["Produtos"],
+        "tags": [
+          "Produtos"
+        ],
         "summary": "Obter produto",
         "description": "Obtém detalhes de um produto específico",
-        "security": [{"apiKeyAuth": []}],
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {"type": "string", "format": "uuid"}
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "Detalhes do produto",
-          "content": {
-            "application/json": {
-              "schema": {
+            "content": {
+              "application/json": {
+                "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"},
-                    "product": {"$ref": "#/components/schemas/Product"}
+                    "message": {
+                      "type": "string"
+                    },
+                    "product": {
+                      "$ref": "#/components/schemas/Product"
+                    }
                   }
                 }
               }
             }
           },
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "401": {"$ref": "#/components/responses/Unauthorized"}
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
         }
       },
       "patch": {
-        "tags": ["Produtos"],
+        "tags": [
+          "Produtos"
+        ],
         "summary": "Atualizar produto",
         "description": "Atualiza um produto existente",
-        "security": [{"apiKeyAuth": []}],
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {"type": "string", "format": "uuid"}
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
           }
         ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": {"$ref": "#/components/schemas/UpdateProductRequest"}
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProductRequest"
+              }
             }
           }
         },
@@ -497,29 +742,48 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"},
-                    "product": {"$ref": "#/components/schemas/Product"}
+                    "message": {
+                      "type": "string"
+                    },
+                    "product": {
+                      "$ref": "#/components/schemas/Product"
+                    }
                   }
                 }
               }
             }
           },
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "401": {"$ref": "#/components/responses/Unauthorized"}
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
         }
       },
       "delete": {
-        "tags": ["Produtos"],
+        "tags": [
+          "Produtos"
+        ],
         "summary": "Deletar produto",
         "description": "Remove um produto permanentemente",
-        "security": [{"apiKeyAuth": []}],
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {"type": "string", "format": "uuid"}
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
           }
         ],
         "responses": {
@@ -530,41 +794,65 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"}
+                    "message": {
+                      "type": "string"
+                    }
                   }
                 }
               }
             }
           },
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "401": {"$ref": "#/components/responses/Unauthorized"}
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
         }
       }
     },
     "/api/v1/coupons": {
       "get": {
-        "tags": ["Cupons"],
+        "tags": [
+          "Cupons"
+        ],
         "summary": "Listar cupons",
         "description": "Lista todos os cupons do usuário autenticado",
-        "security": [{"apiKeyAuth": []}],
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "page",
             "in": "query",
             "description": "Número da página",
-            "schema": {"type": "integer", "minimum": 1, "default": 1}
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
           },
           {
             "name": "limit",
             "in": "query",
             "description": "Número de itens por página",
-            "schema": {"type": "integer", "minimum": 1, "maximum": 100, "default": 20}
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
           },
           {
             "name": "includeInactive",
             "in": "query",
             "description": "Incluir cupons inativos",
-            "schema": {"type": "boolean", "default": false}
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
@@ -575,35 +863,60 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"},
-                    "coupons": {"type": "array", "items": {"$ref": "#/components/schemas/Coupon"}},
+                    "message": {
+                      "type": "string"
+                    },
+                    "coupons": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Coupon"
+                      }
+                    },
                     "pagination": {
                       "type": "object",
                       "properties": {
-                        "page": {"type": "integer"},
-                        "limit": {"type": "integer"},
-                        "total": {"type": "integer"},
-                        "totalPages": {"type": "integer"}
+                        "page": {
+                          "type": "integer"
+                        },
+                        "limit": {
+                          "type": "integer"
+                        },
+                        "total": {
+                          "type": "integer"
+                        },
+                        "totalPages": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
           }
-        }
-      }
-    },
-          "401": {"$ref": "#/components/responses/Unauthorized"}
         }
       },
       "post": {
-        "tags": ["Cupons"],
+        "tags": [
+          "Cupons"
+        ],
         "summary": "Criar cupom",
         "description": "Cria um novo cupom de desconto",
-        "security": [{"apiKeyAuth": []}],
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": {"$ref": "#/components/schemas/CreateCouponRequest"}
+              "schema": {
+                "$ref": "#/components/schemas/CreateCouponRequest"
+              }
             }
           }
         },
@@ -615,30 +928,47 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"},
-                    "coupon": {"$ref": "#/components/schemas/Coupon"}
+                    "message": {
+                      "type": "string"
+                    },
+                    "coupon": {
+                      "$ref": "#/components/schemas/Coupon"
+                    }
                   }
                 }
               }
             }
           },
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "401": {"$ref": "#/components/responses/Unauthorized"}
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
         }
       }
     },
     "/api/v1/coupons/{id}": {
       "get": {
-        "tags": ["Cupons"],
+        "tags": [
+          "Cupons"
+        ],
         "summary": "Obter cupom",
         "description": "Obtém detalhes de um cupom específico",
-        "security": [{"apiKeyAuth": []}],
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {"type": "string", "format": "uuid"}
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
           }
         ],
         "responses": {
@@ -649,35 +979,54 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"},
-                    "coupon": {"$ref": "#/components/schemas/Coupon"}
+                    "message": {
+                      "type": "string"
+                    },
+                    "coupon": {
+                      "$ref": "#/components/schemas/Coupon"
+                    }
                   }
                 }
               }
             }
           },
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "401": {"$ref": "#/components/responses/Unauthorized"}
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
         }
       },
       "patch": {
-        "tags": ["Cupons"],
+        "tags": [
+          "Cupons"
+        ],
         "summary": "Atualizar cupom",
         "description": "Atualiza um cupom existente",
-        "security": [{"apiKeyAuth": []}],
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {"type": "string", "format": "uuid"}
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
           }
         ],
         "requestBody": {
-            "required": true,
+          "required": true,
           "content": {
             "application/json": {
-              "schema": {"$ref": "#/components/schemas/UpdateCouponRequest"}
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCouponRequest"
+              }
             }
           }
         },
@@ -686,32 +1035,51 @@
             "description": "Cupom atualizado com sucesso",
             "content": {
               "application/json": {
-            "schema": {
+                "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"},
-                    "coupon": {"$ref": "#/components/schemas/Coupon"}
+                    "message": {
+                      "type": "string"
+                    },
+                    "coupon": {
+                      "$ref": "#/components/schemas/Coupon"
+                    }
                   }
                 }
               }
             }
           },
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "401": {"$ref": "#/components/responses/Unauthorized"}
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
         }
       },
       "delete": {
-        "tags": ["Cupons"],
+        "tags": [
+          "Cupons"
+        ],
         "summary": "Deletar cupom",
         "description": "Remove um cupom permanentemente",
-        "security": [{"apiKeyAuth": []}],
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {"type": "string", "format": "uuid"}
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
           }
         ],
         "responses": {
@@ -722,20 +1090,28 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"}
+                    "message": {
+                      "type": "string"
+                    }
                   }
                 }
               }
             }
           },
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "401": {"$ref": "#/components/responses/Unauthorized"}
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
         }
       }
     },
     "/api/coupons/validate": {
       "post": {
-        "tags": ["Cupons"],
+        "tags": [
+          "Cupons"
+        ],
         "summary": "Validar cupom",
         "description": "Valida um cupom de desconto (endpoint público, usado no checkout). Este endpoint possui rate limiting avançado: 10 requisições por minuto por IP e 5 requisições por 5 minutos por sessão/device. Respostas unificadas para prevenir enumeração de cupons.",
         "security": [],
@@ -745,13 +1121,26 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["code", "amountCents"],
+                "required": [
+                  "code",
+                  "amountCents"
+                ],
                 "properties": {
-                  "code": {"type": "string", "description": "Código do cupom"},
-                  "amountCents": {"type": "integer", "minimum": 1, "description": "Valor da compra em centavos"},
+                  "code": {
+                    "type": "string",
+                    "description": "Código do cupom"
+                  },
+                  "amountCents": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "Valor da compra em centavos"
+                  },
                   "productIds": {
                     "type": "array",
-                    "items": {"type": "string", "format": "uuid"},
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
                     "default": [],
                     "description": "IDs dos produtos no carrinho"
                   }
@@ -768,10 +1157,20 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "valid": {"type": "boolean"},
-                    "discountAmount": {"type": "integer", "description": "Valor do desconto em centavos"},
-                    "finalAmount": {"type": "integer", "description": "Valor final após desconto"},
-                    "coupon": {"$ref": "#/components/schemas/Coupon"}
+                    "valid": {
+                      "type": "boolean"
+                    },
+                    "discountAmount": {
+                      "type": "integer",
+                      "description": "Valor do desconto em centavos"
+                    },
+                    "finalAmount": {
+                      "type": "integer",
+                      "description": "Valor final após desconto"
+                    },
+                    "coupon": {
+                      "$ref": "#/components/schemas/Coupon"
+                    }
                   }
                 }
               }
@@ -784,8 +1183,12 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "valid": {"type": "boolean"},
-                    "message": {"type": "string"}
+                    "valid": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
                   }
                 }
               }
@@ -796,10 +1199,16 @@
     },
     "/api/v1/balance": {
       "get": {
-        "tags": ["Saldo"],
+        "tags": [
+          "Saldo"
+        ],
         "summary": "Obter saldo",
         "description": "Obtém o saldo atual e movimentações recentes",
-        "security": [{"apiKeyAuth": []}],
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Saldo obtido com sucesso",
@@ -808,13 +1217,24 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {"type": "string"},
+                    "message": {
+                      "type": "string"
+                    },
                     "balance": {
                       "type": "object",
                       "properties": {
-                        "current": {"type": "integer", "description": "Saldo atual em centavos"},
-                        "currency": {"type": "string", "example": "BRL"},
-                        "lastUpdated": {"type": "string", "format": "date-time"}
+                        "current": {
+                          "type": "integer",
+                          "description": "Saldo atual em centavos"
+                        },
+                        "currency": {
+                          "type": "string",
+                          "example": "BRL"
+                        },
+                        "lastUpdated": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
                       }
                     },
                     "recentEntries": {
@@ -822,766 +1242,1573 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "id": {"type": "string"},
-                          "type": {"type": "string", "enum": ["CREDIT", "DEBIT"]},
-                          "reason": {"type": "string"},
-                          "amount": {"type": "integer"},
-                          "createdAt": {"type": "string", "format": "date-time"}
+                          "id": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "CREDIT",
+                              "DEBIT"
+                            ]
+                          },
+                          "reason": {
+                            "type": "string"
+                          },
+                          "amount": {
+                            "type": "integer"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
+              },
+              "401": {
+                "$ref": "#/components/responses/Unauthorized"
               }
             }
           }
-        }
-      },
-          "401": {"$ref": "#/components/responses/Unauthorized"}
-        }
-      }
-    },
-    "/api/v1/clients": {
-      "get": {
-        "tags": ["Clientes"],
-        "summary": "Listar clientes",
-        "description": "Lista todos os clientes do usuário autenticado com paginação e filtros",
-        "security": [{"apiKeyAuth": []}],
-        "parameters": [
-          {
-            "name": "page",
-            "in": "query",
-            "description": "Número da página",
-            "schema": {"type": "integer", "minimum": 1, "default": 1}
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Número de itens por página",
-            "schema": {"type": "integer", "minimum": 1, "maximum": 100, "default": 20}
-          },
-          {
-            "name": "orderBy",
-            "in": "query",
-            "description": "Campo para ordenação",
-            "schema": {"type": "string", "enum": ["createdAt", "updatedAt", "name", "email"], "default": "createdAt"}
-          },
-          {
-            "name": "orderDirection",
-            "in": "query",
-            "description": "Direção da ordenação",
-            "schema": {"type": "string", "enum": ["asc", "desc"], "default": "desc"}
-          },
-          {
-            "name": "name",
-            "in": "query",
-            "description": "Filtrar por nome (busca parcial)",
-            "schema": {"type": "string"}
-          },
-          {
-            "name": "email",
-            "in": "query",
-            "description": "Filtrar por email (busca parcial)",
-            "schema": {"type": "string"}
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Lista de clientes",
-            "content": {
-              "application/json": {
+        },
+        "/api/v1/clients": {
+          "get": {
+            "tags": [
+              "Clientes"
+            ],
+            "summary": "Listar clientes",
+            "description": "Lista todos os clientes do usuário autenticado com paginação e filtros",
+            "security": [
+              {
+                "apiKeyAuth": []
+              }
+            ],
+            "parameters": [
+              {
+                "name": "page",
+                "in": "query",
+                "description": "Número da página",
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {"type": "string"},
-                    "clients": {"type": "array", "items": {"$ref": "#/components/schemas/Client"}},
-                    "pagination": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "default": 1
+                }
+              },
+              {
+                "name": "limit",
+                "in": "query",
+                "description": "Número de itens por página",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 100,
+                  "default": 20
+                }
+              },
+              {
+                "name": "orderBy",
+                "in": "query",
+                "description": "Campo para ordenação",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "createdAt",
+                    "updatedAt",
+                    "name",
+                    "email"
+                  ],
+                  "default": "createdAt"
+                }
+              },
+              {
+                "name": "orderDirection",
+                "in": "query",
+                "description": "Direção da ordenação",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "asc",
+                    "desc"
+                  ],
+                  "default": "desc"
+                }
+              },
+              {
+                "name": "name",
+                "in": "query",
+                "description": "Filtrar por nome (busca parcial)",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "email",
+                "in": "query",
+                "description": "Filtrar por email (busca parcial)",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Lista de clientes",
+                "content": {
+                  "application/json": {
+                    "schema": {
                       "type": "object",
                       "properties": {
-                        "total": {"type": "integer"},
-                        "page": {"type": "integer"},
-                        "limit": {"type": "integer"},
-                        "orderBy": {"type": "string"},
-                        "orderDirection": {"type": "string"}
+                        "message": {
+                          "type": "string"
+                        },
+                        "clients": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Client"
+                          }
+                        },
+                        "pagination": {
+                          "type": "object",
+                          "properties": {
+                            "total": {
+                              "type": "integer"
+                            },
+                            "page": {
+                              "type": "integer"
+                            },
+                            "limit": {
+                              "type": "integer"
+                            },
+                            "orderBy": {
+                              "type": "string"
+                            },
+                            "orderDirection": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "401": {
+                "$ref": "#/components/responses/Unauthorized"
+              },
+              "403": {
+                "$ref": "#/components/responses/Forbidden"
+              }
+            }
+          },
+          "post": {
+            "tags": [
+              "Clientes"
+            ],
+            "summary": "Criar cliente",
+            "description": "Cria um novo cliente vinculado ao usuário autenticado",
+            "security": [
+              {
+                "apiKeyAuth": []
+              }
+            ],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/CreateClientRequest"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "201": {
+                "description": "Cliente criado com sucesso",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string"
+                        },
+                        "client": {
+                          "$ref": "#/components/schemas/Client"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "400": {
+                "$ref": "#/components/responses/BadRequest"
+              },
+              "401": {
+                "$ref": "#/components/responses/Unauthorized"
+              },
+              "403": {
+                "$ref": "#/components/responses/Forbidden"
+              },
+              "409": {
+                "description": "Email já existe",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string"
+                        }
                       }
                     }
                   }
                 }
               }
             }
-          },
-          "401": {"$ref": "#/components/responses/Unauthorized"},
-          "403": {"$ref": "#/components/responses/Forbidden"}
-        }
-      },
-      "post": {
-        "tags": ["Clientes"],
-        "summary": "Criar cliente",
-        "description": "Cria um novo cliente vinculado ao usuário autenticado",
-        "security": [{"apiKeyAuth": []}],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {"$ref": "#/components/schemas/CreateClientRequest"}
-            }
           }
         },
-        "responses": {
-          "201": {
-            "description": "Cliente criado com sucesso",
-            "content": {
-              "application/json": {
+        "/api/v1/clients/{id}": {
+          "get": {
+            "tags": [
+              "Clientes"
+            ],
+            "summary": "Obter cliente",
+            "description": "Obtém detalhes de um cliente específico",
+            "security": [
+              {
+                "apiKeyAuth": []
+              }
+            ],
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "description": "ID do cliente",
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {"type": "string"},
-                    "client": {"$ref": "#/components/schemas/Client"}
-                  }
+                  "type": "string",
+                  "format": "uuid"
                 }
               }
-            }
-          },
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "401": {"$ref": "#/components/responses/Unauthorized"},
-          "403": {"$ref": "#/components/responses/Forbidden"},
-          "409": {
-            "description": "Email já existe",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {"type": "string"}
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/clients/{id}": {
-      "get": {
-        "tags": ["Clientes"],
-        "summary": "Obter cliente",
-        "description": "Obtém detalhes de um cliente específico",
-        "security": [{"apiKeyAuth": []}],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "ID do cliente",
-            "schema": {"type": "string", "format": "uuid"}
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Cliente obtido com sucesso",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {"type": "string"},
-                    "client": {"$ref": "#/components/schemas/Client"}
-                  }
-                }
-              }
-            }
-          },
-          "401": {"$ref": "#/components/responses/Unauthorized"},
-          "403": {"$ref": "#/components/responses/Forbidden"},
-          "404": {"$ref": "#/components/responses/NotFound"}
-        }
-      }
-    },
-    "/api/v1/webhooks": {
-      "get": {
-        "tags": ["Webhooks"],
-        "summary": "Obter informações de webhook",
-        "description": "Obtém informações sobre webhooks configurados",
-        "security": [{"apiKeyAuth": []}],
-        "responses": {
-          "200": {
-            "description": "Informações de webhook",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {"type": "string"},
-  "webhooks": {
+            ],
+            "responses": {
+              "200": {
+                "description": "Cliente obtido com sucesso",
+                "content": {
+                  "application/json": {
+                    "schema": {
                       "type": "object",
                       "properties": {
-                        "url": {"type": "string"},
-                        "events": {"type": "array", "items": {"type": "string"}},
-                        "secret": {"type": "string"}
+                        "message": {
+                          "type": "string"
+                        },
+                        "client": {
+                          "$ref": "#/components/schemas/Client"
+                        }
                       }
                     }
                   }
                 }
+              },
+              "401": {
+                "$ref": "#/components/responses/Unauthorized"
+              },
+              "403": {
+                "$ref": "#/components/responses/Forbidden"
+              },
+              "404": {
+                "$ref": "#/components/responses/NotFound"
               }
             }
-          },
-          "401": {"$ref": "#/components/responses/Unauthorized"}
-        }
-      }
-    },
-    "/api/v1/webhooks/subscriptions": {
-      "get": {
-        "tags": ["Webhooks"],
-        "summary": "Listar assinaturas de webhook",
-        "description": "Lista todas as assinaturas de webhook do usuário",
-        "security": [{"apiKeyAuth": []}],
-        "responses": {
-          "200": {
-            "description": "Lista de assinaturas",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {"type": "string"},
-                    "subscriptions": {
-                      "type": "array",
-                      "items": {"$ref": "#/components/schemas/WebhookSubscription"}
+          }
+        },
+        "/api/v1/webhooks": {
+          "get": {
+            "tags": [
+              "Webhooks"
+            ],
+            "summary": "Obter informações de webhook",
+            "description": "Obtém informações sobre webhooks configurados",
+            "security": [
+              {
+                "apiKeyAuth": []
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Informações de webhook",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string"
+                        },
+                        "webhooks": {
+                          "type": "object",
+                          "properties": {
+                            "url": {
+                              "type": "string"
+                            },
+                            "events": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "secret": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }
+              },
+              "401": {
+                "$ref": "#/components/responses/Unauthorized"
               }
-            }
-          },
-          "401": {"$ref": "#/components/responses/Unauthorized"}
-        }
-      },
-      "post": {
-        "tags": ["Webhooks"],
-        "summary": "Criar assinatura de webhook",
-        "description": "Cria uma nova assinatura de webhook",
-        "security": [{"apiKeyAuth": []}],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {"$ref": "#/components/schemas/CreateWebhookSubscriptionRequest"}
             }
           }
         },
-        "responses": {
-          "201": {
-            "description": "Assinatura criada com sucesso",
-          "content": {
-            "application/json": {
-              "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {"type": "string"},
-                    "subscription": {"$ref": "#/components/schemas/WebhookSubscription"}
+        "/api/v1/webhooks/subscriptions": {
+          "get": {
+            "tags": [
+              "Webhooks"
+            ],
+            "summary": "Listar assinaturas de webhook",
+            "description": "Lista todas as assinaturas de webhook do usuário",
+            "security": [
+              {
+                "apiKeyAuth": []
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Lista de assinaturas",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string"
+                        },
+                        "subscriptions": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/WebhookSubscription"
+                          }
+                        }
+                      }
+                    }
                   }
                 }
+              },
+              "401": {
+                "$ref": "#/components/responses/Unauthorized"
               }
             }
           },
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "401": {"$ref": "#/components/responses/Unauthorized"}
-        }
-      }
-    },
-    "/api/v1/webhooks/subscriptions/{id}": {
-      "put": {
-        "tags": ["Webhooks"],
-        "summary": "Atualizar assinatura de webhook",
-        "description": "Atualiza uma assinatura de webhook existente",
-        "security": [{"apiKeyAuth": []}],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {"type": "string", "format": "uuid"}
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {"$ref": "#/components/schemas/UpdateWebhookSubscriptionRequest"}
+          "post": {
+            "tags": [
+              "Webhooks"
+            ],
+            "summary": "Criar assinatura de webhook",
+            "description": "Cria uma nova assinatura de webhook",
+            "security": [
+              {
+                "apiKeyAuth": []
+              }
+            ],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/CreateWebhookSubscriptionRequest"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "201": {
+                "description": "Assinatura criada com sucesso",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string"
+                        },
+                        "subscription": {
+                          "$ref": "#/components/schemas/WebhookSubscription"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "400": {
+                "$ref": "#/components/responses/BadRequest"
+              },
+              "401": {
+                "$ref": "#/components/responses/Unauthorized"
+              }
             }
           }
         },
-        "responses": {
-          "200": {
-            "description": "Assinatura atualizada com sucesso",
-            "content": {
-              "application/json": {
+        "/api/v1/webhooks/subscriptions/{id}": {
+          "put": {
+            "tags": [
+              "Webhooks"
+            ],
+            "summary": "Atualizar assinatura de webhook",
+            "description": "Atualiza uma assinatura de webhook existente",
+            "security": [
+              {
+                "apiKeyAuth": []
+              }
+            ],
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {"type": "string"},
-                    "subscription": {"$ref": "#/components/schemas/WebhookSubscription"}
-          }
-        }
-      }
-    }
-  },
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "401": {"$ref": "#/components/responses/Unauthorized"}
-        }
-      },
-      "delete": {
-        "tags": ["Webhooks"],
-        "summary": "Deletar assinatura de webhook",
-        "description": "Remove uma assinatura de webhook",
-        "security": [{"apiKeyAuth": []}],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {"type": "string", "format": "uuid"}
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Assinatura removida com sucesso",
-            "content": {
-              "application/json": {
-                "schema": {
-        "type": "object",
-        "properties": {
-                    "message": {"type": "string"}
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            ],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UpdateWebhookSubscriptionRequest"
                   }
                 }
               }
+            },
+            "responses": {
+              "200": {
+                "description": "Assinatura atualizada com sucesso",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string"
+                        },
+                        "subscription": {
+                          "$ref": "#/components/schemas/WebhookSubscription"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "400": {
+                "$ref": "#/components/responses/BadRequest"
+              },
+              "404": {
+                "$ref": "#/components/responses/NotFound"
+              },
+              "401": {
+                "$ref": "#/components/responses/Unauthorized"
+              }
             }
           },
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "401": {"$ref": "#/components/responses/Unauthorized"}
-        }
-      }
-    },
-    "/api/v1/webhooks/events": {
-      "get": {
-        "tags": ["Webhooks"],
-        "summary": "Listar eventos de webhook",
-        "description": "Lista eventos de webhook com paginação",
-        "security": [{"apiKeyAuth": []}],
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "schema": {"type": "integer", "minimum": 1, "maximum": 100, "default": 20}
-          },
-          {
-            "name": "cursor",
-            "in": "query",
-            "schema": {"type": "string"}
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Lista de eventos",
-            "content": {
-              "application/json": {
+          "delete": {
+            "tags": [
+              "Webhooks"
+            ],
+            "summary": "Deletar assinatura de webhook",
+            "description": "Remove uma assinatura de webhook",
+            "security": [
+              {
+                "apiKeyAuth": []
+              }
+            ],
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
                 "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Assinatura removida com sucesso",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "404": {
+                "$ref": "#/components/responses/NotFound"
+              },
+              "401": {
+                "$ref": "#/components/responses/Unauthorized"
+              }
+            }
+          }
+        },
+        "/api/v1/webhooks/events": {
+          "get": {
+            "tags": [
+              "Webhooks"
+            ],
+            "summary": "Listar eventos de webhook",
+            "description": "Lista eventos de webhook com paginação",
+            "security": [
+              {
+                "apiKeyAuth": []
+              }
+            ],
+            "parameters": [
+              {
+                "name": "limit",
+                "in": "query",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 100,
+                  "default": 20
+                }
+              },
+              {
+                "name": "cursor",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Lista de eventos",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string"
+                        },
+                        "events": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/WebhookEvent"
+                          }
+                        },
+                        "pagination": {
+                          "$ref": "#/components/schemas/Pagination"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "401": {
+                "$ref": "#/components/responses/Unauthorized"
+              }
+            }
+          }
+        }
+      },
+      "components": {
+        "securitySchemes": {
+          "apiKeyAuth": {
+            "type": "apiKey",
+            "in": "header",
+            "name": "X-API-Key",
+            "description": "Chave de API obtida através do endpoint /api/credentials. Também aceita formato Bearer Token: Authorization: Bearer <api_key>"
+          }
+        },
+        "schemas": {
+          "Transaction": {
             "type": "object",
             "properties": {
-                    "message": {"type": "string"},
-                    "events": {
-                      "type": "array",
-                      "items": {"$ref": "#/components/schemas/WebhookEvent"}
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "displayId": {
+                "type": "string",
+                "nullable": true
+              },
+              "product": {
+                "type": "string",
+                "nullable": true
+              },
+              "amountCents": {
+                "type": "integer",
+                "nullable": true
+              },
+              "status": {
+                "type": "string"
+              },
+              "paymentMethod": {
+                "type": "string"
+              },
+              "client": {
+                "type": "object"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          },
+          "CreateTransactionRequest": {
+            "type": "object",
+            "required": [
+              "product",
+              "amountCents",
+              "paymentMethod",
+              "clientEmail",
+              "clientName"
+            ],
+            "properties": {
+              "product": {
+                "type": "string"
+              },
+              "amountCents": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "paymentMethod": {
+                "type": "string",
+                "enum": [
+                  "PIX",
+                  "CREDIT_CARD",
+                  "BOLETO"
+                ]
+              },
+              "clientEmail": {
+                "type": "string",
+                "format": "email"
+              },
+              "clientName": {
+                "type": "string"
+              },
+              "paymentLinkId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "installments": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 12
+              },
+              "dueDate": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          },
+          "PaymentLink": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "slug": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string",
+                "nullable": true
+              },
+              "amount": {
+                "type": "integer",
+                "nullable": true,
+                "description": "Valor em centavos (null se usar products)"
+              },
+              "currency": {
+                "type": "string",
+                "default": "BRL"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "ACTIVE",
+                  "INACTIVE"
+                ]
+              },
+              "expiresAt": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "redirectUrl": {
+                "type": "string",
+                "format": "uri",
+                "nullable": true
+              },
+              "settings": {
+                "type": "object",
+                "nullable": true
+              },
+              "salesCount": {
+                "type": "integer",
+                "default": 0
+              },
+              "timesUsed": {
+                "type": "integer",
+                "default": 0
+              },
+              "metaPixelCode": {
+                "type": "string",
+                "nullable": true,
+                "description": "Código do Meta Pixel para rastreamento"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          },
+          "CreatePaymentLinkRequest": {
+            "type": "object",
+            "required": [
+              "title"
+            ],
+            "properties": {
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255
+              },
+              "description": {
+                "type": "string",
+                "maxLength": 1000,
+                "nullable": true
+              },
+              "amountCents": {
+                "type": "integer",
+                "minimum": 1,
+                "description": "Valor fixo em centavos (opcional se products for fornecido)"
+              },
+              "currency": {
+                "type": "string",
+                "default": "BRL"
+              },
+              "expiresAt": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "redirectUrl": {
+                "type": "string",
+                "format": "uri",
+                "nullable": true
+              },
+              "productDescription": {
+                "type": "string",
+                "maxLength": 1000,
+                "nullable": true
+              },
+              "settings": {
+                "type": "object",
+                "properties": {
+                  "pixEnabled": {
+                    "type": "boolean"
+                  },
+                  "boletoEnabled": {
+                    "type": "boolean"
+                  },
+                  "creditCardEnabled": {
+                    "type": "boolean"
+                  },
+                  "maxInstallments": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 12
+                  },
+                  "interestFreeInstallments": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "interestRate": {
+                    "type": "number"
+                  },
+                  "requirePhone": {
+                    "type": "boolean"
+                  },
+                  "requireAddress": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "products": {
+                "type": "array",
+                "description": "Lista de produtos associados ao link (opcional se amountCents for fornecido)",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "productId",
+                    "quantity"
+                  ],
+                  "properties": {
+                    "productId": {
+                      "type": "string",
+                      "format": "uuid"
                     },
-                    "pagination": {"$ref": "#/components/schemas/Pagination"}
+                    "quantity": {
+                      "type": "integer",
+                      "minimum": 1
+                    }
+                  }
+                }
+              },
+              "stockQuantity": {
+                "type": "integer",
+                "minimum": 0,
+                "nullable": true
+              },
+              "stockEnabled": {
+                "type": "boolean"
+              },
+              "metaPixelCode": {
+                "type": "string",
+                "nullable": true,
+                "description": "Código do Meta Pixel para rastreamento"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "ACTIVE",
+                  "INACTIVE"
+                ],
+                "default": "ACTIVE"
+              }
+            },
+            "description": "É necessário fornecer pelo menos amountCents OU products (ou ambos)"
+          },
+          "UpdatePaymentLinkRequest": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255
+              },
+              "description": {
+                "type": "string",
+                "maxLength": 1000,
+                "nullable": true
+              },
+              "amountCents": {
+                "type": "integer",
+                "minimum": 1,
+                "description": "Valor fixo em centavos (opcional se products for fornecido)"
+              },
+              "currency": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "ACTIVE",
+                  "INACTIVE"
+                ]
+              },
+              "expiresAt": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "redirectUrl": {
+                "type": "string",
+                "format": "uri",
+                "nullable": true
+              },
+              "productDescription": {
+                "type": "string",
+                "maxLength": 1000,
+                "nullable": true
+              },
+              "settings": {
+                "type": "object",
+                "properties": {
+                  "pixEnabled": {
+                    "type": "boolean"
+                  },
+                  "boletoEnabled": {
+                    "type": "boolean"
+                  },
+                  "creditCardEnabled": {
+                    "type": "boolean"
+                  },
+                  "maxInstallments": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 12
+                  },
+                  "interestFreeInstallments": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "interestRate": {
+                    "type": "number"
+                  },
+                  "requirePhone": {
+                    "type": "boolean"
+                  },
+                  "requireAddress": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "products": {
+                "type": "array",
+                "description": "Lista de produtos associados ao link (opcional se amountCents for fornecido)",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "productId",
+                    "quantity"
+                  ],
+                  "properties": {
+                    "productId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "quantity": {
+                      "type": "integer",
+                      "minimum": 1
+                    }
+                  }
+                }
+              },
+              "stockQuantity": {
+                "type": "integer",
+                "minimum": 0,
+                "nullable": true
+              },
+              "stockEnabled": {
+                "type": "boolean"
+              },
+              "metaPixelCode": {
+                "type": "string",
+                "nullable": true,
+                "description": "Código do Meta Pixel para rastreamento"
+              }
+            },
+            "description": "É necessário fornecer pelo menos amountCents OU products (ou ambos)"
+          },
+          "Product": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "name": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string",
+                "nullable": true
+              },
+              "price": {
+                "type": "integer",
+                "description": "Preço em centavos"
+              },
+              "currency": {
+                "type": "string",
+                "default": "BRL"
+              },
+              "stockQuantity": {
+                "type": "integer",
+                "nullable": true,
+                "description": "Quantidade em estoque (null = ilimitado)"
+              },
+              "stockEnabled": {
+                "type": "boolean",
+                "description": "Indica se o controle de estoque está habilitado"
+              },
+              "isDigital": {
+                "type": "boolean",
+                "description": "Indica se o produto é digital (não requer estoque físico)"
+              },
+              "imageUrl": {
+                "type": "string",
+                "nullable": true,
+                "format": "uri"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "ACTIVE",
+                  "INACTIVE"
+                ]
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          },
+          "CreateProductRequest": {
+            "type": "object",
+            "required": [
+              "name",
+              "price"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255
+              },
+              "description": {
+                "type": "string",
+                "maxLength": 1000,
+                "nullable": true
+              },
+              "price": {
+                "type": "integer",
+                "minimum": 1,
+                "description": "Preço em centavos"
+              },
+              "currency": {
+                "type": "string",
+                "default": "BRL"
+              },
+              "stockQuantity": {
+                "type": "integer",
+                "minimum": 0,
+                "nullable": true,
+                "description": "Quantidade em estoque (obrigatório se stockEnabled = true)"
+              },
+              "stockEnabled": {
+                "type": "boolean",
+                "default": false
+              },
+              "isDigital": {
+                "type": "boolean",
+                "default": false,
+                "description": "Indica se o produto é digital (não requer estoque físico)"
+              },
+              "imageUrl": {
+                "type": "string",
+                "format": "uri",
+                "nullable": true
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "ACTIVE",
+                  "INACTIVE"
+                ],
+                "default": "ACTIVE"
+              }
+            }
+          },
+          "UpdateProductRequest": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255
+              },
+              "description": {
+                "type": "string",
+                "maxLength": 1000,
+                "nullable": true
+              },
+              "price": {
+                "type": "integer",
+                "minimum": 1,
+                "description": "Preço em centavos"
+              },
+              "stockQuantity": {
+                "type": "integer",
+                "minimum": 0,
+                "nullable": true,
+                "description": "Quantidade em estoque (obrigatório se stockEnabled = true)"
+              },
+              "stockEnabled": {
+                "type": "boolean"
+              },
+              "isDigital": {
+                "type": "boolean",
+                "description": "Indica se o produto é digital (não requer estoque físico)"
+              },
+              "imageUrl": {
+                "type": "string",
+                "format": "uri",
+                "nullable": true
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "ACTIVE",
+                  "INACTIVE"
+                ]
+              }
+            }
+          },
+          "Coupon": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "code": {
+                "type": "string"
+              },
+              "discountType": {
+                "type": "string",
+                "enum": [
+                  "PERCENTAGE",
+                  "FIXED"
+                ]
+              },
+              "discountValue": {
+                "type": "number"
+              },
+              "description": {
+                "type": "string",
+                "nullable": true
+              },
+              "minPurchaseCents": {
+                "type": "integer",
+                "nullable": true
+              },
+              "maxDiscountCents": {
+                "type": "integer",
+                "nullable": true
+              },
+              "usageLimit": {
+                "type": "integer",
+                "nullable": true
+              },
+              "perUserLimit": {
+                "type": "integer",
+                "nullable": true
+              },
+              "validFrom": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "validUntil": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "status": {
+                "type": "string"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          },
+          "CreateCouponRequest": {
+            "type": "object",
+            "required": [
+              "code",
+              "discountType",
+              "discountValue"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 50
+              },
+              "discountType": {
+                "type": "string",
+                "enum": [
+                  "PERCENTAGE",
+                  "FIXED"
+                ]
+              },
+              "discountValue": {
+                "type": "number",
+                "minimum": 0
+              },
+              "description": {
+                "type": "string",
+                "maxLength": 500
+              },
+              "minPurchaseCents": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "maxDiscountCents": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "usageLimit": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "perUserLimit": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "validFrom": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "validUntil": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "productIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "ACTIVE",
+                  "INACTIVE"
+                ],
+                "default": "ACTIVE"
+              }
+            }
+          },
+          "UpdateCouponRequest": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 50
+              },
+              "discountType": {
+                "type": "string",
+                "enum": [
+                  "PERCENTAGE",
+                  "FIXED"
+                ]
+              },
+              "discountValue": {
+                "type": "number",
+                "minimum": 0
+              },
+              "description": {
+                "type": "string",
+                "maxLength": 500
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "ACTIVE",
+                  "INACTIVE"
+                ]
+              }
+            }
+          },
+          "Client": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "name": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string",
+                "format": "email"
+              },
+              "document": {
+                "type": "string",
+                "nullable": true
+              },
+              "phone": {
+                "type": "string",
+                "nullable": true
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          },
+          "CreateClientRequest": {
+            "type": "object",
+            "required": [
+              "name",
+              "email"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 255
+              },
+              "email": {
+                "type": "string",
+                "format": "email"
+              },
+              "document": {
+                "type": "string",
+                "minLength": 11,
+                "maxLength": 20,
+                "nullable": true
+              },
+              "phone": {
+                "type": "string",
+                "minLength": 10,
+                "maxLength": 20,
+                "nullable": true
+              }
+            }
+          },
+          "WebhookSubscription": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "url": {
+                "type": "string",
+                "format": "uri"
+              },
+              "events": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "isActive": {
+                "type": "boolean"
+              },
+              "lastTriggeredAt": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          },
+          "CreateWebhookSubscriptionRequest": {
+            "type": "object",
+            "required": [
+              "url",
+              "events"
+            ],
+            "properties": {
+              "url": {
+                "type": "string",
+                "format": "uri"
+              },
+              "events": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "transaction.created",
+                    "transaction.updated",
+                    "transaction.completed",
+                    "transaction.failed",
+                    "payment_link.created",
+                    "payment_link.updated",
+                    "balance.updated"
+                  ]
+                }
+              },
+              "isActive": {
+                "type": "boolean",
+                "default": true
+              }
+            }
+          },
+          "UpdateWebhookSubscriptionRequest": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "format": "uri"
+              },
+              "events": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "isActive": {
+                "type": "boolean"
+              }
+            }
+          },
+          "WebhookEvent": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "event": {
+                "type": "string"
+              },
+              "payload": {
+                "type": "object"
+              },
+              "status": {
+                "type": "string"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          },
+          "Pagination": {
+            "type": "object",
+            "properties": {
+              "limit": {
+                "type": "integer"
+              },
+              "cursor": {
+                "type": "string",
+                "nullable": true
+              },
+              "hasMore": {
+                "type": "boolean"
+              },
+              "nextCursor": {
+                "type": "string",
+                "nullable": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "BadRequest": {
+            "description": "Requisição inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
                   }
                 }
               }
             }
           },
-          "401": {"$ref": "#/components/responses/Unauthorized"}
-        }
-      }
-    }
-  },
-  "components": {
-    "securitySchemes": {
-      "apiKeyAuth": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "X-API-Key",
-        "description": "Chave de API obtida através do endpoint /api/credentials. Também aceita formato Bearer Token: Authorization: Bearer <api_key>"
-      }
-    },
-    "schemas": {
-      "Transaction": {
-        "type": "object",
-        "properties": {
-          "id": {"type": "string", "format": "uuid"},
-          "displayId": {"type": "string", "nullable": true},
-          "product": {"type": "string", "nullable": true},
-          "amountCents": {"type": "integer", "nullable": true},
-          "status": {"type": "string"},
-          "paymentMethod": {"type": "string"},
-          "client": {"type": "object"},
-          "createdAt": {"type": "string", "format": "date-time"},
-          "updatedAt": {"type": "string", "format": "date-time"}
-        }
-      },
-      "CreateTransactionRequest": {
-        "type": "object",
-        "required": ["product", "amountCents", "paymentMethod", "clientEmail", "clientName"],
-        "properties": {
-          "product": {"type": "string"},
-          "amountCents": {"type": "integer", "minimum": 1},
-          "paymentMethod": {"type": "string", "enum": ["PIX", "CREDIT_CARD", "BOLETO"]},
-          "clientEmail": {"type": "string", "format": "email"},
-          "clientName": {"type": "string"},
-          "paymentLinkId": {"type": "string", "format": "uuid"},
-          "installments": {"type": "integer", "minimum": 1, "maximum": 12},
-          "dueDate": {"type": "string", "format": "date-time"}
-        }
-      },
-      "PaymentLink": {
-        "type": "object",
-        "properties": {
-          "id": {"type": "string", "format": "uuid"},
-          "slug": {"type": "string"},
-          "title": {"type": "string"},
-          "description": {"type": "string", "nullable": true},
-          "amount": {"type": "integer", "nullable": true, "description": "Valor em centavos (null se usar products)"},
-          "currency": {"type": "string", "default": "BRL"},
-          "status": {"type": "string", "enum": ["ACTIVE", "INACTIVE"]},
-          "expiresAt": {"type": "string", "format": "date-time", "nullable": true},
-          "redirectUrl": {"type": "string", "format": "uri", "nullable": true},
-          "settings": {"type": "object", "nullable": true},
-          "salesCount": {"type": "integer", "default": 0},
-          "timesUsed": {"type": "integer", "default": 0},
-          "metaPixelCode": {"type": "string", "nullable": true, "description": "Código do Meta Pixel para rastreamento"},
-          "createdAt": {"type": "string", "format": "date-time"},
-          "updatedAt": {"type": "string", "format": "date-time"}
-        }
-      },
-      "CreatePaymentLinkRequest": {
-        "type": "object",
-        "required": ["title"],
-        "properties": {
-          "title": {"type": "string", "minLength": 1, "maxLength": 255},
-          "description": {"type": "string", "maxLength": 1000, "nullable": true},
-          "amountCents": {"type": "integer", "minimum": 1, "description": "Valor fixo em centavos (opcional se products for fornecido)"},
-          "currency": {"type": "string", "default": "BRL"},
-          "expiresAt": {"type": "string", "format": "date-time", "nullable": true},
-          "redirectUrl": {"type": "string", "format": "uri", "nullable": true},
-          "productDescription": {"type": "string", "maxLength": 1000, "nullable": true},
-          "settings": {
-            "type": "object",
-            "properties": {
-              "pixEnabled": {"type": "boolean"},
-              "boletoEnabled": {"type": "boolean"},
-              "creditCardEnabled": {"type": "boolean"},
-              "maxInstallments": {"type": "integer", "minimum": 1, "maximum": 12},
-              "interestFreeInstallments": {"type": "integer", "minimum": 0},
-              "interestRate": {"type": "number"},
-              "requirePhone": {"type": "boolean"},
-              "requireAddress": {"type": "boolean"}
-            }
-          },
-          "products": {
-            "type": "array",
-            "description": "Lista de produtos associados ao link (opcional se amountCents for fornecido)",
-            "items": {
-              "type": "object",
-              "required": ["productId", "quantity"],
-              "properties": {
-                "productId": {"type": "string", "format": "uuid"},
-                "quantity": {"type": "integer", "minimum": 1}
+          "Unauthorized": {
+            "description": "Não autorizado - API Key inválida ou ausente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
               }
             }
           },
-          "stockQuantity": {"type": "integer", "minimum": 0, "nullable": true},
-          "stockEnabled": {"type": "boolean"},
-          "metaPixelCode": {"type": "string", "nullable": true, "description": "Código do Meta Pixel para rastreamento"},
-          "status": {"type": "string", "enum": ["ACTIVE", "INACTIVE"], "default": "ACTIVE"}
-        },
-        "description": "É necessário fornecer pelo menos amountCents OU products (ou ambos)"
-      },
-      "UpdatePaymentLinkRequest": {
-        "type": "object",
-        "properties": {
-          "title": {"type": "string", "minLength": 1, "maxLength": 255},
-          "description": {"type": "string", "maxLength": 1000, "nullable": true},
-          "amountCents": {"type": "integer", "minimum": 1, "description": "Valor fixo em centavos (opcional se products for fornecido)"},
-          "currency": {"type": "string"},
-          "status": {"type": "string", "enum": ["ACTIVE", "INACTIVE"]},
-          "expiresAt": {"type": "string", "format": "date-time", "nullable": true},
-          "redirectUrl": {"type": "string", "format": "uri", "nullable": true},
-          "productDescription": {"type": "string", "maxLength": 1000, "nullable": true},
-          "settings": {
-            "type": "object",
-            "properties": {
-              "pixEnabled": {"type": "boolean"},
-              "boletoEnabled": {"type": "boolean"},
-              "creditCardEnabled": {"type": "boolean"},
-              "maxInstallments": {"type": "integer", "minimum": 1, "maximum": 12},
-              "interestFreeInstallments": {"type": "integer", "minimum": 0},
-              "interestRate": {"type": "number"},
-              "requirePhone": {"type": "boolean"},
-              "requireAddress": {"type": "boolean"}
-            }
-          },
-          "products": {
-            "type": "array",
-            "description": "Lista de produtos associados ao link (opcional se amountCents for fornecido)",
-            "items": {
-              "type": "object",
-              "required": ["productId", "quantity"],
-              "properties": {
-                "productId": {"type": "string", "format": "uuid"},
-                "quantity": {"type": "integer", "minimum": 1}
+          "Forbidden": {
+            "description": "Acesso negado - Permissão insuficiente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
               }
             }
           },
-          "stockQuantity": {"type": "integer", "minimum": 0, "nullable": true},
-          "stockEnabled": {"type": "boolean"},
-          "metaPixelCode": {"type": "string", "nullable": true, "description": "Código do Meta Pixel para rastreamento"}
-        },
-        "description": "É necessário fornecer pelo menos amountCents OU products (ou ambos)"
-      },
-      "Product": {
-        "type": "object",
-        "properties": {
-          "id": {"type": "string", "format": "uuid"},
-          "name": {"type": "string"},
-          "description": {"type": "string", "nullable": true},
-          "price": {"type": "integer", "description": "Preço em centavos"},
-          "currency": {"type": "string", "default": "BRL"},
-          "stockQuantity": {"type": "integer", "nullable": true, "description": "Quantidade em estoque (null = ilimitado)"},
-          "stockEnabled": {"type": "boolean", "description": "Indica se o controle de estoque está habilitado"},
-          "isDigital": {"type": "boolean", "description": "Indica se o produto é digital (não requer estoque físico)"},
-          "imageUrl": {"type": "string", "nullable": true, "format": "uri"},
-          "status": {"type": "string", "enum": ["ACTIVE", "INACTIVE"]},
-          "createdAt": {"type": "string", "format": "date-time"},
-          "updatedAt": {"type": "string", "format": "date-time"}
-        }
-      },
-      "CreateProductRequest": {
-        "type": "object",
-        "required": ["name", "price"],
-        "properties": {
-          "name": {"type": "string", "minLength": 1, "maxLength": 255},
-          "description": {"type": "string", "maxLength": 1000, "nullable": true},
-          "price": {"type": "integer", "minimum": 1, "description": "Preço em centavos"},
-          "currency": {"type": "string", "default": "BRL"},
-          "stockQuantity": {"type": "integer", "minimum": 0, "nullable": true, "description": "Quantidade em estoque (obrigatório se stockEnabled = true)"},
-          "stockEnabled": {"type": "boolean", "default": false},
-          "isDigital": {"type": "boolean", "default": false, "description": "Indica se o produto é digital (não requer estoque físico)"},
-          "imageUrl": {"type": "string", "format": "uri", "nullable": true},
-          "status": {"type": "string", "enum": ["ACTIVE", "INACTIVE"], "default": "ACTIVE"}
-        }
-      },
-      "UpdateProductRequest": {
-        "type": "object",
-        "properties": {
-          "name": {"type": "string", "minLength": 1, "maxLength": 255},
-          "description": {"type": "string", "maxLength": 1000, "nullable": true},
-          "price": {"type": "integer", "minimum": 1, "description": "Preço em centavos"},
-          "stockQuantity": {"type": "integer", "minimum": 0, "nullable": true, "description": "Quantidade em estoque (obrigatório se stockEnabled = true)"},
-          "stockEnabled": {"type": "boolean"},
-          "isDigital": {"type": "boolean", "description": "Indica se o produto é digital (não requer estoque físico)"},
-          "imageUrl": {"type": "string", "format": "uri", "nullable": true},
-          "status": {"type": "string", "enum": ["ACTIVE", "INACTIVE"]}
-        }
-      },
-      "Coupon": {
-        "type": "object",
-        "properties": {
-          "id": {"type": "string", "format": "uuid"},
-          "code": {"type": "string"},
-          "discountType": {"type": "string", "enum": ["PERCENTAGE", "FIXED"]},
-          "discountValue": {"type": "number"},
-          "description": {"type": "string", "nullable": true},
-          "minPurchaseCents": {"type": "integer", "nullable": true},
-          "maxDiscountCents": {"type": "integer", "nullable": true},
-          "usageLimit": {"type": "integer", "nullable": true},
-          "perUserLimit": {"type": "integer", "nullable": true},
-          "validFrom": {"type": "string", "format": "date-time", "nullable": true},
-          "validUntil": {"type": "string", "format": "date-time", "nullable": true},
-          "status": {"type": "string"},
-          "createdAt": {"type": "string", "format": "date-time"},
-          "updatedAt": {"type": "string", "format": "date-time"}
-        }
-      },
-      "CreateCouponRequest": {
-        "type": "object",
-        "required": ["code", "discountType", "discountValue"],
-        "properties": {
-          "code": {"type": "string", "minLength": 3, "maxLength": 50},
-          "discountType": {"type": "string", "enum": ["PERCENTAGE", "FIXED"]},
-          "discountValue": {"type": "number", "minimum": 0},
-          "description": {"type": "string", "maxLength": 500},
-          "minPurchaseCents": {"type": "integer", "minimum": 0},
-          "maxDiscountCents": {"type": "integer", "minimum": 0},
-          "usageLimit": {"type": "integer", "minimum": 1},
-          "perUserLimit": {"type": "integer", "minimum": 1},
-          "validFrom": {"type": "string", "format": "date-time"},
-          "validUntil": {"type": "string", "format": "date-time"},
-          "productIds": {
-            "type": "array",
-            "items": {"type": "string", "format": "uuid"}
-          },
-          "status": {"type": "string", "enum": ["ACTIVE", "INACTIVE"], "default": "ACTIVE"}
-        }
-      },
-      "UpdateCouponRequest": {
-        "type": "object",
-        "properties": {
-          "code": {"type": "string", "minLength": 3, "maxLength": 50},
-          "discountType": {"type": "string", "enum": ["PERCENTAGE", "FIXED"]},
-          "discountValue": {"type": "number", "minimum": 0},
-          "description": {"type": "string", "maxLength": 500},
-          "status": {"type": "string", "enum": ["ACTIVE", "INACTIVE"]}
-        }
-      },
-      "Client": {
-        "type": "object",
-        "properties": {
-          "id": {"type": "string", "format": "uuid"},
-          "name": {"type": "string"},
-          "email": {"type": "string", "format": "email"},
-          "document": {"type": "string", "nullable": true},
-          "phone": {"type": "string", "nullable": true},
-          "createdAt": {"type": "string", "format": "date-time"},
-          "updatedAt": {"type": "string", "format": "date-time"}
-        }
-      },
-      "CreateClientRequest": {
-        "type": "object",
-        "required": ["name", "email"],
-        "properties": {
-          "name": {"type": "string", "minLength": 3, "maxLength": 255},
-          "email": {"type": "string", "format": "email"},
-          "document": {"type": "string", "minLength": 11, "maxLength": 20, "nullable": true},
-          "phone": {"type": "string", "minLength": 10, "maxLength": 20, "nullable": true}
-        }
-      },
-      "WebhookSubscription": {
-        "type": "object",
-        "properties": {
-          "id": {"type": "string", "format": "uuid"},
-          "url": {"type": "string", "format": "uri"},
-          "events": {"type": "array", "items": {"type": "string"}},
-          "isActive": {"type": "boolean"},
-          "lastTriggeredAt": {"type": "string", "format": "date-time", "nullable": true},
-          "createdAt": {"type": "string", "format": "date-time"},
-          "updatedAt": {"type": "string", "format": "date-time"}
-        }
-      },
-      "CreateWebhookSubscriptionRequest": {
-        "type": "object",
-        "required": ["url", "events"],
-        "properties": {
-          "url": {"type": "string", "format": "uri"},
-          "events": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": [
-                "transaction.created",
-                "transaction.updated",
-                "transaction.completed",
-                "transaction.failed",
-                "payment_link.created",
-                "payment_link.updated",
-                "balance.updated"
-              ]
-            }
-          },
-          "isActive": {"type": "boolean", "default": true}
-        }
-      },
-      "UpdateWebhookSubscriptionRequest": {
-        "type": "object",
-        "properties": {
-          "url": {"type": "string", "format": "uri"},
-          "events": {
-            "type": "array",
-            "items": {"type": "string"}
-          },
-          "isActive": {"type": "boolean"}
-        }
-      },
-      "WebhookEvent": {
-        "type": "object",
-        "properties": {
-          "id": {"type": "string", "format": "uuid"},
-          "event": {"type": "string"},
-          "payload": {"type": "object"},
-          "status": {"type": "string"},
-          "createdAt": {"type": "string", "format": "date-time"}
-        }
-      },
-      "Pagination": {
-        "type": "object",
-        "properties": {
-          "limit": {"type": "integer"},
-          "cursor": {"type": "string", "nullable": true},
-          "hasMore": {"type": "boolean"},
-          "nextCursor": {"type": "string", "nullable": true}
-        }
-      }
-    },
-    "responses": {
-      "BadRequest": {
-        "description": "Requisição inválida",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {"type": "string"},
-                "errors": {"type": "array", "items": {"type": "object"}}
-              }
-            }
-          }
-        }
-      },
-      "Unauthorized": {
-        "description": "Não autorizado - API Key inválida ou ausente",
-        "content": {
-          "application/json": {
-            "schema": {
-        "type": "object",
-        "properties": {
-                "message": {"type": "string"}
-              }
-            }
-          }
-        }
-      },
-      "Forbidden": {
-        "description": "Acesso negado - Permissão insuficiente",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {"type": "string"}
-              }
-            }
-          }
-        }
-      },
-      "NotFound": {
-        "description": "Recurso não encontrado",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {"type": "string"}
+          "NotFound": {
+            "description": "Recurso não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
               }
             }
           }
         }
       }
     }
-  }
-}
-
