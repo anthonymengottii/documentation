@@ -3,7 +3,7 @@
   
   # UPay Gateway API - Documentação Pública
   
-  [![Documentation](https://img.shields.io/badge/Documentation-Live-brightgreen)](https://docs.upay.com.br)
+  [![Documentation](https://img.shields.io/badge/Documentation-Live-brightgreen)](https://docs.upay.com)
   [![API Version](https://img.shields.io/badge/API-v1.0-blue)](https://upay-sistema-api.onrender.com)
   [![License](https://img.shields.io/badge/License-MIT-purple)](LICENSE)
   
