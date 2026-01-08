@@ -68,6 +68,18 @@
             ]
           },
           {
+            "group": "Clientes",
+            "icon": "users",
+            "pages": [
+              "pages/customers/reference",
+              "pages/customers/create",
+              "pages/customers/list",
+              "pages/customers/get",
+              "pages/customers/update",
+              "pages/customers/delete"
+            ]
+          },
+          {
             "group": "Cupom",
             "icon": "tag",
             "pages": [
