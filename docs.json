@@ -56,7 +56,7 @@
           },
           {
             "group": "Produtos",
-            "icon": "package",
+            "icon": "box-archive",
             "pages": [
               "pages/products/reference",
               "pages/products/create",
