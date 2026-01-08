@@ -81,25 +81,27 @@ curl -X POST "https://https://upay-sistema-api.onrender.com//api/v1/coupons" \
 
 ## Campos disponíveis
 
-### Campos Obrigatórios
+### Campos obrigatórios
 
-- `code` (string): Código do cupom (único, máx. 50 caracteres)
-- `discountType` (enum): "PERCENTAGE" ou "FIXED"
-- `discountValue` (number): 
-  - Para PERCENTAGE: valor percentual (ex: 10 = 10%)
-  - Para FIXED: valor em centavos (ex: 5000 = R$ 50,00)
+| Campo | Tipo | Descrição |
+|-------|------|-----------|
+| `code` | string | Código único do cupom. Máximo 50 caracteres. Apenas letras, números e hífen. |
+| `discountType` | string | Tipo de desconto. Valores: "PERCENTAGE" ou "FIXED". |
+| `discountValue` | number | Valor do desconto. Para PERCENTAGE: valor percentual (ex: 10 = 10%). Para FIXED: valor em centavos (ex: 5000 = R$ 50,00). Mínimo: 1. |
 
-### Campos Opcionais
+### Campos opcionais
 
-- `description` (string): Descrição do cupom
-- `minPurchaseAmount` (number): Valor mínimo de compra em centavos
-- `maxDiscountAmount` (number): Valor máximo de desconto em centavos (apenas para PERCENTAGE)
-- `maxUses` (number): Limite total de usos (null = ilimitado)
-- `maxUsesPerUser` (number): Limite de usos por usuário (null = ilimitado)
-- `validFrom` (string): Data de início (ISO 8601)
-- `validUntil` (string): Data de fim (ISO 8601)
-- `productIds` (array): IDs dos produtos aplicáveis (vazio = todos)
-- `status` (enum): "ACTIVE" ou "INACTIVE" (padrão: "ACTIVE")
+| Campo | Tipo | Descrição | Padrão |
+|-------|------|-----------|--------|
+| `description` | string | Descrição do cupom. Máximo 500 caracteres. | - |
+| `minPurchaseAmount` | number | Valor mínimo de compra em centavos. Mínimo: 0. | null |
+| `maxDiscountAmount` | number | Valor máximo de desconto em centavos. Apenas para PERCENTAGE. Mínimo: 1. | null |
+| `maxUses` | number | Limite total de usos do cupom. null = ilimitado. Mínimo: 1. | null |
+| `maxUsesPerUser` | number | Limite de usos por usuário. null = ilimitado. Mínimo: 1. | null |
+| `validFrom` | string | Data de início da validade. Formato ISO 8601. Exemplo: "2024-01-01T00:00:00Z". | null |
+| `validUntil` | string | Data de fim da validade. Formato ISO 8601. Deve ser posterior a `validFrom`. | null |
+| `productIds` | array | Array de IDs de produtos aplicáveis. Vazio ou null = todos os produtos. | [] |
+| `status` | string | Status do cupom. Valores: "ACTIVE" ou "INACTIVE". | "ACTIVE" |
 
 ## 📖 Exemplos Completos
 
