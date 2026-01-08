@@ -48,6 +48,31 @@ Configure sua integração com a UPay Gateway API e comece a processar pagamento
       -H "Content-Type: application/json"
     ```
     
+    **Resposta de sucesso (200 OK):**
+    ```json
+    {
+      "data": [
+        {
+          "id": "clx1234567890",
+          "slug": "meu-produto",
+          "name": "Meu Produto",
+          "amount": 100.00,
+          "currency": "BRL",
+          "status": "active"
+        }
+      ],
+      "total": 1
+    }
+    ```
+    
+    **Resposta de erro (401 Unauthorized):**
+    ```json
+    {
+      "error": "Unauthorized",
+      "message": "Token inválido ou expirado"
+    }
+    ```
+    
     <Tip>
       Substitua `SUA_API_KEY_AQUI` pela sua API Key real.
     </Tip>
