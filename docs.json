@@ -20,7 +20,13 @@
             "pages": [
               "pages/introduction",
               "pages/quickstart",
-              "pages/authentication",
+              "pages/authentication"
+            ]
+          },
+          {
+            "group": "Guias",
+            "icon": "map",
+            "pages": [
               "pages/guides/features/payment-links",
               "pages/guides/features/coupons",
               "pages/guides/features/webhooks"
