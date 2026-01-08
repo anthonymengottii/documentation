@@ -28,7 +28,6 @@
             "group": "Recursos",
             "icon": "lightbulb",
             "pages": [
-              "pages/errors",
               "pages/troubleshooting",
               "pages/glossary",
               "pages/changelog"
