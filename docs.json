@@ -93,14 +93,14 @@
           }
         ]
       },
-<<<<<<< Updated upstream
-     {
-        "tab": "Referência da API",
-=======
       {
-        "tab": "Endpoints",
->>>>>>> Stashed changes
-        "openapi": "api-reference/openapi.json"
+        "tab": "Referência da API",
+        "groups": [
+          {
+            "group": "Endpoints",
+            "openapi": "api-reference/openapi"
+          }
+        ]
       }
     ]
   },
