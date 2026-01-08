@@ -95,7 +95,13 @@
       },
       {
         "tab": "Referência da API",
-        "openapi": "https://raw.githubusercontent.com/anthonymengottii/documentation/main/api-reference/openapi.json"
+        "groups": [
+          {
+            "group": "API Reference",
+            "openapi": "https://raw.githubusercontent.com/anthonymengottii/documentation/main/api-reference/openapi.json",
+            "pages": []
+          }
+        ]
       }
     ]
   },
