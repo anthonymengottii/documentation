@@ -53,26 +53,37 @@ Estes endpoints requerem autenticação via Bearer Token (JWT):
 
 ## Autenticação
 
-### Endpoints Públicos
-Não requerem autenticação. Apenas rate limiting por IP.
+### Endpoints públicos
+Não requerem autenticação. Apenas rate limiting por IP (100 requisições/minuto).
 
 ### Endpoints API v1
 Requerem autenticação via Bearer Token (API Key):
 
-```
+```bash
 Authorization: Bearer SUA_API_KEY
 ```
 
 ### Endpoints Dashboard
 Requerem autenticação via Bearer Token (JWT):
 
-```
+```bash
 Authorization: Bearer SEU_JWT_TOKEN
 ```
 
 ## Base URL
 
 ```
-https://upay-sistema-api.onrender.com/
+https://upay-sistema-api.onrender.com
 ```
+
+## Rate limits
+
+| Tipo de endpoint | Limite |
+|------------------|--------|
+| Endpoints públicos | 100 requisições/minuto por IP |
+| Endpoints autenticados | 1000 requisições/minuto por API Key |
+
+<Warning>
+  Ao exceder o rate limit, você receberá um erro `429 Too Many Requests` com o header `Retry-After` indicando quando tentar novamente.
+</Warning>
 
