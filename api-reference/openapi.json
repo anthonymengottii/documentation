@@ -1267,14 +1267,15 @@
                     }
                   }
                 }
-              },
-              "401": {
-                "$ref": "#/components/responses/Unauthorized"
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
           }
         }
-      },
+      }
+    },
     "/api/v1/clients": {
       "get": {
         "tags": [
@@ -1525,321 +1526,321 @@
               }
             }
           }
-        },
-        "/api/v1/webhooks": {
-          "get": {
-            "tags": [
-              "Webhooks"
-            ],
-            "summary": "Obter informações de webhook",
-            "description": "Obtém informações sobre webhooks configurados",
-            "security": [
-              {
-                "apiKeyAuth": []
-              }
-            ],
-            "responses": {
-              "200": {
-                "description": "Informações de webhook",
-                "content": {
-                  "application/json": {
-                    "schema": {
-                      "type": "object",
-                      "properties": {
-                        "message": {
-                          "type": "string"
-                        },
-                        "webhooks": {
-                          "type": "object",
-                          "properties": {
-                            "url": {
-                              "type": "string"
-                            },
-                            "events": {
-                              "type": "array",
-                              "items": {
-                                "type": "string"
-                              }
-                            },
-                            "secret": {
-                              "type": "string"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              "401": {
-                "$ref": "#/components/responses/Unauthorized"
-              }
-            }
+        }
+      },
+    "/api/v1/webhooks": {
+      "get": {
+        "tags": [
+          "Webhooks"
+        ],
+        "summary": "Obter informações de webhook",
+        "description": "Obtém informações sobre webhooks configurados",
+        "security": [
+          {
+            "apiKeyAuth": []
           }
-        },
-        "/api/v1/webhooks/subscriptions": {
-          "get": {
-            "tags": [
-              "Webhooks"
-            ],
-            "summary": "Listar assinaturas de webhook",
-            "description": "Lista todas as assinaturas de webhook do usuário",
-            "security": [
-              {
-                "apiKeyAuth": []
-              }
-            ],
-            "responses": {
-              "200": {
-                "description": "Lista de assinaturas",
-                "content": {
-                  "application/json": {
-                    "schema": {
-                      "type": "object",
-                      "properties": {
-                        "message": {
-                          "type": "string"
-                        },
-                        "subscriptions": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/WebhookSubscription"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              "401": {
-                "$ref": "#/components/responses/Unauthorized"
-              }
-            }
-          },
-          "post": {
-            "tags": [
-              "Webhooks"
-            ],
-            "summary": "Criar assinatura de webhook",
-            "description": "Cria uma nova assinatura de webhook",
-            "security": [
-              {
-                "apiKeyAuth": []
-              }
-            ],
-            "requestBody": {
-              "required": true,
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/CreateWebhookSubscriptionRequest"
-                  }
-                }
-              }
-            },
-            "responses": {
-              "201": {
-                "description": "Assinatura criada com sucesso",
-                "content": {
-                  "application/json": {
-                    "schema": {
-                      "type": "object",
-                      "properties": {
-                        "message": {
-                          "type": "string"
-                        },
-                        "subscription": {
-                          "$ref": "#/components/schemas/WebhookSubscription"
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              "400": {
-                "$ref": "#/components/responses/BadRequest"
-              },
-              "401": {
-                "$ref": "#/components/responses/Unauthorized"
-              }
-            }
-          }
-        },
-        "/api/v1/webhooks/subscriptions/{id}": {
-          "put": {
-            "tags": [
-              "Webhooks"
-            ],
-            "summary": "Atualizar assinatura de webhook",
-            "description": "Atualiza uma assinatura de webhook existente",
-            "security": [
-              {
-                "apiKeyAuth": []
-              }
-            ],
-            "parameters": [
-              {
-                "name": "id",
-                "in": "path",
-                "required": true,
+        ],
+        "responses": {
+          "200": {
+            "description": "Informações de webhook",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "uuid"
-                }
-              }
-            ],
-            "requestBody": {
-              "required": true,
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/UpdateWebhookSubscriptionRequest"
-                  }
-                }
-              }
-            },
-            "responses": {
-              "200": {
-                "description": "Assinatura atualizada com sucesso",
-                "content": {
-                  "application/json": {
-                    "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "webhooks": {
                       "type": "object",
                       "properties": {
-                        "message": {
-                          "type": "string"
-                        },
-                        "subscription": {
-                          "$ref": "#/components/schemas/WebhookSubscription"
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              "400": {
-                "$ref": "#/components/responses/BadRequest"
-              },
-              "404": {
-                "$ref": "#/components/responses/NotFound"
-              },
-              "401": {
-                "$ref": "#/components/responses/Unauthorized"
-              }
-            }
-          },
-          "delete": {
-            "tags": [
-              "Webhooks"
-            ],
-            "summary": "Deletar assinatura de webhook",
-            "description": "Remove uma assinatura de webhook",
-            "security": [
-              {
-                "apiKeyAuth": []
-              }
-            ],
-            "parameters": [
-              {
-                "name": "id",
-                "in": "path",
-                "required": true,
-                "schema": {
-                  "type": "string",
-                  "format": "uuid"
-                }
-              }
-            ],
-            "responses": {
-              "200": {
-                "description": "Assinatura removida com sucesso",
-                "content": {
-                  "application/json": {
-                    "schema": {
-                      "type": "object",
-                      "properties": {
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              "404": {
-                "$ref": "#/components/responses/NotFound"
-              },
-              "401": {
-                "$ref": "#/components/responses/Unauthorized"
-              }
-            }
-          }
-        },
-        "/api/v1/webhooks/events": {
-          "get": {
-            "tags": [
-              "Webhooks"
-            ],
-            "summary": "Listar eventos de webhook",
-            "description": "Lista eventos de webhook com paginação",
-            "security": [
-              {
-                "apiKeyAuth": []
-              }
-            ],
-            "parameters": [
-              {
-                "name": "limit",
-                "in": "query",
-                "schema": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 100,
-                  "default": 20
-                }
-              },
-              {
-                "name": "cursor",
-                "in": "query",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            ],
-            "responses": {
-              "200": {
-                "description": "Lista de eventos",
-                "content": {
-                  "application/json": {
-                    "schema": {
-                      "type": "object",
-                      "properties": {
-                        "message": {
+                        "url": {
                           "type": "string"
                         },
                         "events": {
                           "type": "array",
                           "items": {
-                            "$ref": "#/components/schemas/WebhookEvent"
+                            "type": "string"
                           }
                         },
-                        "pagination": {
-                          "$ref": "#/components/schemas/Pagination"
+                        "secret": {
+                          "type": "string"
                         }
                       }
                     }
                   }
                 }
-              },
-              "401": {
-                "$ref": "#/components/responses/Unauthorized"
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
           }
         }
       }
     },
-    "components": {
+    "/api/v1/webhooks/subscriptions": {
+      "get": {
+        "tags": [
+          "Webhooks"
+        ],
+        "summary": "Listar assinaturas de webhook",
+        "description": "Lista todas as assinaturas de webhook do usuário",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de assinaturas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "subscriptions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/WebhookSubscription"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Webhooks"
+        ],
+        "summary": "Criar assinatura de webhook",
+        "description": "Cria uma nova assinatura de webhook",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWebhookSubscriptionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Assinatura criada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "subscription": {
+                      "$ref": "#/components/schemas/WebhookSubscription"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/v1/webhooks/subscriptions/{id}": {
+      "put": {
+        "tags": [
+          "Webhooks"
+        ],
+        "summary": "Atualizar assinatura de webhook",
+        "description": "Atualiza uma assinatura de webhook existente",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWebhookSubscriptionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Assinatura atualizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "subscription": {
+                      "$ref": "#/components/schemas/WebhookSubscription"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Webhooks"
+        ],
+        "summary": "Deletar assinatura de webhook",
+        "description": "Remove uma assinatura de webhook",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Assinatura removida com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/v1/webhooks/events": {
+      "get": {
+        "tags": [
+          "Webhooks"
+        ],
+        "summary": "Listar eventos de webhook",
+        "description": "Lista eventos de webhook com paginação",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de eventos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "events": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/WebhookEvent"
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    }
+  },
+  "components": {
         "securitySchemes": {
           "apiKeyAuth": {
             "type": "apiKey",
