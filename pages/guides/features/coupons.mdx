@@ -12,16 +12,17 @@ O sistema de **Cupons de Desconto** permite que você crie e gerencie cupons pro
 Antes de começar, você precisa:
 - Uma conta ativa na UPay
 - Sua API Key configurada (veja [Autenticação](/pages/authentication))
+- Conhecimento básico de APIs REST
 
 ## Funcionalidades
 
-- **Tipos de desconto**: Percentual ou valor fixo
-- **Validade configurável**: Data de início e fim
-- **Limites de uso**: Total e por usuário
-- **Valor mínimo**: Defina valor mínimo de compra
-- **Valor máximo**: Limite o desconto máximo (para percentuais)
-- **Produtos específicos**: Aplique a todos ou produtos selecionados
-- **Validação pública**: Endpoint público para validar cupons no checkout
+- **Tipos de desconto**: Percentual (%) ou valor fixo (R$)
+- **Validade configurável**: Data de início e fim no formato ISO 8601
+- **Limites de uso**: Total de usos e por usuário (null = ilimitado)
+- **Valor mínimo**: Defina valor mínimo de compra em centavos
+- **Valor máximo**: Limite o desconto máximo em centavos (apenas para percentuais)
+- **Produtos específicos**: Aplique a todos os produtos ou apenas produtos selecionados
+- **Validação pública**: Endpoint público (sem autenticação) para validar cupons no checkout
 
 ## Criando um cupom
 
