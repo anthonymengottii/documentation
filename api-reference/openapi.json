@@ -1838,9 +1838,10 @@
           }
         }
       }
-    },
+    }
+  },
   "components": {
-        "securitySchemes": {
+    "securitySchemes": {
           "apiKeyAuth": {
             "type": "apiKey",
             "in": "header",
