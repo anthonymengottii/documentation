@@ -83,19 +83,31 @@ curl -X POST "https://upay-sistema-api.onrender.com/api/v1/payment-links" \
 | `metaPixelCode` | string | ID do Meta Pixel para rastreamento. Formato: números apenas. | - |
 | `status` | string | Status do link. Valores: "ACTIVE" ou "INACTIVE". | "ACTIVE" |
 
-### Configurações de Pagamento (`settings`)
+### Configurações de pagamento (`settings`)
 
+| Campo | Tipo | Descrição | Padrão |
+|-------|------|-----------|--------|
+| `pixEnabled` | boolean | Habilita pagamento via PIX. | true |
+| `boletoEnabled` | boolean | Habilita pagamento via Boleto. | false |
+| `creditCardEnabled` | boolean | Habilita pagamento via Cartão de Crédito. | true |
+| `maxInstallments` | number | Número máximo de parcelas. Mínimo: 1, Máximo: 12. | 1 |
+| `interestFreeInstallments` | number | Parcelas sem juros. Deve ser ≤ `maxInstallments`. | 1 |
+| `interestRate` | number | Taxa de juros mensal (%). Aplicada após parcelas sem juros. | 0 |
+| `requirePhone` | boolean | Exige telefone no checkout. | true |
+| `requireAddress` | boolean | Exige endereço completo no checkout. | false |
+
+**Exemplo:**
 ```json
 {
   "settings": {
-    "pixEnabled": true,              // Habilitar PIX
-    "boletoEnabled": false,          // Habilitar Boleto
-    "creditCardEnabled": true,       // Habilitar Cartão
-    "maxInstallments": 12,           // Máximo de parcelas
-    "interestFreeInstallments": 3,  // Parcelas sem juros
-    "interestRate": 2.5,            // Taxa de juros (%)
-    "requirePhone": true,           // Exigir telefone
-    "requireAddress": true           // Exigir endereço
+    "pixEnabled": true,
+    "boletoEnabled": false,
+    "creditCardEnabled": true,
+    "maxInstallments": 12,
+    "interestFreeInstallments": 3,
+    "interestRate": 2.5,
+    "requirePhone": true,
+    "requireAddress": true
   }
 }
 ```
