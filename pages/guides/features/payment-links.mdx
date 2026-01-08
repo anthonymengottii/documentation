@@ -53,7 +53,7 @@ curl -X POST "https://upay-sistema-api.onrender.com/api/v1/payment-links" \
     "amountCents": 9900,
     "currency": "BRL",
     "status": "ACTIVE",
-    "url": "https://app.upaybr.com/checkout/produto-premium-abc123",
+    "url": "https://checkout.upaybr.com/pay/produto-premium-abc123",
     "createdAt": "2025-12-30T00:00:00.000Z",
     "updatedAt": "2025-12-30T00:00:00.000Z"
   }
@@ -256,7 +256,7 @@ curl -X DELETE "https://upay-sistema-api.onrender.com/api/v1/payment-links/{id}"
 Após criar um link, você receberá uma URL no formato:
 
 ```
-https://app.upaybr.com/checkout/{slug}
+https://checkout.upaybr.com/pay/{slug}
 ```
 
 Esta URL pode ser compartilhada diretamente com seus clientes.
