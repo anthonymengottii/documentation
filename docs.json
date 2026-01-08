@@ -95,7 +95,7 @@
       },
       {
         "tab": "Referência da API",
-        "openapi": "./api-reference/openapi.json"
+        "openapi": "https://raw.githubusercontent.com/anthonymengottii/documentation/main/api-reference/openapi.json"
       }
     ]
   },
