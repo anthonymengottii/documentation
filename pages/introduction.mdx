@@ -45,11 +45,14 @@ const response = await fetch('https://upay-sistema-api.onrender.com/api/v1/payme
     }
   })
 });
+
+const data = await response.json();
+console.log(data.data.url); // URL do checkout
 ```
 
-## API descomplicada
+## Arquitetura RESTful Simplificada
 
-Nossa API foi construída com princípios fundamentais que facilitam a integração:
+Nossa API foi construída seguindo os princípios REST com foco em simplicidade e previsibilidade:
 
 ### 1. **Baseada em intenção**: Cada endpoint representa exatamente o que você lê
 
@@ -59,12 +62,17 @@ GET  /api/v1/payment-links     // Lista links de pagamento
 GET  /api/v1/payment-links/:id // Busca um link específico
 ```
 
-### 2. **Idempotente**: Execute a mesma requisição quantas vezes precisar, sem efeitos colaterais
+### 2. **Idempotência**: Requisições seguras para retry
+
+Operações POST e PUT são idempotentes quando você fornece um `idempotencyKey`, garantindo que requisições duplicadas não criem recursos múltiplos.
 
 ```javascript
-// Seguro para executar múltiplas vezes
 await fetch('/api/v1/payment-links', {
   method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${apiKey}`,
+    'Idempotency-Key': 'unique-key-123' // Previne duplicação
+  },
   body: JSON.stringify({...})
 });
 ```
@@ -85,13 +93,13 @@ await fetch('/api/v1/payment-links', {
 }
 ```
 
-### 4. **Documentação completa**: Guias detalhados e exemplos práticos
+### 4. **Documentação completa e suporte dedicado**
 
-Para facilitar ainda mais, oferecemos:
-- Guias passo a passo
-- Exemplos em múltiplas linguagens
-- Referência completa da API
-- Suporte dedicado
+Para garantir uma integração bem-sucedida, oferecemos:
+- Guias passo a passo com casos de uso reais
+- Exemplos de código em JavaScript, Python, PHP e cURL
+- Referência completa da API com todos os parâmetros documentados
+- Suporte técnico via email: [suporte@upay.com.br](mailto:suporte@upay.com.br)
 
 ## Funcionalidades Principais
 
@@ -104,25 +112,25 @@ Para facilitar ainda mais, oferecemos:
     Crie links personalizados com múltiplos métodos de pagamento
   </Card>
   <Card
-    title="Produtos"
-    icon="box"
-    href="/pages/guides/features/products"
+    title="Autenticação"
+    icon="key"
+    href="/pages/authentication"
   >
-    Gerencie seu catálogo de produtos
+    Configure suas credenciais de API
   </Card>
   <Card
-    title="Cupons"
-    icon="ticket"
-    href="/pages/guides/features/coupons"
+    title="Tratamento de Erros"
+    icon="triangle-alert"
+    href="/pages/errors"
   >
-    Sistema completo de cupons de desconto
+    Entenda os códigos de erro e como tratá-los
   </Card>
   <Card
-    title="Webhooks"
-    icon="bell"
-    href="/pages/guides/features/webhooks"
+    title="Referência da API"
+    icon="book-open"
+    href="/pages/payment-links/reference"
   >
-    Receba notificações em tempo real
+    Documentação completa dos endpoints
   </Card>
 </CardGroup>
 
@@ -140,7 +148,7 @@ Para facilitar ainda mais, oferecemos:
 <Card
   title="Autenticação"
   icon="key"
-  href="/pages/guides/authentication"
+  href="/pages/authentication"
   horizontal
 >
   Aprenda como obter e usar suas credenciais de API.
