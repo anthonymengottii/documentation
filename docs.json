@@ -20,7 +20,8 @@
             "pages": [
               "pages/introduction",
               "pages/quickstart",
-              "pages/authentication"
+              "pages/authentication",
+              "pages/sdks"
             ]
           },
           {
