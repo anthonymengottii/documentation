@@ -29,7 +29,7 @@ Configure sua integração com a UPay Gateway API e comece a processar pagamento
     A URL base da API UPay é:
     
     ```
-    https://https://upay-sistema-api.onrender.com/
+    https://upay-sistema-api.onrender.com/
     ```
     
     Todas as requisições devem ser feitas para este endpoint, com exceção dos endpoints públicos de checkout.
@@ -43,7 +43,7 @@ Configure sua integração com a UPay Gateway API e comece a processar pagamento
     Teste sua API Key fazendo uma requisição para listar seus links de pagamento:
     
     ```bash
-    curl -X GET "https://https://upay-sistema-api.onrender.com//api/v1/payment-links" \
+    curl -X GET "https://upay-sistema-api.onrender.com//api/v1/payment-links" \
       -H "Authorization: Bearer SUA_API_KEY_AQUI" \
       -H "Content-Type: application/json"
     ```
@@ -58,7 +58,7 @@ Configure sua integração com a UPay Gateway API e comece a processar pagamento
     
     ```javascript
     const apiKey = 'SUA_API_KEY_AQUI';
-    const response = await fetch('https://https://upay-sistema-api.onrender.com//api/v1/payment-links', {
+    const response = await fetch('https://upay-sistema-api.onrender.com//api/v1/payment-links', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
@@ -84,7 +84,7 @@ Configure sua integração com a UPay Gateway API e comece a processar pagamento
     }
     
     response = requests.get(
-        'https://https://upay-sistema-api.onrender.com//api/v1/payment-links',
+        'https://upay-sistema-api.onrender.com//api/v1/payment-links',
         headers=headers
     )
     
@@ -101,7 +101,7 @@ Configure sua integração com a UPay Gateway API e comece a processar pagamento
     Agora vamos criar seu primeiro link de pagamento:
     
     ```bash
-    curl -X POST "https://https://upay-sistema-api.onrender.com//api/v1/payment-links" \
+    curl -X POST "https://upay-sistema-api.onrender.com//api/v1/payment-links" \
       -H "Authorization: Bearer SUA_API_KEY_AQUI" \
       -H "Content-Type: application/json" \
       -d '{
@@ -120,7 +120,7 @@ Configure sua integração com a UPay Gateway API e comece a processar pagamento
     Se você tiver cupons configurados, pode validá-los no checkout:
     
     ```bash
-    curl -X POST "https://https://upay-sistema-api.onrender.com//api/v1/coupons/validate" \
+    curl -X POST "https://upay-sistema-api.onrender.com//api/v1/coupons/validate" \
       -H "Content-Type: application/json" \
       -d '{
         "code": "DESCONTO10",
