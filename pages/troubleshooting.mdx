@@ -1,325 +1,388 @@
 ---
-title: Troubleshooting
-description: Soluções para problemas comuns ao integrar com a API UPay
+title: Códigos de erro
+description: Referência completa de códigos de erro da API Upay e como resolvê-los
 ---
 
-## Problemas Comuns e Soluções
+A API Upay utiliza códigos de status HTTP convencionais para indicar o sucesso ou falha de uma requisição. Códigos na faixa `2xx` indicam sucesso, códigos na faixa `4xx` indicam erros causados por informações fornecidas (ex: parâmetro obrigatório faltando, autenticação falhou, etc.), e códigos na faixa `5xx` indicam erros nos servidores da Upay.
 
-Esta página contém soluções para os problemas mais frequentes encontrados durante a integração com a API UPay.
+## Estrutura de erro
 
-## Autenticação
+Todas as respostas de erro seguem o mesmo formato:
 
-### Erro 401: "Token inválido ou expirado"
-
-**Problema**: Sua requisição está sendo rejeitada com erro de autenticação.
-
-**Causas comuns**:
-- API Key incorreta ou ausente
-- Formato do header de autenticação incorreto
-- API Key revogada ou expirada
-
-**Soluções**:
-
-1. Verifique se está usando o formato correto do header:
-```bash
-Authorization: Bearer SUA_API_KEY_AQUI
-```
-
-2. Confirme que sua API Key está ativa no Dashboard:
-   - Acesse [Dashboard UPay](https://app.upaybr.com)
-   - Navegue até **Configurações → API Keys**
-   - Verifique o status da sua chave
-
-3. Gere uma nova API Key se necessário
-
-### Erro 403: "Permissões insuficientes"
-
-**Problema**: Você não tem permissão para acessar determinado recurso.
-
-**Solução**: Verifique as permissões da sua API Key no Dashboard e solicite as permissões necessárias.
-
-## Links de Pagamento
-
-### Link de pagamento não está sendo criado
-
-**Problema**: Requisição POST retorna erro 400.
-
-**Verificações**:
-
-1. **Campos obrigatórios**: Certifique-se de incluir todos os campos necessários:
 ```json
 {
-  "title": "Nome do produto",
-  "amountCents": 9900,
-  "settings": {
-    "pixEnabled": true
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Erro de validação nos dados fornecidos",
+    "details": [
+      {
+        "field": "amount",
+        "message": "O valor deve ser maior que zero"
+      }
+    ]
   }
 }
 ```
 
-2. **Valor mínimo**: O valor deve ser no mínimo R$ 1,00 (100 centavos)
+### Campos da resposta
 
-3. **Formato correto**: Use `amountCents` (inteiro) ao invés de `amount` (decimal)
+- **code**: Código único identificando o tipo de erro
+- **message**: Mensagem descritiva do erro em português
+- **details**: Array com detalhes adicionais (opcional, presente em erros de validação)
 
-### Slug já existe
+## Códigos de status HTTP
 
-**Problema**: Erro 409 ao criar link com slug duplicado.
+### 2xx - Sucesso
 
-**Solução**: Use um slug único ou deixe o sistema gerar automaticamente:
-```json
-{
-  "title": "Meu Produto",
-  "slug": "meu-produto-v2"  // Adicione sufixo único
-}
-```
+<ResponseField name="200 OK" type="success">
+  A requisição foi bem-sucedida. O corpo da resposta contém os dados solicitados.
+</ResponseField>
 
-### Link não aparece no checkout
+<ResponseField name="201 Created" type="success">
+  O recurso foi criado com sucesso. O corpo da resposta contém o recurso criado.
+</ResponseField>
 
-**Problema**: URL do checkout retorna 404.
+<ResponseField name="204 No Content" type="success">
+  A requisição foi bem-sucedida, mas não há conteúdo para retornar (comum em operações DELETE).
+</ResponseField>
 
-**Verificações**:
-1. Confirme que o link está com status `ACTIVE`
-2. Verifique se a URL está correta: `https://app.upaybr.com/checkout/{slug}`
-3. Aguarde alguns segundos após a criação (propagação de cache)
+### 4xx - Erros do cliente
 
-## Pagamentos
+<ResponseField name="400 Bad Request" type="error">
+  A requisição não pôde ser processada devido a sintaxe inválida ou parâmetros incorretos.
+  
+  **Códigos comuns:**
+  - `VALIDATION_ERROR`: Dados de entrada inválidos
+  - `INVALID_REQUEST`: Formato da requisição inválido
+  - `MISSING_PARAMETER`: Parâmetro obrigatório ausente
+</ResponseField>
 
-### PIX não está sendo gerado
+<ResponseField name="401 Unauthorized" type="error">
+  A autenticação falhou ou não foi fornecida. Verifique sua API Key.
+  
+  **Códigos comuns:**
+  - `AUTHENTICATION_FAILED`: API Key inválida ou ausente
+  - `INVALID_API_KEY`: API Key não encontrada ou revogada
+  - `API_KEY_EXPIRED`: API Key expirada
+</ResponseField>
 
-**Problema**: Checkout não exibe opção PIX.
+<ResponseField name="403 Forbidden" type="error">
+  Você não tem permissão para acessar este recurso.
+  
+  **Códigos comuns:**
+  - `INSUFFICIENT_PERMISSIONS`: Permissões insuficientes
+  - `RESOURCE_ACCESS_DENIED`: Acesso negado ao recurso
+</ResponseField>
 
-**Causas comuns**:
-- PIX não habilitado nas configurações do link
-- Conta não verificada (KYC pendente)
+<ResponseField name="404 Not Found" type="error">
+  O recurso solicitado não foi encontrado.
+  
+  **Códigos comuns:**
+  - `RESOURCE_NOT_FOUND`: Recurso não existe
+  - `PAYMENT_LINK_NOT_FOUND`: Link de pagamento não encontrado
+  - `TRANSACTION_NOT_FOUND`: Transação não encontrada
+  - `PRODUCT_NOT_FOUND`: Produto não encontrado
+</ResponseField>
 
-**Soluções**:
+<ResponseField name="409 Conflict" type="error">
+  A requisição conflita com o estado atual do recurso.
+  
+  **Códigos comuns:**
+  - `DUPLICATE_RESOURCE`: Recurso duplicado
+  - `SLUG_ALREADY_EXISTS`: Slug já está em uso
+  - `CONFLICT`: Conflito de estado
+</ResponseField>
 
-1. Verifique as configurações do link:
-```json
-{
-  "settings": {
-    "pixEnabled": true
+<ResponseField name="422 Unprocessable Entity" type="error">
+  A requisição está bem formada, mas não pode ser processada devido a erros semânticos.
+  
+  **Códigos comuns:**
+  - `BUSINESS_RULE_VIOLATION`: Violação de regra de negócio
+  - `INVALID_STATE_TRANSITION`: Transição de estado inválida
+  - `INSUFFICIENT_BALANCE`: Saldo insuficiente
+</ResponseField>
+
+<ResponseField name="429 Too Many Requests" type="error">
+  Você excedeu o limite de requisições. Aguarde antes de tentar novamente.
+  
+  **Códigos comuns:**
+  - `RATE_LIMIT_EXCEEDED`: Limite de taxa excedido
+  
+  **Headers de resposta:**
+  - `X-RateLimit-Limit`: Limite total de requisições
+  - `X-RateLimit-Remaining`: Requisições restantes
+  - `X-RateLimit-Reset`: Timestamp quando o limite será resetado
+</ResponseField>
+
+### 5xx - Erros do servidor
+
+<ResponseField name="500 Internal Server Error" type="error">
+  Ocorreu um erro interno no servidor. Entre em contato com o suporte se o problema persistir.
+  
+  **Códigos comuns:**
+  - `INTERNAL_ERROR`: Erro interno do servidor
+  - `UNEXPECTED_ERROR`: Erro inesperado
+</ResponseField>
+
+<ResponseField name="502 Bad Gateway" type="error">
+  O servidor recebeu uma resposta inválida de um servidor upstream.
+  
+  **Códigos comuns:**
+  - `GATEWAY_ERROR`: Erro no gateway
+  - `PAYMENT_PROVIDER_ERROR`: Erro no provedor de pagamento
+</ResponseField>
+
+<ResponseField name="503 Service Unavailable" type="error">
+  O serviço está temporariamente indisponível. Tente novamente mais tarde.
+  
+  **Códigos comuns:**
+  - `SERVICE_UNAVAILABLE`: Serviço indisponível
+  - `MAINTENANCE_MODE`: Sistema em manutenção
+</ResponseField>
+
+<ResponseField name="504 Gateway Timeout" type="error">
+  O servidor não recebeu resposta a tempo de um servidor upstream.
+  
+  **Códigos comuns:**
+  - `GATEWAY_TIMEOUT`: Timeout no gateway
+  - `REQUEST_TIMEOUT`: Timeout na requisição
+</ResponseField>
+
+## Códigos de erro específicos
+
+### Erros de validação
+
+| Código | Descrição | Solução |
+|--------|-----------|---------|
+| `VALIDATION_ERROR` | Dados de entrada inválidos | Verifique os campos no array `details` |
+| `INVALID_EMAIL` | Formato de email inválido | Forneça um email válido |
+| `INVALID_PHONE` | Formato de telefone inválido | Use o formato: +5511999999999 |
+| `INVALID_CPF` | CPF inválido | Forneça um CPF válido (apenas números) |
+| `INVALID_CNPJ` | CNPJ inválido | Forneça um CNPJ válido (apenas números) |
+| `INVALID_AMOUNT` | Valor inválido | O valor deve ser maior que zero |
+| `INVALID_DATE` | Data inválida | Use formato ISO 8601 |
+| `INVALID_ENUM_VALUE` | Valor de enum inválido | Use um dos valores permitidos |
+
+### Erros de autenticação
+
+| Código | Descrição | Solução |
+|--------|-----------|---------|
+| `AUTHENTICATION_FAILED` | Falha na autenticação | Verifique sua API Key |
+| `INVALID_API_KEY` | API Key inválida | Gere uma nova API Key no dashboard |
+| `API_KEY_EXPIRED` | API Key expirada | Gere uma nova API Key |
+| `MISSING_API_KEY` | API Key não fornecida | Inclua o header `Authorization: Bearer YOUR_API_KEY` |
+
+### Erros de recursos
+
+| Código | Descrição | Solução |
+|--------|-----------|---------|
+| `RESOURCE_NOT_FOUND` | Recurso não encontrado | Verifique o ID do recurso |
+| `PAYMENT_LINK_NOT_FOUND` | Link de pagamento não encontrado | Verifique o slug ou ID do link |
+| `TRANSACTION_NOT_FOUND` | Transação não encontrada | Verifique o ID da transação |
+| `PRODUCT_NOT_FOUND` | Produto não encontrado | Verifique o ID do produto |
+| `CUSTOMER_NOT_FOUND` | Cliente não encontrado | Verifique o ID do cliente |
+| `COUPON_NOT_FOUND` | Cupom não encontrado | Verifique o código do cupom |
+
+### Erros de negócio
+
+| Código | Descrição | Solução |
+|--------|-----------|---------|
+| `SLUG_ALREADY_EXISTS` | Slug já está em uso | Use um slug diferente |
+| `COUPON_EXPIRED` | Cupom expirado | Use um cupom válido |
+| `COUPON_LIMIT_REACHED` | Limite de uso do cupom atingido | Use outro cupom |
+| `INSUFFICIENT_STOCK` | Estoque insuficiente | Reduza a quantidade ou aguarde reposição |
+| `PAYMENT_LINK_EXPIRED` | Link de pagamento expirado | Crie um novo link |
+| `PAYMENT_LINK_INACTIVE` | Link de pagamento inativo | Ative o link ou crie um novo |
+| `INVALID_PAYMENT_METHOD` | Método de pagamento inválido | Use: PIX, CREDIT_CARD, DEBIT_CARD ou BOLETO |
+| `INSUFFICIENT_BALANCE` | Saldo insuficiente | Aguarde processamento de transações |
+
+### Erros de webhook
+
+| Código | Descrição | Solução |
+|--------|-----------|---------|
+| `INVALID_WEBHOOK_SIGNATURE` | Assinatura do webhook inválida | Verifique o secret do webhook |
+| `WEBHOOK_DELIVERY_FAILED` | Falha ao entregar webhook | Verifique se sua URL está acessível |
+| `WEBHOOK_TIMEOUT` | Timeout ao entregar webhook | Sua URL deve responder em até 5 segundos |
+
+## Exemplos de tratamento
+
+### JavaScript/TypeScript
+
+```typescript
+import { UpayClient, UpayValidationError, UpayAuthenticationError } from '@upay/upay-js';
+
+const upay = new UpayClient({ apiKey: 'sua_api_key' });
+
+try {
+  const link = await upay.paymentLinks.create({
+    title: 'Produto',
+    amount: 10000,
+  });
+} catch (error) {
+  if (error instanceof UpayValidationError) {
+    console.error('Erro de validação:', error.message);
+    console.error('Detalhes:', error.details);
+  } else if (error instanceof UpayAuthenticationError) {
+    console.error('Erro de autenticação:', error.message);
+  } else {
+    console.error('Erro desconhecido:', error);
   }
 }
 ```
 
-2. Complete o processo de KYC no Dashboard
+### Python
 
-### Pagamento com cartão falha
+```python
+from upay import UpayClient, UpayValidationError, UpayAuthenticationError
 
-**Problema**: Transação com cartão é recusada.
+upay = UpayClient(api_key="sua_api_key")
 
-**Causas comuns**:
-- Dados do cartão incorretos
-- Cartão sem limite
-- Cartão bloqueado pelo banco emissor
-- Falha na validação de segurança (CVV, 3DS)
+try:
+    link = upay.payment_links.create({
+        "title": "Produto",
+        "amount": 10000
+    })
+except UpayValidationError as e:
+    print(f"Erro de validação: {e.message}")
+    print(f"Detalhes: {e.details}")
+except UpayAuthenticationError as e:
+    print(f"Erro de autenticação: {e.message}")
+except Exception as e:
+    print(f"Erro desconhecido: {e}")
+```
 
-**Soluções**:
-1. Solicite ao cliente que verifique os dados do cartão
-2. Tente com outro cartão
-3. Entre em contato com o banco emissor
+### PHP
 
-### Webhook não está sendo recebido
+```php
+use Upay\UpayClient;
+use Upay\Utils\Exceptions\UpayValidationError;
+use Upay\Utils\Exceptions\UpayAuthenticationError;
 
-**Problema**: Seu servidor não recebe notificações de webhook.
+$upay = new UpayClient(apiKey: "sua_api_key");
 
-**Verificações**:
+try {
+    $link = $upay->paymentLinks->create([
+        'title' => 'Produto',
+        'amount' => 10000
+    ]);
+} catch (UpayValidationError $e) {
+    echo "Erro de validação: " . $e->getMessage() . "\n";
+    print_r($e->details);
+} catch (UpayAuthenticationError $e) {
+    echo "Erro de autenticação: " . $e->getMessage() . "\n";
+} catch (Exception $e) {
+    echo "Erro desconhecido: " . $e->getMessage() . "\n";
+}
+```
 
-1. **URL acessível**: Certifique-se de que sua URL é pública e acessível:
+### cURL
+
 ```bash
-curl -X POST https://sua-url.com/webhook \
+# Exemplo de resposta de erro
+curl -X POST https://upay-sistema-api.onrender.com/api/v1/payment-links \
+  -H "Authorization: Bearer sua_api_key" \
   -H "Content-Type: application/json" \
-  -d '{"test": true}'
-```
+  -d '{
+    "title": "Produto",
+    "amount": -100
+  }'
 
-2. **Resposta rápida**: Seu endpoint deve responder em até 5 segundos com status 200
-
-3. **HTTPS obrigatório**: URLs de webhook devem usar HTTPS em produção
-
-4. **Verifique logs**: Acesse o Dashboard → Webhooks → Logs para ver tentativas de entrega
-
-## Performance
-
-### Requisições lentas
-
-**Problema**: API está demorando para responder.
-
-**Soluções**:
-
-1. **Use paginação**: Limite a quantidade de resultados:
-```bash
-GET /api/v1/payment-links?limit=20&offset=0
-```
-
-2. **Implemente cache**: Armazene dados que não mudam frequentemente
-
-3. **Requisições paralelas**: Use Promise.all() para múltiplas requisições independentes:
-```javascript
-const [links, transactions] = await Promise.all([
-  fetch('/api/v1/payment-links'),
-  fetch('/api/v1/transactions')
-]);
-```
-
-### Rate limit excedido (429)
-
-**Problema**: Muitas requisições em curto período.
-
-**Limites**:
-- Endpoints públicos: 100 req/min por IP
-- Endpoints autenticados: 1000 req/min por API Key
-
-**Soluções**:
-
-1. **Implemente retry com backoff**:
-```javascript
-async function fetchWithRetry(url, options, maxRetries = 3) {
-  for (let i = 0; i < maxRetries; i++) {
-    const response = await fetch(url, options);
-    
-    if (response.status === 429) {
-      const retryAfter = response.headers.get('Retry-After') || Math.pow(2, i);
-      await new Promise(resolve => setTimeout(resolve, retryAfter * 1000));
-      continue;
-    }
-    
-    return response;
+# Resposta (400 Bad Request):
+{
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Erro de validação nos dados fornecidos",
+    "details": [
+      {
+        "field": "amount",
+        "message": "O valor deve ser maior que zero"
+      }
+    ]
   }
 }
 ```
 
-2. **Monitore headers de rate limit**:
-```javascript
+## Boas práticas
+
+### 1. Sempre trate erros
+
+Nunca assuma que uma requisição será bem-sucedida. Sempre implemente tratamento de erros adequado.
+
+### 2. Use retry com backoff exponencial
+
+Para erros `5xx` e `429`, implemente retry com backoff exponencial:
+
+```typescript
+async function retryWithBackoff(fn: () => Promise<any>, maxRetries = 3) {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      return await fn();
+    } catch (error) {
+      if (error.status >= 500 || error.status === 429) {
+        const delay = Math.pow(2, i) * 1000; // 1s, 2s, 4s
+        await new Promise(resolve => setTimeout(resolve, delay));
+      } else {
+        throw error;
+      }
+    }
+  }
+  throw new Error('Max retries exceeded');
+}
+```
+
+### 3. Monitore rate limits
+
+Verifique os headers de rate limit e ajuste sua taxa de requisições:
+
+```typescript
+const response = await fetch('https://upay-sistema-api.onrender.com/api/v1/payment-links', {
+  headers: { 'Authorization': `Bearer ${apiKey}` }
+});
+
 const remaining = response.headers.get('X-RateLimit-Remaining');
 const reset = response.headers.get('X-RateLimit-Reset');
+
+if (remaining < 10) {
+  console.warn('Próximo do limite de rate limit');
+}
 ```
 
-## Ambiente de Desenvolvimento
+### 4. Log erros para análise
 
-### Testando sem processar pagamentos reais
+Mantenha logs detalhados de erros para facilitar debugging:
 
-**Solução**: Use valores de teste específicos:
-
-**Cartões de teste**:
+```typescript
+catch (error) {
+  console.error({
+    timestamp: new Date().toISOString(),
+    errorCode: error.code,
+    message: error.message,
+    details: error.details,
+    requestId: error.requestId, // Se disponível
+  });
+}
 ```
-Aprovado: 4111 1111 1111 1111
-Recusado: 4000 0000 0000 0002
-CVV: 123
-Validade: qualquer data futura
-```
 
-**PIX de teste**: Em ambiente de desenvolvimento, o QR Code gerado não processa pagamento real.
+### 5. Valide dados antes de enviar
 
-### CORS bloqueando requisições
+Valide dados no cliente antes de fazer requisições para reduzir erros:
 
-**Problema**: Erro de CORS ao fazer requisições do navegador.
-
-**Solução**: A API UPay permite CORS de qualquer origem. Se ainda tiver problemas:
-
-1. Verifique se está incluindo os headers corretos:
-```javascript
-fetch('https://upay-sistema-api.onrender.com/api/v1/payment-links', {
-  method: 'GET',
-  headers: {
-    'Authorization': `Bearer ${apiKey}`,
-    'Content-Type': 'application/json'
+```typescript
+function validatePaymentLink(data: any) {
+  if (!data.title || data.title.length < 3) {
+    throw new Error('Título deve ter pelo menos 3 caracteres');
   }
-});
+  if (!data.amount || data.amount <= 0) {
+    throw new Error('Valor deve ser maior que zero');
+  }
+  // ... outras validações
+}
 ```
 
-2. Para requisições sensíveis, use um proxy no seu backend
+## Suporte
 
-## Erros Específicos
+Se você encontrar um erro não documentado ou precisar de ajuda:
 
-### "Invalid JSON"
-
-**Problema**: Corpo da requisição não é um JSON válido.
-
-**Solução**: Verifique a sintaxe do JSON:
-```javascript
-// ❌ Errado
-body: "{title: 'Produto'}"
-
-// ✅ Correto
-body: JSON.stringify({ title: 'Produto' })
-```
-
-### "CPF/CNPJ inválido"
-
-**Problema**: Documento fornecido não passa na validação.
-
-**Solução**: 
-- Use apenas números (sem pontos ou traços)
-- Verifique o dígito verificador
-- CPF: 11 dígitos
-- CNPJ: 14 dígitos
-
-```javascript
-// ❌ Errado
-cpf: "123.456.789-00"
-
-// ✅ Correto
-cpf: "12345678900"
-```
-
-### "Amount must be greater than 0"
-
-**Problema**: Valor do pagamento é inválido.
-
-**Solução**: Use valores em centavos (inteiro):
-```javascript
-// ❌ Errado
-amountCents: 99.90
-
-// ✅ Correto
-amountCents: 9990  // R$ 99,90
-```
-
-## Ainda precisa de ajuda?
-
-Se você não encontrou a solução para seu problema:
-
-<CardGroup cols={2}>
-  <Card title="Documentação" icon="book-open" href="/pages/introduction">
-    Consulte a documentação completa
-  </Card>
-  <Card title="Códigos de Erro" icon="triangle-alert" href="/pages/errors">
-    Veja todos os códigos de erro
-  </Card>
-  <Card title="Suporte por Email" icon="envelope" href="mailto:suporte@upay.com.br">
-    Entre em contato: suporte@upay.com.br
-  </Card>
-  <Card title="GitHub Issues" icon="github" href="https://github.com/anthonymengottii/upay-sdks/issues">
-    Reporte bugs ou solicite features
-  </Card>
-</CardGroup>
-
-## Dicas para reportar problemas
-
-Ao entrar em contato com o suporte, inclua:
-
-1. **Descrição clara do problema**
-2. **Código de exemplo** que reproduz o erro
-3. **Resposta completa da API** (incluindo headers)
-4. **Request ID** (se disponível no header `X-Request-ID`)
-5. **Timestamp** de quando o erro ocorreu
-6. **Ambiente** (produção ou desenvolvimento)
-
-Exemplo de relatório:
-```
-Problema: Erro 500 ao criar link de pagamento
-
-Request:
-POST /api/v1/payment-links
-Headers: Authorization: Bearer sk_***
-Body: {"title": "Produto", "amountCents": 9900}
-
-Response:
-Status: 500
-Body: {"error": "Internal Server Error"}
-Headers: X-Request-ID: req_abc123
-
-Timestamp: 2024-01-15T10:30:00Z
-Ambiente: Produção
-```
+- Consulte a [página de troubleshooting](/troubleshooting)
+- Entre em contato: suporte@upaybr.com
+- Abra uma issue no [GitHub](https://github.com/anthonymengottii/upay-sdks/issues)
