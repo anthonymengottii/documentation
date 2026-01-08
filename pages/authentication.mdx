@@ -172,32 +172,107 @@ api_key = os.getenv('UPAY_API_KEY')
 
 ## Tratamento de erros
 
+A API retorna códigos HTTP padrão para indicar sucesso ou falha das requisições.
+
+### Códigos de status HTTP
+
+| Código | Descrição |
+|--------|-----------|
+| `200` | Requisição bem-sucedida |
+| `201` | Recurso criado com sucesso |
+| `400` | Requisição inválida (erro de validação) |
+| `401` | Não autenticado (API Key inválida ou ausente) |
+| `403` | Não autorizado (sem permissão para o recurso) |
+| `404` | Recurso não encontrado |
+| `429` | Muitas requisições (rate limit excedido) |
+| `500` | Erro interno do servidor |
+
 ### 401 Unauthorized
 
 ```json
 {
   "error": "Unauthorized",
-  "message": "Token inválido ou expirado"
+  "message": "Token inválido ou expirado",
+  "statusCode": 401
 }
 ```
+
+**Causas comuns:**
+- API Key incorreta ou ausente
+- Formato do header de autenticação incorreto
+- API Key revogada ou expirada
 
 **Soluções:**
 - Verifique se a API Key está correta
 - Verifique se está usando o formato `Bearer {api_key}`
-- Verifique se a API Key não foi revogada
+- Verifique se a API Key não foi revogada no dashboard
 
 ### 403 Forbidden
 
 ```json
 {
   "error": "Forbidden",
-  "message": "Você não tem permissão para acessar este recurso"
+  "message": "Você não tem permissão para acessar este recurso",
+  "statusCode": 403
 }
 ```
+
+**Causas comuns:**
+- API Key sem as permissões necessárias
+- Tentativa de acessar recurso de outro usuário
 
 **Soluções:**
 - Verifique se sua API Key tem as permissões necessárias
 - Entre em contato com o suporte para solicitar permissões adicionais
+
+### 400 Bad Request
+
+```json
+{
+  "error": "Validation Error",
+  "message": "Dados inválidos",
+  "statusCode": 400,
+  "details": [
+    {
+      "field": "amount",
+      "message": "O valor deve ser maior que 0"
+    },
+    {
+      "field": "currency",
+      "message": "Moeda inválida. Use BRL"
+    }
+  ]
+}
+```
+
+**Causas comuns:**
+- Campos obrigatórios ausentes
+- Valores fora do intervalo permitido
+- Formato de dados incorreto
+
+**Soluções:**
+- Verifique a documentação do endpoint para campos obrigatórios
+- Valide os tipos e formatos dos dados antes de enviar
+
+### 429 Too Many Requests
+
+```json
+{
+  "error": "Rate Limit Exceeded",
+  "message": "Você excedeu o limite de requisições",
+  "statusCode": 429,
+  "retryAfter": 60
+}
+```
+
+**Limites de rate:**
+- **Endpoints públicos**: 100 requisições por minuto por IP
+- **Endpoints autenticados**: 1000 requisições por minuto por API Key
+
+**Soluções:**
+- Implemente exponential backoff nas suas requisições
+- Use o header `Retry-After` para saber quando tentar novamente
+- Considere fazer cache de dados que não mudam frequentemente
 
 ## Próximos passos
 
