@@ -208,7 +208,7 @@ curl -X GET "https://upay-sistema-api.onrender.com/api/v1/payment-links/{id}" \
   -H "Authorization: Bearer SUA_API_KEY"
 ```
 
-## ✏️ Atualizando um Link
+## Atualizando um link
 
 ```bash
 curl -X PATCH "https://upay-sistema-api.onrender.com/api/v1/payment-links/{id}" \
@@ -224,7 +224,7 @@ curl -X PATCH "https://upay-sistema-api.onrender.com/api/v1/payment-links/{id}" 
   Você pode atualizar apenas os campos que desejar. Campos não enviados permanecerão inalterados.
 </Note>
 
-## Deletando um link
+## 🗑️ Deletando um Link
 
 ```bash
 curl -X DELETE "https://upay-sistema-api.onrender.com/api/v1/payment-links/{id}" \
@@ -235,7 +235,7 @@ curl -X DELETE "https://upay-sistema-api.onrender.com/api/v1/payment-links/{id}"
   A exclusão é permanente e não pode ser desfeita. Certifique-se de que realmente deseja deletar o link.
 </Warning>
 
-## 🔗 URL do Checkout
+## URL do checkout
 
 Após criar um link, você receberá uma URL no formato:
 
