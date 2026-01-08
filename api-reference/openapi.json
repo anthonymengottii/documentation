@@ -1405,129 +1405,128 @@
           }
         }
       },
-          "post": {
-            "tags": [
-              "Clientes"
-            ],
-            "summary": "Criar cliente",
-            "description": "Cria um novo cliente vinculado ao usuário autenticado",
-            "security": [
-              {
-                "apiKeyAuth": []
-              }
-            ],
-            "requestBody": {
-              "required": true,
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/CreateClientRequest"
-                  }
-                }
-              }
-            },
-            "responses": {
-              "201": {
-                "description": "Cliente criado com sucesso",
-                "content": {
-                  "application/json": {
-                    "schema": {
-                      "type": "object",
-                      "properties": {
-                        "message": {
-                          "type": "string"
-                        },
-                        "client": {
-                          "$ref": "#/components/schemas/Client"
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              "400": {
-                "$ref": "#/components/responses/BadRequest"
-              },
-              "401": {
-                "$ref": "#/components/responses/Unauthorized"
-              },
-              "403": {
-                "$ref": "#/components/responses/Forbidden"
-              },
-              "409": {
-                "description": "Email já existe",
-                "content": {
-                  "application/json": {
-                    "schema": {
-                      "type": "object",
-                      "properties": {
-                        "message": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
+      "post": {
+        "tags": [
+          "Clientes"
+        ],
+        "summary": "Criar cliente",
+        "description": "Cria um novo cliente vinculado ao usuário autenticado",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateClientRequest"
               }
             }
           }
         },
-        "/api/v1/clients/{id}": {
-          "get": {
-            "tags": [
-              "Clientes"
-            ],
-            "summary": "Obter cliente",
-            "description": "Obtém detalhes de um cliente específico",
-            "security": [
-              {
-                "apiKeyAuth": []
-              }
-            ],
-            "parameters": [
-              {
-                "name": "id",
-                "in": "path",
-                "required": true,
-                "description": "ID do cliente",
+        "responses": {
+          "201": {
+            "description": "Cliente criado com sucesso",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "uuid"
-                }
-              }
-            ],
-            "responses": {
-              "200": {
-                "description": "Cliente obtido com sucesso",
-                "content": {
-                  "application/json": {
-                    "schema": {
-                      "type": "object",
-                      "properties": {
-                        "message": {
-                          "type": "string"
-                        },
-                        "client": {
-                          "$ref": "#/components/schemas/Client"
-                        }
-                      }
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "client": {
+                      "$ref": "#/components/schemas/Client"
                     }
                   }
                 }
-              },
-              "401": {
-                "$ref": "#/components/responses/Unauthorized"
-              },
-              "403": {
-                "$ref": "#/components/responses/Forbidden"
-              },
-              "404": {
-                "$ref": "#/components/responses/NotFound"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "409": {
+            "description": "Email já existe",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
               }
             }
           }
         }
-      },
+      }
+    },
+    "/api/v1/clients/{id}": {
+      "get": {
+        "tags": [
+          "Clientes"
+        ],
+        "summary": "Obter cliente",
+        "description": "Obtém detalhes de um cliente específico",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID do cliente",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cliente obtido com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "client": {
+                      "$ref": "#/components/schemas/Client"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
     "/api/v1/webhooks": {
       "get": {
         "tags": [
