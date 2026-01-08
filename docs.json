@@ -93,8 +93,13 @@
           }
         ]
       },
+<<<<<<< Updated upstream
      {
         "tab": "Referência da API",
+=======
+      {
+        "tab": "Endpoints",
+>>>>>>> Stashed changes
         "openapi": "api-reference/openapi.json"
       }
     ]
@@ -112,7 +117,7 @@
     ],
     "primary": {
       "type": "button",
-      "label": "Acessar Dashboard",
+      "label": "Dashboard",
       "href": "https://app.upaybr.com"
     }
   },
