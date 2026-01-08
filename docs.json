@@ -94,13 +94,8 @@
         ]
       },
       {
-        "tab": "Referência da API",
-        "groups": [
-          {
-            "group": "Endpoints",
-            "openapi": "api-reference/openapi"
-          }
-        ]
+        "tab": "Endpoints",
+        "openapi": "api-reference/openapi.json"
       }
     ]
   },
