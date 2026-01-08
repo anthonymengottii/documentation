@@ -1564,10 +1564,10 @@
               "properties": {
                 "message": {"type": "string"}
               }
+            }
           }
         }
-      }
-    },
+      },
       "NotFound": {
         "description": "Recurso não encontrado",
         "content": {
@@ -1583,5 +1583,5 @@
       }
     }
   }
-}  }}
+}
 
