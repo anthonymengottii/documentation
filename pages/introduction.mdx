@@ -45,6 +45,9 @@ const response = await fetch('https://upay-sistema-api.onrender.com/api/v1/payme
     }
   })
 });
+
+const data = await response.json();
+console.log(data.data.url); // URL do checkout
 ```
 
 ## API descomplicada
