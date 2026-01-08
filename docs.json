@@ -74,9 +74,7 @@
               "pages/customers/reference",
               "pages/customers/create",
               "pages/customers/list",
-              "pages/customers/get",
-              "pages/customers/update",
-              "pages/customers/delete"
+              "pages/customers/get"
             ]
           },
           {
