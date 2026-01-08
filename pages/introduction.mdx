@@ -1,6 +1,6 @@
 ---
 title: "Introdução"
-description: "Comece aqui e aprenda sobre a UPay Gateway API"
+description: "API completa de pagamentos com PIX, cartão e boleto. Crie links de pagamento, gerencie transações e integre webhooks facilmente"
 ---
 
 <Hero
@@ -20,17 +20,17 @@ Nesta documentação você encontrará tudo o que precisa para integrar com a AP
 
 A UPay Gateway API é uma plataforma completa de pagamentos que surgiu da necessidade de oferecer uma solução white-label robusta e flexível para processamento de transações. Diferente de outras plataformas que são excessivamente complexas:
 
-- ✅ **API simples e intuitiva**: Endpoints claros e bem documentados
-- ✅ **Múltiplos métodos de pagamento**: PIX, Cartão de Crédito/Débito e Boleto
-- ✅ **Links de pagamento personalizados**: Crie links únicos com configurações flexíveis
-- ✅ **Gestão completa**: Produtos, cupons, webhooks e muito mais
-- ✅ **Dashboard administrativo**: Controle total sobre transações e relatórios
+- **API simples e intuitiva**: Endpoints claros e bem documentados
+- **Múltiplos métodos de pagamento**: PIX, Cartão de Crédito/Débito e Boleto
+- **Links de pagamento personalizados**: Crie links únicos com configurações flexíveis
+- **Gestão completa**: Produtos, cupons, webhooks e muito mais
+- **Dashboard administrativo**: Controle total sobre transações e relatórios
 
 Veja como é fácil:
 
 ```javascript
 // Exemplo de criação de link de pagamento
-const response = await fetch('https://upay-sistema-api.onrender.com//api/v1/payment-links', {
+const response = await fetch('https://upay-sistema-api.onrender.com/api/v1/payment-links', {
   method: 'POST',
   headers: {
     'Authorization': `Bearer ${apiKey}`,
@@ -88,10 +88,10 @@ await fetch('/api/v1/payment-links', {
 ### 4. **Documentação completa**: Guias detalhados e exemplos práticos
 
 Para facilitar ainda mais, oferecemos:
-- ✅ Guias passo a passo
-- ✅ Exemplos em múltiplas linguagens
-- ✅ Referência completa da API
-- ✅ Suporte dedicado
+- Guias passo a passo
+- Exemplos em múltiplas linguagens
+- Referência completa da API
+- Suporte dedicado
 
 ## Funcionalidades Principais
 

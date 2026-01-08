@@ -20,7 +20,18 @@
             "pages": [
               "pages/introduction",
               "pages/quickstart",
-              "pages/authentication"
+              "pages/authentication",
+              "pages/sdks"
+            ]
+          },
+          {
+            "group": "Recursos",
+            "icon": "lightbulb",
+            "pages": [
+              "pages/errors",
+              "pages/troubleshooting",
+              "pages/glossary",
+              "pages/changelog"
             ]
           },
           {

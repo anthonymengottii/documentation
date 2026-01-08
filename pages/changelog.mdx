@@ -1,0 +1,287 @@
+---
+title: Changelog
+description: Histórico de mudanças e atualizações da API Upay
+---
+
+Acompanhe todas as mudanças, melhorias e correções da API Upay. Mantemos compatibilidade retroativa sempre que possível e comunicamos breaking changes com antecedência.
+
+<Note>
+  **Versionamento:** A API Upay segue o padrão de versionamento semântico (SemVer). A versão atual é **v1**.
+</Note>
+
+## 2024
+
+### Janeiro 2024
+
+#### v1.4.0 - 15 de janeiro de 2024
+
+<AccordionGroup>
+  <Accordion title="✨ Novos recursos">
+    - **SDKs oficiais**: Lançamento dos SDKs para JavaScript/TypeScript, Python, PHP e Java
+    - **Validação de webhooks**: Novos utilitários para validar assinaturas de webhooks em todos os SDKs
+    - **Meta Pixel**: Suporte para integração com Meta Pixel em links de pagamento
+    - **Parcelamento**: Configuração de parcelamento até 12x em links de pagamento
+  </Accordion>
+
+  <Accordion title="🔧 Melhorias">
+    - Melhor tratamento de erros com códigos específicos
+    - Documentação expandida com exemplos em múltiplas linguagens
+    - Performance otimizada nas listagens com paginação
+    - Headers de rate limit mais informativos
+  </Accordion>
+
+  <Accordion title="🐛 Correções">
+    - Corrigido problema de timezone em datas de expiração
+    - Corrigido cálculo de desconto com cupons percentuais
+    - Corrigido validação de CPF/CNPJ em alguns casos específicos
+  </Accordion>
+</AccordionGroup>
+
+---
+
+### Dezembro 2023
+
+#### v1.3.0 - 20 de dezembro de 2023
+
+<AccordionGroup>
+  <Accordion title="✨ Novos recursos">
+    - **Webhooks**: Sistema completo de webhooks para notificações em tempo real
+    - **Eventos suportados**: `transaction.paid`, `transaction.failed`, `transaction.refunded`, `payment_link.expired`
+    - **Assinaturas de webhook**: Gerenciamento de subscriptions via API
+    - **Retry automático**: Sistema de retry para webhooks que falharem
+  </Accordion>
+
+  <Accordion title="🔧 Melhorias">
+    - Adicionado campo `metadata` em transações para dados customizados
+    - Melhor validação de dados de entrada
+    - Mensagens de erro mais descritivas
+  </Accordion>
+</AccordionGroup>
+
+---
+
+#### v1.2.0 - 5 de dezembro de 2023
+
+<AccordionGroup>
+  <Accordion title="✨ Novos recursos">
+    - **Sistema de cupons**: Criação e validação de cupons de desconto
+    - **Tipos de desconto**: Suporte para desconto fixo e percentual
+    - **Limites de uso**: Controle de uso por cupom e por usuário
+    - **Produtos aplicáveis**: Restrição de cupons a produtos específicos
+  </Accordion>
+
+  <Accordion title="🔧 Melhorias">
+    - Adicionado campo `expiresAt` em links de pagamento
+    - Suporte para URLs de redirecionamento customizadas
+    - Melhor tratamento de estoque em links de pagamento
+  </Accordion>
+</AccordionGroup>
+
+---
+
+### Novembro 2023
+
+#### v1.1.0 - 15 de novembro de 2023
+
+<AccordionGroup>
+  <Accordion title="✨ Novos recursos">
+    - **Gestão de produtos**: Endpoints para criar e gerenciar produtos
+    - **Catálogo de produtos**: Associação de produtos a links de pagamento
+    - **Controle de estoque**: Gestão automática de estoque por produto
+    - **Imagens de produtos**: Suporte para múltiplas imagens por produto
+  </Accordion>
+
+  <Accordion title="🔧 Melhorias">
+    - Paginação melhorada com metadados completos
+    - Filtros avançados em listagens
+    - Ordenação customizável em queries
+  </Accordion>
+
+  <Accordion title="🐛 Correções">
+    - Corrigido problema de encoding em slugs com caracteres especiais
+    - Corrigido validação de telefone internacional
+  </Accordion>
+</AccordionGroup>
+
+---
+
+#### v1.0.1 - 1 de novembro de 2023
+
+<AccordionGroup>
+  <Accordion title="🐛 Correções">
+    - Corrigido problema de CORS em requisições OPTIONS
+    - Corrigido validação de email em alguns casos
+    - Melhorado tratamento de erros de rede
+  </Accordion>
+</AccordionGroup>
+
+---
+
+### Outubro 2023
+
+#### v1.0.0 - 15 de outubro de 2023 🎉
+
+<AccordionGroup>
+  <Accordion title="✨ Lançamento inicial">
+    - **Links de pagamento**: Criação e gestão de links de pagamento personalizados
+    - **Transações**: Listagem e consulta de transações
+    - **Múltiplos métodos**: Suporte para PIX, Cartão de Crédito/Débito e Boleto
+    - **Autenticação**: Sistema de API Keys
+    - **Rate limiting**: Proteção contra abuso
+    - **Documentação**: Documentação completa da API
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Próximas versões
+
+### Em desenvolvimento
+
+<CardGroup cols={2}>
+  <Card title="Assinaturas recorrentes" icon="repeat">
+    Sistema completo de cobranças recorrentes com múltiplas frequências
+  </Card>
+  
+  <Card title="Split de pagamento" icon="split">
+    Divisão automática de pagamentos entre múltiplos recebedores
+  </Card>
+  
+  <Card title="Checkout customizável" icon="palette">
+    Personalização completa da página de checkout
+  </Card>
+  
+  <Card title="Relatórios avançados" icon="chart-line">
+    Dashboard com métricas e relatórios detalhados
+  </Card>
+</CardGroup>
+
+### Planejado para 2024
+
+- **Q1 2024**
+  - Suporte para múltiplas moedas
+  - Integração com mais gateways de pagamento
+  - Sistema de afiliados
+
+- **Q2 2024**
+  - API de reembolsos
+  - Gestão de disputas (chargebacks)
+  - Autenticação 3D Secure
+
+- **Q3 2024**
+  - Marketplace multi-vendor
+  - Sistema de carteira digital
+  - Pagamentos internacionais
+
+- **Q4 2024**
+  - Machine learning para detecção de fraude
+  - Análise preditiva de vendas
+  - Integração com ERPs
+
+## Breaking changes
+
+Quando fazemos mudanças que quebram compatibilidade, seguimos este processo:
+
+1. **Anúncio prévio**: Comunicamos com 90 dias de antecedência
+2. **Período de transição**: Mantemos ambas as versões funcionando
+3. **Guia de migração**: Fornecemos documentação detalhada
+4. **Suporte**: Oferecemos suporte durante a migração
+
+### Histórico de breaking changes
+
+Até o momento, não houve breaking changes na API v1.
+
+## Deprecações
+
+### Recursos descontinuados
+
+Nenhum recurso foi descontinuado até o momento.
+
+### Avisos de deprecação
+
+<Warning>
+  Quando um recurso for marcado para deprecação, ele continuará funcionando por pelo menos 12 meses antes de ser removido.
+</Warning>
+
+## Como se manter atualizado
+
+### Notificações
+
+Para receber notificações sobre mudanças na API:
+
+1. **Email**: Configure notificações no [Dashboard](https://app.upaybr.com)
+2. **Webhook**: Subscribe ao evento `api.version.updated`
+3. **RSS**: Assine nosso feed RSS (em breve)
+
+### Versionamento da API
+
+A URL da API inclui a versão:
+
+```
+https://upay-sistema-api.onrender.com/api/v1/...
+```
+
+Quando lançarmos a v2, a v1 continuará disponível:
+
+```
+https://upay-sistema-api.onrender.com/api/v1/...  # Versão antiga
+https://upay-sistema-api.onrender.com/api/v2/...  # Nova versão
+```
+
+### Versionamento dos SDKs
+
+Os SDKs seguem versionamento semântico:
+
+- **Major** (1.x.x): Breaking changes
+- **Minor** (x.1.x): Novos recursos (compatível)
+- **Patch** (x.x.1): Correções de bugs
+
+```bash
+# JavaScript/TypeScript
+npm install @upay/upay-js@latest
+
+# Python
+pip install upay-python --upgrade
+
+# PHP
+composer update upay/upay-php
+```
+
+## Suporte a versões antigas
+
+| Versão | Status | Suporte até | Notas |
+|--------|--------|-------------|-------|
+| v1.x | ✅ Atual | Indefinido | Versão estável atual |
+
+## Feedback
+
+Sua opinião é importante! Compartilhe feedback sobre:
+
+- Novos recursos que você gostaria de ver
+- Problemas encontrados
+- Sugestões de melhoria
+
+**Canais de feedback:**
+- Email: feedback@upaybr.com
+- GitHub: [Issues](https://github.com/anthonymengottii/upay-sdks/issues)
+- Dashboard: Seção de feedback
+
+## Recursos adicionais
+
+<CardGroup cols={2}>
+  <Card title="Guia de migração" icon="arrow-right-arrow-left" href="/migration-guide">
+    Guias detalhados para migrar entre versões
+  </Card>
+  
+  <Card title="Códigos de erro" icon="triangle-exclamation" href="/errors">
+    Referência completa de erros
+  </Card>
+  
+  <Card title="Troubleshooting" icon="wrench" href="/troubleshooting">
+    Soluções para problemas comuns
+  </Card>
+  
+  <Card title="Status da API" icon="signal" href="https://status.upaybr.com">
+    Verifique o status dos serviços
+  </Card>
+</CardGroup>
