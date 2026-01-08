@@ -62,36 +62,52 @@ curl -X POST "https://upay-sistema-api.onrender.com/api/v1/payment-links" \
 
 ## Campos disponíveis
 
-### Campos Obrigatórios
+### Campos obrigatórios
 
-- `title` (string): Título do link de pagamento (máx. 255 caracteres)
+| Campo | Tipo | Descrição |
+|-------|------|-----------|
+| `title` | string | Título do link de pagamento. Máximo 255 caracteres. |
 
-### Campos Opcionais
+### Campos opcionais
 
-- `description` (string): Descrição detalhada (máx. 1000 caracteres)
-- `amountCents` (number): Valor em centavos (ex: 9900 = R$ 99,00)
-- `currency` (string): Moeda (padrão: "BRL")
-- `expiresAt` (string): Data de expiração no formato ISO 8601
-- `redirectUrl` (string): URL para redirecionar após pagamento
-- `productDescription` (string): Descrição do produto
-- `stockQuantity` (number): Quantidade em estoque (0 = ilimitado)
-- `stockEnabled` (boolean): Ativar controle de estoque
-- `metaPixelCode` (string): Código do Meta Pixel
-- `status` (enum): "ACTIVE" ou "INACTIVE" (padrão: "ACTIVE")
+| Campo | Tipo | Descrição | Padrão |
+|-------|------|-----------|--------|
+| `description` | string | Descrição detalhada do link. Máximo 1000 caracteres. | - |
+| `amountCents` | number | Valor em centavos. Exemplo: 9900 = R$ 99,00. Mínimo: 100 (R$ 1,00). | - |
+| `currency` | string | Código da moeda. Atualmente apenas "BRL" é suportado. | "BRL" |
+| `expiresAt` | string | Data de expiração no formato ISO 8601. Exemplo: "2024-12-31T23:59:59Z". | null |
+| `redirectUrl` | string | URL completa para redirecionar após pagamento. Deve começar com https://. | - |
+| `productDescription` | string | Descrição adicional do produto. Máximo 500 caracteres. | - |
+| `stockQuantity` | number | Quantidade disponível em estoque. 0 = ilimitado. Mínimo: 0. | 0 |
+| `stockEnabled` | boolean | Ativa controle de estoque. Se true, `stockQuantity` é obrigatório. | false |
+| `metaPixelCode` | string | ID do Meta Pixel para rastreamento. Formato: números apenas. | - |
+| `status` | string | Status do link. Valores: "ACTIVE" ou "INACTIVE". | "ACTIVE" |
 
-### Configurações de Pagamento (`settings`)
+### Configurações de pagamento (`settings`)
 
+| Campo | Tipo | Descrição | Padrão |
+|-------|------|-----------|--------|
+| `pixEnabled` | boolean | Habilita pagamento via PIX. | true |
+| `boletoEnabled` | boolean | Habilita pagamento via Boleto. | false |
+| `creditCardEnabled` | boolean | Habilita pagamento via Cartão de Crédito. | true |
+| `maxInstallments` | number | Número máximo de parcelas. Mínimo: 1, Máximo: 12. | 1 |
+| `interestFreeInstallments` | number | Parcelas sem juros. Deve ser ≤ `maxInstallments`. | 1 |
+| `interestRate` | number | Taxa de juros mensal (%). Aplicada após parcelas sem juros. | 0 |
+| `requirePhone` | boolean | Exige telefone no checkout. | true |
+| `requireAddress` | boolean | Exige endereço completo no checkout. | false |
+
+**Exemplo:**
 ```json
 {
   "settings": {
-    "pixEnabled": true,              // Habilitar PIX
-    "boletoEnabled": false,          // Habilitar Boleto
-    "creditCardEnabled": true,       // Habilitar Cartão
-    "maxInstallments": 12,           // Máximo de parcelas
-    "interestFreeInstallments": 3,  // Parcelas sem juros
-    "interestRate": 2.5,            // Taxa de juros (%)
-    "requirePhone": true,           // Exigir telefone
-    "requireAddress": true           // Exigir endereço
+    "pixEnabled": true,
+    "boletoEnabled": false,
+    "creditCardEnabled": true,
+    "maxInstallments": 12,
+    "interestFreeInstallments": 3,
+    "interestRate": 2.5,
+    "requirePhone": true,
+    "requireAddress": true
   }
 }
 ```

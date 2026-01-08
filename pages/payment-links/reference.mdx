@@ -12,61 +12,78 @@ Gerencie links de pagamento personalizados que podem ser compartilhados com seus
   Para um guia completo sobre Links de Pagamento, consulte [Guia de Links de Pagamento](/pages/guides/features/payment-links).
 </Note>
 
-## Endpoints Disponíveis
+## Endpoints disponíveis
 
-### Endpoints Públicos (Checkout)
+### Endpoints públicos (Checkout)
 
 Estes endpoints são públicos e não requerem autenticação. São usados no checkout público:
 
-- **GET** `/api/payment-links/public/slug/{slug}` - Obter informações de um link de pagamento público
-- **POST** `/api/payment-links/public/slug/{slug}/start` - Iniciar checkout (cria transação PENDING sem dados do cliente)
-- **POST** `/api/payment-links/public/slug/{slug}/checkout` - Criar checkout completo com dados do cliente
-- **GET** `/api/payment-links/public/transactions/{id}/status` - Consultar status de uma transação (público)
-- **GET** `/api/payment-links/public/transactions/{id}/sync-status` - Sincronizar status consultando Pagar.me diretamente
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| **GET** | `/api/payment-links/public/slug/{slug}` | Obter informações de um link de pagamento público |
+| **POST** | `/api/payment-links/public/slug/{slug}/start` | Iniciar checkout (cria transação PENDING sem dados do cliente) |
+| **POST** | `/api/payment-links/public/slug/{slug}/checkout` | Criar checkout completo com dados do cliente |
+| **GET** | `/api/payment-links/public/transactions/{id}/status` | Consultar status de uma transação |
+| **GET** | `/api/payment-links/public/transactions/{id}/sync-status` | Sincronizar status consultando gateway diretamente |
 
-### Endpoints Privados (API v1)
+### Endpoints privados (API v1)
 
 Estes endpoints requerem autenticação via API Key:
 
-- **POST** `/api/v1/payment-links` - [Criar um novo link de pagamento](/pages/payment-links/create)
-- **GET** `/api/v1/payment-links` - [Listar links de pagamento](/pages/payment-links/list)
-- **GET** `/api/v1/payment-links/{id}` - [Obter link de pagamento específico](/pages/payment-links/get)
-- **PATCH** `/api/v1/payment-links/{id}` - [Atualizar link de pagamento](/pages/payment-links/update)
-- **DELETE** `/api/v1/payment-links/{id}` - [Deletar link de pagamento](/pages/payment-links/delete)
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| **POST** | `/api/v1/payment-links` | [Criar um novo link de pagamento](/pages/payment-links/create) |
+| **GET** | `/api/v1/payment-links` | [Listar links de pagamento](/pages/payment-links/list) |
+| **GET** | `/api/v1/payment-links/{id}` | [Obter link de pagamento específico](/pages/payment-links/get) |
+| **PATCH** | `/api/v1/payment-links/{id}` | [Atualizar link de pagamento](/pages/payment-links/update) |
+| **DELETE** | `/api/v1/payment-links/{id}` | [Deletar link de pagamento](/pages/payment-links/delete) |
 
-### Endpoints Privados (Dashboard)
+### Endpoints privados (Dashboard)
 
 Estes endpoints requerem autenticação via Bearer Token (JWT):
 
-- **GET** `/api/payment-links` - Listar links de pagamento
-- **POST** `/api/payment-links` - Criar link de pagamento
-- **GET** `/api/payment-links/{id}` - Obter link de pagamento
-- **PATCH** `/api/payment-links/{id}` - Atualizar link de pagamento
-- **PUT** `/api/payment-links/{id}` - Atualizar link de pagamento (alias)
-- **DELETE** `/api/payment-links/{id}` - Deletar link de pagamento
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| **GET** | `/api/payment-links` | Listar links de pagamento |
+| **POST** | `/api/payment-links` | Criar link de pagamento |
+| **GET** | `/api/payment-links/{id}` | Obter link de pagamento |
+| **PATCH** | `/api/payment-links/{id}` | Atualizar link de pagamento |
+| **PUT** | `/api/payment-links/{id}` | Atualizar link de pagamento (alias) |
+| **DELETE** | `/api/payment-links/{id}` | Deletar link de pagamento |
 
 ## Autenticação
 
-### Endpoints Públicos
-Não requerem autenticação. Apenas rate limiting por IP.
+### Endpoints públicos
+Não requerem autenticação. Apenas rate limiting por IP (100 requisições/minuto).
 
 ### Endpoints API v1
 Requerem autenticação via Bearer Token (API Key):
 
-```
+```bash
 Authorization: Bearer SUA_API_KEY
 ```
 
 ### Endpoints Dashboard
 Requerem autenticação via Bearer Token (JWT):
 
-```
+```bash
 Authorization: Bearer SEU_JWT_TOKEN
 ```
 
 ## Base URL
 
 ```
-https://upay-sistema-api.onrender.com/
+https://upay-sistema-api.onrender.com
 ```
+
+## Rate limits
+
+| Tipo de endpoint | Limite |
+|------------------|--------|
+| Endpoints públicos | 100 requisições/minuto por IP |
+| Endpoints autenticados | 1000 requisições/minuto por API Key |
+
+<Warning>
+  Ao exceder o rate limit, você receberá um erro `429 Too Many Requests` com o header `Retry-After` indicando quando tentar novamente.
+</Warning>
 
