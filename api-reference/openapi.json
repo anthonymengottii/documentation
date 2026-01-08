@@ -1838,8 +1838,7 @@
           }
         }
       }
-    }
-  },
+    },
   "components": {
         "securitySchemes": {
           "apiKeyAuth": {

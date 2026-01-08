@@ -97,7 +97,7 @@
         "tab": "Referência da API",
         "groups": [
           {
-            "group": "API Reference",
+            "group": "Endpoints",
             "openapi": "https://raw.githubusercontent.com/anthonymengottii/documentation/main/api-reference/openapi.json",
             "pages": []
           }
