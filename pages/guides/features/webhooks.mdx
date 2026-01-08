@@ -3,20 +3,27 @@ title: "Webhooks"
 description: "Configure webhooks para receber notificações em tempo real sobre eventos importantes"
 ---
 
-## 🔔 Visão Geral
+## Visão geral
 
 **Webhooks** são notificações HTTP enviadas pela UPay Gateway API para sua aplicação quando eventos importantes ocorrem. Isso permite que você reaja em tempo real a mudanças de status, pagamentos confirmados e outros eventos sem precisar fazer polling constante.
 
-## ✨ Funcionalidades
+## Pré-requisitos
 
-- ✅ **Eventos em Tempo Real**: Receba notificações instantâneas
-- ✅ **Múltiplos Eventos**: Configure webhooks para diferentes tipos de eventos
-- ✅ **Retry Automático**: Tentativas automáticas em caso de falha
-- ✅ **Segurança**: Assinatura HMAC para validar requisições
-- ✅ **Histórico**: Visualize todos os eventos enviados
-- ✅ **Múltiplas URLs**: Configure diferentes endpoints para diferentes eventos
+Antes de começar, você precisa:
+- Uma conta ativa na UPay
+- Sua API Key configurada (veja [Autenticação](/pages/authentication))
+- Um endpoint HTTPS público para receber webhooks
 
-## 🚀 Criando uma Assinatura de Webhook
+## Funcionalidades
+
+- **Eventos em tempo real**: Receba notificações instantâneas
+- **Múltiplos eventos**: Configure webhooks para diferentes tipos de eventos
+- **Retry automático**: Tentativas automáticas em caso de falha
+- **Segurança**: Assinatura HMAC para validar requisições
+- **Histórico**: Visualize todos os eventos enviados
+- **Múltiplas URLs**: Configure diferentes endpoints para diferentes eventos
+
+## Criando uma assinatura de webhook
 
 ### Requisição Básica
 
