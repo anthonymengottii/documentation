@@ -62,12 +62,17 @@ GET  /api/v1/payment-links     // Lista links de pagamento
 GET  /api/v1/payment-links/:id // Busca um link específico
 ```
 
-### 2. **Idempotente**: Execute a mesma requisição quantas vezes precisar, sem efeitos colaterais
+### 2. **Idempotência**: Requisições seguras para retry
+
+Operações POST e PUT são idempotentes quando você fornece um `idempotencyKey`, garantindo que requisições duplicadas não criem recursos múltiplos.
 
 ```javascript
-// Seguro para executar múltiplas vezes
 await fetch('/api/v1/payment-links', {
   method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${apiKey}`,
+    'Idempotency-Key': 'unique-key-123' // Previne duplicação
+  },
   body: JSON.stringify({...})
 });
 ```
