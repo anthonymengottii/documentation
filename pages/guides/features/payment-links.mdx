@@ -3,11 +3,11 @@ title: "Links de Pagamento"
 description: "Crie e gerencie links de pagamento personalizados com a UPay Gateway API"
 ---
 
-## 🔗 Visão Geral
+## Visão geral
 
 Os **Links de Pagamento** são URLs personalizadas que você pode criar e compartilhar com seus clientes para receber pagamentos. Cada link pode ser configurado com valores, métodos de pagamento, produtos e muito mais.
 
-## ✨ Funcionalidades
+## Funcionalidades
 
 - ✅ **Slug único**: Cada link tem um identificador único e personalizável
 - ✅ **Múltiplos métodos de pagamento**: PIX, Cartão de Crédito/Débito, Boleto
@@ -18,7 +18,7 @@ Os **Links de Pagamento** são URLs personalizadas que você pode criar e compar
 - ✅ **Meta Pixel**: Integre com Meta Pixel para rastreamento
 - ✅ **URL de redirecionamento**: Configure para onde redirecionar após pagamento
 
-## 🚀 Criando seu Primeiro Link
+## Criando seu primeiro link
 
 ### Requisição Básica
 
@@ -60,7 +60,7 @@ curl -X POST "https://upay-sistema-api.onrender.com/api/v1/payment-links" \
 }
 ```
 
-## 📋 Campos Disponíveis
+## Campos disponíveis
 
 ### Campos Obrigatórios
 
@@ -192,7 +192,7 @@ const response = await fetch('https://upay-sistema-api.onrender.com/api/v1/payme
 });
 ```
 
-## 🔍 Listando Links
+## Listando links
 
 ### Listar Todos os Links
 
@@ -208,7 +208,7 @@ curl -X GET "https://upay-sistema-api.onrender.com/api/v1/payment-links/{id}" \
   -H "Authorization: Bearer SUA_API_KEY"
 ```
 
-## ✏️ Atualizando um Link
+## Atualizando um link
 
 ```bash
 curl -X PATCH "https://upay-sistema-api.onrender.com/api/v1/payment-links/{id}" \
@@ -235,7 +235,7 @@ curl -X DELETE "https://upay-sistema-api.onrender.com/api/v1/payment-links/{id}"
   A exclusão é permanente e não pode ser desfeita. Certifique-se de que realmente deseja deletar o link.
 </Warning>
 
-## 🔗 URL do Checkout
+## URL do checkout
 
 Após criar um link, você receberá uma URL no formato:
 
@@ -250,7 +250,7 @@ Esta URL pode ser compartilhada diretamente com seus clientes.
 - `ACTIVE`: Link ativo e disponível para pagamentos
 - `INACTIVE`: Link desativado (não aceita novos pagamentos)
 
-## 🎯 Casos de Uso
+## Casos de uso
 
 ### E-commerce
 Crie links para produtos específicos com controle de estoque e múltiplos métodos de pagamento.

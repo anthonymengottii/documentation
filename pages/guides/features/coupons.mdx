@@ -3,21 +3,27 @@ title: "Cupons de Desconto"
 description: "Crie e gerencie cupons de desconto para aplicar em pagamentos"
 ---
 
-## 🎟️ Visão Geral
+## Visão geral
 
 O sistema de **Cupons de Desconto** permite que você crie e gerencie cupons promocionais que podem ser aplicados durante o checkout. Os cupons suportam descontos percentuais ou valores fixos, com configurações flexíveis de validade e limites de uso.
 
-## ✨ Funcionalidades
+## Pré-requisitos
 
-- ✅ **Tipos de Desconto**: Percentual ou valor fixo
-- ✅ **Validade Configurável**: Data de início e fim
-- ✅ **Limites de Uso**: Total e por usuário
-- ✅ **Valor Mínimo**: Defina valor mínimo de compra
-- ✅ **Valor Máximo**: Limite o desconto máximo (para percentuais)
-- ✅ **Produtos Específicos**: Aplique a todos ou produtos selecionados
-- ✅ **Validação Pública**: Endpoint público para validar cupons no checkout
+Antes de começar, você precisa:
+- Uma conta ativa na UPay
+- Sua API Key configurada (veja [Autenticação](/pages/authentication))
 
-## 🚀 Criando um Cupom
+## Funcionalidades
+
+- **Tipos de desconto**: Percentual ou valor fixo
+- **Validade configurável**: Data de início e fim
+- **Limites de uso**: Total e por usuário
+- **Valor mínimo**: Defina valor mínimo de compra
+- **Valor máximo**: Limite o desconto máximo (para percentuais)
+- **Produtos específicos**: Aplique a todos ou produtos selecionados
+- **Validação pública**: Endpoint público para validar cupons no checkout
+
+## Criando um cupom
 
 ### Requisição Básica - Desconto Percentual
 
@@ -72,7 +78,7 @@ curl -X POST "https://https://upay-sistema-api.onrender.com//api/v1/coupons" \
 }
 ```
 
-## 📋 Campos Disponíveis
+## Campos disponíveis
 
 ### Campos Obrigatórios
 
@@ -164,7 +170,7 @@ const response = await fetch('https://https://upay-sistema-api.onrender.com//api
 });
 ```
 
-## ✅ Validando um Cupom
+## Validando um cupom
 
 ### Endpoint Público (Checkout)
 
@@ -250,7 +256,7 @@ curl -X GET "https://https://upay-sistema-api.onrender.com//api/v1/coupons/{id}"
   -H "Authorization: Bearer SUA_API_KEY"
 ```
 
-## ✏️ Atualizando um Cupom
+## Atualizando um cupom
 
 ```bash
 curl -X PATCH "https://https://upay-sistema-api.onrender.com//api/v1/coupons/{id}" \
@@ -277,7 +283,7 @@ curl -X DELETE "https://https://upay-sistema-api.onrender.com//api/v1/coupons/{i
   A exclusão é permanente. Cupons já utilizados mantêm o histórico de uso.
 </Warning>
 
-## 📊 Regras de Validação
+## Regras de validação
 
 O sistema valida automaticamente:
 
@@ -305,7 +311,7 @@ Aplique descontos apenas a produtos selecionados do catálogo.
 ### Primeira Compra
 Configure `maxUsesPerUser: 1` para cupons de primeira compra.
 
-## 📚 Próximos Passos
+## Próximos passos
 
 <CardGroup cols={2}>
   <Card title="Referência da API" icon="code" href="/pages/coupon/reference">
