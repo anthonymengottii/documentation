@@ -21,7 +21,6 @@
               "pages/introduction",
               "pages/quickstart",
               "pages/authentication",
-              "pages/sdks",
               "pages/guides/features/payment-links",
               "pages/guides/features/coupons",
               "pages/guides/features/webhooks"
@@ -77,16 +76,6 @@
             "pages": [
               "pages/balance/reference",
               "pages/balance/get"
-            ]
-          },
-          {
-            "group": "Clientes",
-            "icon": "users",
-            "pages": [
-              "pages/clients/reference",
-              "pages/clients/create",
-              "pages/clients/list",
-              "pages/clients/get"
             ]
           },
           {

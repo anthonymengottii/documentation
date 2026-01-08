@@ -26,8 +26,6 @@ A **UPay Gateway API** é uma solução completa de processamento de pagamentos 
 - ✅ **Gestão completa de produtos** - Catálogo integrado com controle de estoque
 - ✅ **Sistema de cupons** - Descontos percentuais ou valores fixos com regras configuráveis
 - ✅ **Webhooks em tempo real** - Notificações instantâneas sobre eventos importantes
-- ✅ **SDKs oficiais** - Bibliotecas prontas para JavaScript, Python, PHP e Java
-- ✅ **Gestão de clientes** - Base de clientes completa com filtros e paginação
 - ✅ **Dashboard administrativo** - Interface completa para gerenciamento e relatórios
 - ✅ **Documentação interativa** - Exemplos práticos e referência completa da API
 
@@ -49,7 +47,6 @@ A **UPay Gateway API** é uma solução completa de processamento de pagamentos 
 
 3. **Explore a documentação**
    - [Guia de Início Rápido](/pages/quickstart)
-   - [SDKs Oficiais](/pages/sdks) - Integração rápida com bibliotecas prontas
    - [Referência Completa da API](/api-reference/openapi.json)
    - [Exemplos de Código](/pages/introduction)
 
@@ -102,7 +99,6 @@ documentation/
 | **Produtos** | Gerencie seu catálogo de produtos | [Ver Documentação](/pages/products/reference) |
 | **Cupons** | Sistema completo de cupons de desconto | [Ver Documentação](/pages/coupon/reference) |
 | **Transações** | Consulte e gerencie transações | [Ver Documentação](/pages/transactions/reference) |
-| **Clientes** | Gerencie sua base de clientes | [Ver Documentação](/pages/clients/reference) |
 | **Webhooks** | Configure notificações em tempo real | [Ver Documentação](/pages/webhooks/reference) |
 | **Saldo** | Consulte saldo e movimentações | [Ver Documentação](/pages/balance/reference) |
 

@@ -827,14 +827,12 @@
                           "reason": {"type": "string"},
                           "amount": {"type": "integer"},
                           "createdAt": {"type": "string", "format": "date-time"}
-                        }
-                      }
-                    }
-                  }
                 }
               }
             }
-          },
+          }
+        }
+      },
           "401": {"$ref": "#/components/responses/Unauthorized"}
         }
       }
@@ -1010,7 +1008,7 @@
                   "type": "object",
                   "properties": {
                     "message": {"type": "string"},
-                    "webhooks": {
+  "webhooks": {
                       "type": "object",
                       "properties": {
                         "url": {"type": "string"},
@@ -1070,7 +1068,7 @@
         "responses": {
           "201": {
             "description": "Assinatura criada com sucesso",
-            "content": {
+          "content": {
             "application/json": {
               "schema": {
                   "type": "object",
@@ -1119,11 +1117,11 @@
                   "properties": {
                     "message": {"type": "string"},
                     "subscription": {"$ref": "#/components/schemas/WebhookSubscription"}
-                  }
-                }
-              }
-            }
-          },
+          }
+        }
+      }
+    }
+  },
           "400": {"$ref": "#/components/responses/BadRequest"},
           "404": {"$ref": "#/components/responses/NotFound"},
           "401": {"$ref": "#/components/responses/Unauthorized"}
@@ -1148,8 +1146,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
+        "type": "object",
+        "properties": {
                     "message": {"type": "string"}
                   }
                 }
@@ -1566,10 +1564,10 @@
               "properties": {
                 "message": {"type": "string"}
               }
-            }
           }
         }
-      },
+      }
+    },
       "NotFound": {
         "description": "Recurso não encontrado",
         "content": {
@@ -1585,4 +1583,5 @@
       }
     }
   }
-}
+}  }}
+
