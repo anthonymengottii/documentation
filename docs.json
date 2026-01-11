@@ -38,6 +38,7 @@
             "icon": "map",
             "pages": [
               "pages/guides/features/payment-links",
+              "pages/guides/features/customers",
               "pages/guides/features/coupons",
               "pages/guides/features/webhooks"
             ]
