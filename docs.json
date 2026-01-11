@@ -39,6 +39,7 @@
             "pages": [
               "pages/guides/features/payment-links",
               "pages/guides/features/coupons",
+              "pages/guides/features/transactions",
               "pages/guides/features/webhooks"
             ]
           },
