@@ -504,6 +504,103 @@
         }
       }
     },
+    "/api/payment-links/public/slug/{slug}": {
+      "get": {
+        "tags": [
+          "Links de Pagamento"
+        ],
+        "summary": "Obter link público",
+        "description": "Obtém detalhes de um link de pagamento para exibição no checkout (sem necessidade de autenticação)",
+        "security": [],
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "description": "Slug do link de pagamento",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes do link de pagamento",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "paymentLink": {
+                      "$ref": "#/components/schemas/PaymentLink"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/api/payment-links/public/slug/{slug}/checkout": {
+      "post": {
+        "tags": [
+          "Links de Pagamento"
+        ],
+        "summary": "Criar checkout completo",
+        "description": "Inicia o fluxo de checkout e cria uma transação",
+        "security": [],
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTransactionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Transação criada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "transaction": {
+                      "$ref": "#/components/schemas/Transaction"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
     "/api/v1/products": {
       "get": {
         "tags": [
@@ -1276,7 +1373,7 @@
         }
       }
     },
-    "/api/v1/clients": {
+    "/api/clients": {
       "get": {
         "tags": [
           "Clientes"
@@ -1289,72 +1386,36 @@
           }
         ],
         "parameters": [
-              {
-                "name": "page",
-                "in": "query",
-                "description": "Número da página",
-                "schema": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "default": 1
-                }
-              },
-              {
-                "name": "limit",
-                "in": "query",
-                "description": "Número de itens por página",
-                "schema": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 100,
-                  "default": 20
-                }
-              },
-              {
-                "name": "orderBy",
-                "in": "query",
-                "description": "Campo para ordenação",
-                "schema": {
-                  "type": "string",
-                  "enum": [
-                    "createdAt",
-                    "updatedAt",
-                    "name",
-                    "email"
-                  ],
-                  "default": "createdAt"
-                }
-              },
-              {
-                "name": "orderDirection",
-                "in": "query",
-                "description": "Direção da ordenação",
-                "schema": {
-                  "type": "string",
-                  "enum": [
-                    "asc",
-                    "desc"
-                  ],
-                  "default": "desc"
-                }
-              },
-              {
-                "name": "name",
-                "in": "query",
-                "description": "Filtrar por nome (busca parcial)",
-                "schema": {
-                  "type": "string"
-                }
-              },
-              {
-                "name": "email",
-                "in": "query",
-                "description": "Filtrar por email (busca parcial)",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            ],
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Número da página",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Número de itens por página",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Filtrar por nome ou email (busca parcial)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Lista de clientes",
@@ -1383,12 +1444,6 @@
                         },
                         "limit": {
                           "type": "integer"
-                        },
-                        "orderBy": {
-                          "type": "string"
-                        },
-                        "orderDirection": {
-                          "type": "string"
                         }
                       }
                     }
@@ -1453,26 +1508,11 @@
           },
           "403": {
             "$ref": "#/components/responses/Forbidden"
-          },
-          "409": {
-            "description": "Email já existe",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
           }
         }
       }
     },
-    "/api/v1/clients/{id}": {
+    "/api/clients/{id}": {
       "get": {
         "tags": [
           "Clientes"
@@ -1841,972 +1881,991 @@
   },
   "components": {
     "securitySchemes": {
-          "apiKeyAuth": {
-            "type": "apiKey",
-            "in": "header",
-            "name": "API-Key",
-            "description": "Chave de API obtida através do endpoint /api/credentials. Também aceita formato Bearer Token: Authorization: Bearer <api_key>"
-          }
-        },
-        "schemas": {
-          "Transaction": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "displayId": {
-                "type": "string",
-                "nullable": true
-              },
-              "product": {
-                "type": "string",
-                "nullable": true
-              },
-              "amountCents": {
-                "type": "integer",
-                "nullable": true
-              },
-              "status": {
-                "type": "string"
-              },
-              "paymentMethod": {
-                "type": "string"
-              },
-              "client": {
-                "type": "object"
-              },
-              "createdAt": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "updatedAt": {
-                "type": "string",
-                "format": "date-time"
-              }
-            }
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "API-Key",
+        "description": "Chave de API obtida através do endpoint /api/credentials. Também aceita formato Bearer Token: Authorization: Bearer <api_key>"
+      }
+    },
+    "schemas": {
+      "Transaction": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
           },
-          "CreateTransactionRequest": {
+          "displayId": {
+            "type": "string",
+            "nullable": true
+          },
+          "product": {
+            "type": "string",
+            "nullable": true
+          },
+          "amountCents": {
+            "type": "integer",
+            "nullable": true
+          },
+          "status": {
+            "type": "string"
+          },
+          "paymentMethod": {
+            "type": "string"
+          },
+          "client": {
+            "type": "object"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CreateTransactionRequest": {
+        "type": "object",
+        "required": [
+          "product",
+          "amountCents",
+          "paymentMethod",
+          "clientEmail",
+          "clientName"
+        ],
+        "properties": {
+          "product": {
+            "type": "string"
+          },
+          "amountCents": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "paymentMethod": {
+            "type": "string",
+            "enum": [
+              "PIX",
+              "CREDIT_CARD",
+              "BOLETO"
+            ]
+          },
+          "clientEmail": {
+            "type": "string",
+            "format": "email"
+          },
+          "clientName": {
+            "type": "string"
+          },
+          "paymentLinkId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "installments": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
+          },
+          "dueDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "PaymentLink": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "amount": {
+            "type": "integer",
+            "nullable": true,
+            "description": "Valor em centavos (null se usar products)"
+          },
+          "currency": {
+            "type": "string",
+            "default": "BRL"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE"
+            ]
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "redirectUrl": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          },
+          "settings": {
             "type": "object",
-            "required": [
-              "product",
-              "amountCents",
-              "paymentMethod",
-              "clientEmail",
-              "clientName"
-            ],
+            "nullable": true
+          },
+          "salesCount": {
+            "type": "integer",
+            "default": 0
+          },
+          "timesUsed": {
+            "type": "integer",
+            "default": 0
+          },
+          "metaPixelCode": {
+            "type": "string",
+            "nullable": true,
+            "description": "Código do Meta Pixel para rastreamento"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CreatePaymentLinkRequest": {
+        "type": "object",
+        "required": [
+          "title"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 1000,
+            "nullable": true
+          },
+          "amountCents": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Valor fixo em centavos (opcional se products for fornecido)"
+          },
+          "currency": {
+            "type": "string",
+            "default": "BRL"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "redirectUrl": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          },
+          "productDescription": {
+            "type": "string",
+            "maxLength": 1000,
+            "nullable": true
+          },
+          "settings": {
+            "type": "object",
             "properties": {
-              "product": {
-                "type": "string"
+              "pixEnabled": {
+                "type": "boolean"
               },
-              "amountCents": {
-                "type": "integer",
-                "minimum": 1
+              "boletoEnabled": {
+                "type": "boolean"
               },
-              "paymentMethod": {
-                "type": "string",
-                "enum": [
-                  "PIX",
-                  "CREDIT_CARD",
-                  "BOLETO"
-                ]
+              "creditCardEnabled": {
+                "type": "boolean"
               },
-              "clientEmail": {
-                "type": "string",
-                "format": "email"
-              },
-              "clientName": {
-                "type": "string"
-              },
-              "paymentLinkId": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "installments": {
+              "maxInstallments": {
                 "type": "integer",
                 "minimum": 1,
                 "maximum": 12
               },
-              "dueDate": {
-                "type": "string",
-                "format": "date-time"
-              }
-            }
-          },
-          "PaymentLink": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "slug": {
-                "type": "string"
-              },
-              "title": {
-                "type": "string"
-              },
-              "description": {
-                "type": "string",
-                "nullable": true
-              },
-              "amount": {
+              "interestFreeInstallments": {
                 "type": "integer",
-                "nullable": true,
-                "description": "Valor em centavos (null se usar products)"
+                "minimum": 0
               },
-              "currency": {
-                "type": "string",
-                "default": "BRL"
-              },
-              "status": {
-                "type": "string",
-                "enum": [
-                  "ACTIVE",
-                  "INACTIVE"
-                ]
-              },
-              "expiresAt": {
-                "type": "string",
-                "format": "date-time",
-                "nullable": true
-              },
-              "redirectUrl": {
-                "type": "string",
-                "format": "uri",
-                "nullable": true
-              },
-              "settings": {
-                "type": "object",
-                "nullable": true
-              },
-              "salesCount": {
-                "type": "integer",
-                "default": 0
-              },
-              "timesUsed": {
-                "type": "integer",
-                "default": 0
-              },
-              "metaPixelCode": {
-                "type": "string",
-                "nullable": true,
-                "description": "Código do Meta Pixel para rastreamento"
-              },
-              "createdAt": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "updatedAt": {
-                "type": "string",
-                "format": "date-time"
-              }
-            }
-          },
-          "CreatePaymentLinkRequest": {
-            "type": "object",
-            "required": [
-              "title"
-            ],
-            "properties": {
-              "title": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 255
-              },
-              "description": {
-                "type": "string",
-                "maxLength": 1000,
-                "nullable": true
-              },
-              "amountCents": {
-                "type": "integer",
-                "minimum": 1,
-                "description": "Valor fixo em centavos (opcional se products for fornecido)"
-              },
-              "currency": {
-                "type": "string",
-                "default": "BRL"
-              },
-              "expiresAt": {
-                "type": "string",
-                "format": "date-time",
-                "nullable": true
-              },
-              "redirectUrl": {
-                "type": "string",
-                "format": "uri",
-                "nullable": true
-              },
-              "productDescription": {
-                "type": "string",
-                "maxLength": 1000,
-                "nullable": true
-              },
-              "settings": {
-                "type": "object",
-                "properties": {
-                  "pixEnabled": {
-                    "type": "boolean"
-                  },
-                  "boletoEnabled": {
-                    "type": "boolean"
-                  },
-                  "creditCardEnabled": {
-                    "type": "boolean"
-                  },
-                  "maxInstallments": {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 12
-                  },
-                  "interestFreeInstallments": {
-                    "type": "integer",
-                    "minimum": 0
-                  },
-                  "interestRate": {
-                    "type": "number"
-                  },
-                  "requirePhone": {
-                    "type": "boolean"
-                  },
-                  "requireAddress": {
-                    "type": "boolean"
-                  }
-                }
-              },
-              "products": {
-                "type": "array",
-                "description": "Lista de produtos associados ao link (opcional se amountCents for fornecido)",
-                "items": {
-                  "type": "object",
-                  "required": [
-                    "productId",
-                    "quantity"
-                  ],
-                  "properties": {
-                    "productId": {
-                      "type": "string",
-                      "format": "uuid"
-                    },
-                    "quantity": {
-                      "type": "integer",
-                      "minimum": 1
-                    }
-                  }
-                }
-              },
-              "stockQuantity": {
-                "type": "integer",
-                "minimum": 0,
-                "nullable": true
-              },
-              "stockEnabled": {
-                "type": "boolean"
-              },
-              "metaPixelCode": {
-                "type": "string",
-                "nullable": true,
-                "description": "Código do Meta Pixel para rastreamento"
-              },
-              "status": {
-                "type": "string",
-                "enum": [
-                  "ACTIVE",
-                  "INACTIVE"
-                ],
-                "default": "ACTIVE"
-              }
-            },
-            "description": "É necessário fornecer pelo menos amountCents OU products (ou ambos)"
-          },
-          "UpdatePaymentLinkRequest": {
-            "type": "object",
-            "properties": {
-              "title": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 255
-              },
-              "description": {
-                "type": "string",
-                "maxLength": 1000,
-                "nullable": true
-              },
-              "amountCents": {
-                "type": "integer",
-                "minimum": 1,
-                "description": "Valor fixo em centavos (opcional se products for fornecido)"
-              },
-              "currency": {
-                "type": "string"
-              },
-              "status": {
-                "type": "string",
-                "enum": [
-                  "ACTIVE",
-                  "INACTIVE"
-                ]
-              },
-              "expiresAt": {
-                "type": "string",
-                "format": "date-time",
-                "nullable": true
-              },
-              "redirectUrl": {
-                "type": "string",
-                "format": "uri",
-                "nullable": true
-              },
-              "productDescription": {
-                "type": "string",
-                "maxLength": 1000,
-                "nullable": true
-              },
-              "settings": {
-                "type": "object",
-                "properties": {
-                  "pixEnabled": {
-                    "type": "boolean"
-                  },
-                  "boletoEnabled": {
-                    "type": "boolean"
-                  },
-                  "creditCardEnabled": {
-                    "type": "boolean"
-                  },
-                  "maxInstallments": {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 12
-                  },
-                  "interestFreeInstallments": {
-                    "type": "integer",
-                    "minimum": 0
-                  },
-                  "interestRate": {
-                    "type": "number"
-                  },
-                  "requirePhone": {
-                    "type": "boolean"
-                  },
-                  "requireAddress": {
-                    "type": "boolean"
-                  }
-                }
-              },
-              "products": {
-                "type": "array",
-                "description": "Lista de produtos associados ao link (opcional se amountCents for fornecido)",
-                "items": {
-                  "type": "object",
-                  "required": [
-                    "productId",
-                    "quantity"
-                  ],
-                  "properties": {
-                    "productId": {
-                      "type": "string",
-                      "format": "uuid"
-                    },
-                    "quantity": {
-                      "type": "integer",
-                      "minimum": 1
-                    }
-                  }
-                }
-              },
-              "stockQuantity": {
-                "type": "integer",
-                "minimum": 0,
-                "nullable": true
-              },
-              "stockEnabled": {
-                "type": "boolean"
-              },
-              "metaPixelCode": {
-                "type": "string",
-                "nullable": true,
-                "description": "Código do Meta Pixel para rastreamento"
-              }
-            },
-            "description": "É necessário fornecer pelo menos amountCents OU products (ou ambos)"
-          },
-          "Product": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "name": {
-                "type": "string"
-              },
-              "description": {
-                "type": "string",
-                "nullable": true
-              },
-              "price": {
-                "type": "integer",
-                "description": "Preço em centavos"
-              },
-              "currency": {
-                "type": "string",
-                "default": "BRL"
-              },
-              "stockQuantity": {
-                "type": "integer",
-                "nullable": true,
-                "description": "Quantidade em estoque (null = ilimitado)"
-              },
-              "stockEnabled": {
-                "type": "boolean",
-                "description": "Indica se o controle de estoque está habilitado"
-              },
-              "isDigital": {
-                "type": "boolean",
-                "description": "Indica se o produto é digital (não requer estoque físico)"
-              },
-              "imageUrl": {
-                "type": "string",
-                "nullable": true,
-                "format": "uri"
-              },
-              "status": {
-                "type": "string",
-                "enum": [
-                  "ACTIVE",
-                  "INACTIVE"
-                ]
-              },
-              "createdAt": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "updatedAt": {
-                "type": "string",
-                "format": "date-time"
-              }
-            }
-          },
-          "CreateProductRequest": {
-            "type": "object",
-            "required": [
-              "name",
-              "price"
-            ],
-            "properties": {
-              "name": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 255
-              },
-              "description": {
-                "type": "string",
-                "maxLength": 1000,
-                "nullable": true
-              },
-              "price": {
-                "type": "integer",
-                "minimum": 1,
-                "description": "Preço em centavos"
-              },
-              "currency": {
-                "type": "string",
-                "default": "BRL"
-              },
-              "stockQuantity": {
-                "type": "integer",
-                "minimum": 0,
-                "nullable": true,
-                "description": "Quantidade em estoque (obrigatório se stockEnabled = true)"
-              },
-              "stockEnabled": {
-                "type": "boolean",
-                "default": false
-              },
-              "isDigital": {
-                "type": "boolean",
-                "default": false,
-                "description": "Indica se o produto é digital (não requer estoque físico)"
-              },
-              "imageUrl": {
-                "type": "string",
-                "format": "uri",
-                "nullable": true
-              },
-              "status": {
-                "type": "string",
-                "enum": [
-                  "ACTIVE",
-                  "INACTIVE"
-                ],
-                "default": "ACTIVE"
-              }
-            }
-          },
-          "UpdateProductRequest": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 255
-              },
-              "description": {
-                "type": "string",
-                "maxLength": 1000,
-                "nullable": true
-              },
-              "price": {
-                "type": "integer",
-                "minimum": 1,
-                "description": "Preço em centavos"
-              },
-              "stockQuantity": {
-                "type": "integer",
-                "minimum": 0,
-                "nullable": true,
-                "description": "Quantidade em estoque (obrigatório se stockEnabled = true)"
-              },
-              "stockEnabled": {
-                "type": "boolean"
-              },
-              "isDigital": {
-                "type": "boolean",
-                "description": "Indica se o produto é digital (não requer estoque físico)"
-              },
-              "imageUrl": {
-                "type": "string",
-                "format": "uri",
-                "nullable": true
-              },
-              "status": {
-                "type": "string",
-                "enum": [
-                  "ACTIVE",
-                  "INACTIVE"
-                ]
-              }
-            }
-          },
-          "Coupon": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "code": {
-                "type": "string"
-              },
-              "discountType": {
-                "type": "string",
-                "enum": [
-                  "PERCENTAGE",
-                  "FIXED"
-                ]
-              },
-              "discountValue": {
+              "interestRate": {
                 "type": "number"
               },
-              "description": {
-                "type": "string",
-                "nullable": true
+              "requirePhone": {
+                "type": "boolean"
               },
-              "minPurchaseCents": {
-                "type": "integer",
-                "nullable": true
-              },
-              "maxDiscountCents": {
-                "type": "integer",
-                "nullable": true
-              },
-              "usageLimit": {
-                "type": "integer",
-                "nullable": true
-              },
-              "perUserLimit": {
-                "type": "integer",
-                "nullable": true
-              },
-              "validFrom": {
-                "type": "string",
-                "format": "date-time",
-                "nullable": true
-              },
-              "validUntil": {
-                "type": "string",
-                "format": "date-time",
-                "nullable": true
-              },
-              "status": {
-                "type": "string"
-              },
-              "createdAt": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "updatedAt": {
-                "type": "string",
-                "format": "date-time"
+              "requireAddress": {
+                "type": "boolean"
               }
             }
           },
-          "CreateCouponRequest": {
-            "type": "object",
-            "required": [
-              "code",
-              "discountType",
-              "discountValue"
-            ],
-            "properties": {
-              "code": {
-                "type": "string",
-                "minLength": 3,
-                "maxLength": 50
-              },
-              "discountType": {
-                "type": "string",
-                "enum": [
-                  "PERCENTAGE",
-                  "FIXED"
-                ]
-              },
-              "discountValue": {
-                "type": "number",
-                "minimum": 0
-              },
-              "description": {
-                "type": "string",
-                "maxLength": 500
-              },
-              "minPurchaseCents": {
-                "type": "integer",
-                "minimum": 0
-              },
-              "maxDiscountCents": {
-                "type": "integer",
-                "minimum": 0
-              },
-              "usageLimit": {
-                "type": "integer",
-                "minimum": 1
-              },
-              "perUserLimit": {
-                "type": "integer",
-                "minimum": 1
-              },
-              "validFrom": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "validUntil": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "productIds": {
-                "type": "array",
-                "items": {
+          "products": {
+            "type": "array",
+            "description": "Lista de produtos associados ao link (opcional se amountCents for fornecido)",
+            "items": {
+              "type": "object",
+              "required": [
+                "productId",
+                "quantity"
+              ],
+              "properties": {
+                "productId": {
                   "type": "string",
                   "format": "uuid"
+                },
+                "quantity": {
+                  "type": "integer",
+                  "minimum": 1
                 }
-              },
-              "status": {
-                "type": "string",
-                "enum": [
-                  "ACTIVE",
-                  "INACTIVE"
-                ],
-                "default": "ACTIVE"
               }
             }
           },
-          "UpdateCouponRequest": {
+          "stockQuantity": {
+            "type": "integer",
+            "minimum": 0,
+            "nullable": true
+          },
+          "stockEnabled": {
+            "type": "boolean"
+          },
+          "metaPixelCode": {
+            "type": "string",
+            "nullable": true,
+            "description": "Código do Meta Pixel para rastreamento"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE"
+            ],
+            "default": "ACTIVE"
+          }
+        },
+        "description": "É necessário fornecer pelo menos amountCents OU products (ou ambos)"
+      },
+      "UpdatePaymentLinkRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 1000,
+            "nullable": true
+          },
+          "amountCents": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Valor fixo em centavos (opcional se products for fornecido)"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE"
+            ]
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "redirectUrl": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          },
+          "productDescription": {
+            "type": "string",
+            "maxLength": 1000,
+            "nullable": true
+          },
+          "settings": {
             "type": "object",
             "properties": {
-              "code": {
-                "type": "string",
-                "minLength": 3,
-                "maxLength": 50
+              "pixEnabled": {
+                "type": "boolean"
               },
-              "discountType": {
-                "type": "string",
-                "enum": [
-                  "PERCENTAGE",
-                  "FIXED"
-                ]
+              "boletoEnabled": {
+                "type": "boolean"
               },
-              "discountValue": {
-                "type": "number",
+              "creditCardEnabled": {
+                "type": "boolean"
+              },
+              "maxInstallments": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 12
+              },
+              "interestFreeInstallments": {
+                "type": "integer",
                 "minimum": 0
               },
-              "description": {
-                "type": "string",
-                "maxLength": 500
+              "interestRate": {
+                "type": "number"
               },
-              "status": {
-                "type": "string",
-                "enum": [
-                  "ACTIVE",
-                  "INACTIVE"
-                ]
-              }
-            }
-          },
-          "Client": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "name": {
-                "type": "string"
-              },
-              "email": {
-                "type": "string",
-                "format": "email"
-              },
-              "document": {
-                "type": "string",
-                "nullable": true
-              },
-              "phone": {
-                "type": "string",
-                "nullable": true
-              },
-              "createdAt": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "updatedAt": {
-                "type": "string",
-                "format": "date-time"
-              }
-            }
-          },
-          "CreateClientRequest": {
-            "type": "object",
-            "required": [
-              "name",
-              "email"
-            ],
-            "properties": {
-              "name": {
-                "type": "string",
-                "minLength": 3,
-                "maxLength": 255
-              },
-              "email": {
-                "type": "string",
-                "format": "email"
-              },
-              "document": {
-                "type": "string",
-                "minLength": 11,
-                "maxLength": 20,
-                "nullable": true
-              },
-              "phone": {
-                "type": "string",
-                "minLength": 10,
-                "maxLength": 20,
-                "nullable": true
-              }
-            }
-          },
-          "WebhookSubscription": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "url": {
-                "type": "string",
-                "format": "uri"
-              },
-              "events": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "isActive": {
+              "requirePhone": {
                 "type": "boolean"
               },
-              "lastTriggeredAt": {
-                "type": "string",
-                "format": "date-time",
-                "nullable": true
-              },
-              "createdAt": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "updatedAt": {
-                "type": "string",
-                "format": "date-time"
+              "requireAddress": {
+                "type": "boolean"
               }
             }
           },
-          "CreateWebhookSubscriptionRequest": {
-            "type": "object",
-            "required": [
-              "url",
-              "events"
-            ],
-            "properties": {
-              "url": {
-                "type": "string",
-                "format": "uri"
-              },
-              "events": {
-                "type": "array",
-                "items": {
+          "products": {
+            "type": "array",
+            "description": "Lista de produtos associados ao link (opcional se amountCents for fornecido)",
+            "items": {
+              "type": "object",
+              "required": [
+                "productId",
+                "quantity"
+              ],
+              "properties": {
+                "productId": {
                   "type": "string",
-                  "enum": [
-                    "transaction.created",
-                    "transaction.updated",
-                    "transaction.completed",
-                    "transaction.failed",
-                    "payment_link.created",
-                    "payment_link.updated",
-                    "balance.updated"
-                  ]
+                  "format": "uuid"
+                },
+                "quantity": {
+                  "type": "integer",
+                  "minimum": 1
                 }
-              },
-              "isActive": {
-                "type": "boolean",
-                "default": true
               }
             }
           },
-          "UpdateWebhookSubscriptionRequest": {
+          "stockQuantity": {
+            "type": "integer",
+            "minimum": 0,
+            "nullable": true
+          },
+          "stockEnabled": {
+            "type": "boolean"
+          },
+          "metaPixelCode": {
+            "type": "string",
+            "nullable": true,
+            "description": "Código do Meta Pixel para rastreamento"
+          }
+        },
+        "description": "É necessário fornecer pelo menos amountCents OU products (ou ambos)"
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "price": {
+            "type": "integer",
+            "description": "Preço em centavos"
+          },
+          "currency": {
+            "type": "string",
+            "default": "BRL"
+          },
+          "stockQuantity": {
+            "type": "integer",
+            "nullable": true,
+            "description": "Quantidade em estoque (null = ilimitado)"
+          },
+          "stockEnabled": {
+            "type": "boolean",
+            "description": "Indica se o controle de estoque está habilitado"
+          },
+          "isDigital": {
+            "type": "boolean",
+            "description": "Indica se o produto é digital (não requer estoque físico)"
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CreateProductRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "price"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 1000,
+            "nullable": true
+          },
+          "price": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Preço em centavos"
+          },
+          "currency": {
+            "type": "string",
+            "default": "BRL"
+          },
+          "stockQuantity": {
+            "type": "integer",
+            "minimum": 0,
+            "nullable": true,
+            "description": "Quantidade em estoque (obrigatório se stockEnabled = true)"
+          },
+          "stockEnabled": {
+            "type": "boolean",
+            "default": false
+          },
+          "isDigital": {
+            "type": "boolean",
+            "default": false,
+            "description": "Indica se o produto é digital (não requer estoque físico)"
+          },
+          "imageUrl": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE"
+            ],
+            "default": "ACTIVE"
+          }
+        }
+      },
+      "UpdateProductRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 1000,
+            "nullable": true
+          },
+          "price": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Preço em centavos"
+          },
+          "stockQuantity": {
+            "type": "integer",
+            "minimum": 0,
+            "nullable": true,
+            "description": "Quantidade em estoque (obrigatório se stockEnabled = true)"
+          },
+          "stockEnabled": {
+            "type": "boolean"
+          },
+          "isDigital": {
+            "type": "boolean",
+            "description": "Indica se o produto é digital (não requer estoque físico)"
+          },
+          "imageUrl": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE"
+            ]
+          }
+        }
+      },
+      "Coupon": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "code": {
+            "type": "string"
+          },
+          "discountType": {
+            "type": "string",
+            "enum": [
+              "PERCENTAGE",
+              "FIXED"
+            ]
+          },
+          "discountValue": {
+            "type": "number"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "minPurchaseCents": {
+            "type": "integer",
+            "nullable": true
+          },
+          "maxDiscountCents": {
+            "type": "integer",
+            "nullable": true
+          },
+          "usageLimit": {
+            "type": "integer",
+            "nullable": true
+          },
+          "perUserLimit": {
+            "type": "integer",
+            "nullable": true
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "validUntil": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "status": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CreateCouponRequest": {
+        "type": "object",
+        "required": [
+          "code",
+          "discountType",
+          "discountValue"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 50
+          },
+          "discountType": {
+            "type": "string",
+            "enum": [
+              "PERCENTAGE",
+              "FIXED"
+            ]
+          },
+          "discountValue": {
+            "type": "number",
+            "minimum": 0
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "minPurchaseCents": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "maxDiscountCents": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "usageLimit": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "perUserLimit": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "validUntil": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "productIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE"
+            ],
+            "default": "ACTIVE"
+          }
+        }
+      },
+      "UpdateCouponRequest": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 50
+          },
+          "discountType": {
+            "type": "string",
+            "enum": [
+              "PERCENTAGE",
+              "FIXED"
+            ]
+          },
+          "discountValue": {
+            "type": "number",
+            "minimum": 0
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE"
+            ]
+          }
+        }
+      },
+      "Client": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "document": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CreateClientRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "email"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 255
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "document": {
+            "type": "string",
+            "minLength": 11,
+            "maxLength": 20,
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 20,
+            "nullable": true
+          }
+        }
+      },
+      "WebhookSubscription": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "lastTriggeredAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CreateWebhookSubscriptionRequest": {
+        "type": "object",
+        "required": [
+          "url",
+          "events"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "transaction.created",
+                "transaction.updated",
+                "transaction.completed",
+                "transaction.failed",
+                "payment_link.created",
+                "payment_link.updated",
+                "balance.updated"
+              ]
+            }
+          },
+          "isActive": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "UpdateWebhookSubscriptionRequest": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "WebhookEvent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "type": {
+            "type": "string",
+            "description": "Tipo do evento"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "data": {
             "type": "object",
-            "properties": {
-              "url": {
-                "type": "string",
-                "format": "uri"
-              },
-              "events": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "isActive": {
-                "type": "boolean"
-              }
-            }
+            "description": "Dados do evento (Transaction, PaymentLink, etc.)"
           },
-          "WebhookEvent": {
+          "subscription": {
             "type": "object",
             "properties": {
               "id": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "event": {
                 "type": "string"
               },
-              "payload": {
-                "type": "object"
-              },
-              "status": {
-                "type": "string"
-              },
-              "createdAt": {
+              "url": {
                 "type": "string",
-                "format": "date-time"
-              }
-            }
-          },
-          "Pagination": {
-            "type": "object",
-            "properties": {
-              "limit": {
-                "type": "integer"
-              },
-              "cursor": {
-                "type": "string",
-                "nullable": true
-              },
-              "hasMore": {
-                "type": "boolean"
-              },
-              "nextCursor": {
-                "type": "string",
-                "nullable": true
+                "format": "uri"
               }
             }
           }
-        },
-        "responses": {
-          "BadRequest": {
-            "description": "Requisição inválida",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    },
-                    "errors": {
-                      "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
-                    }
+        }
+      },
+      "Pagination": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer"
+          },
+          "cursor": {
+            "type": "string",
+            "nullable": true
+          },
+          "hasMore": {
+            "type": "boolean"
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Requisição inválida",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "code": {
+                  "type": "string"
+                },
+                "timestamp": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "path": {
+                  "type": "string"
+                },
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
                   }
                 }
               }
             }
-          },
-          "Unauthorized": {
-            "description": "Não autorizado - API Key inválida ou ausente",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Não autorizado - API Key inválida ou ausente",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
                 }
               }
             }
-          },
-          "Forbidden": {
-            "description": "Acesso negado - Permissão insuficiente",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+          }
+        }
+      },
+      "Forbidden": {
+        "description": "Acesso negado - Permissão insuficiente",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
                 }
               }
             }
-          },
-          "NotFound": {
-            "description": "Recurso não encontrado",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Recurso não encontrado",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
                 }
               }
             }
@@ -2814,3 +2873,5 @@
         }
       }
     }
+  }
+}

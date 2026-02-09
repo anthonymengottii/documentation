@@ -1,0 +1,86 @@
+---
+title: "Sistema de Indicações (Referrals)"
+description: "Gerencie seu programa de parcerias e recompensas através da API de Indicações"
+---
+
+## Visão geral
+
+O Sistema de Indicações permite que os usuários convidem outros para a plataforma Upay e acompanhem suas estatísticas de indicação e recompensas.
+
+## Endpoints Disponíveis
+
+Todos os endpoints abaixo requerem autenticação via **API Key**.
+
+### 1. Obter Código de Indicação
+
+Retorna o código único e o link de convite do usuário.
+
+**GET** `/api/referral/code`
+
+#### Resposta de Sucesso (200 OK)
+
+```json
+{
+  "code": "UPAY-123-ABC",
+  "referralUrl": "https://app.upaybr.com/register?ref=UPAY-123-ABC"
+}
+```
+
+### 2. Verificar Estatísticas
+
+Obtém um resumo do desempenho das indicações.
+
+**GET** `/api/referral/stats`
+
+#### Resposta de Sucesso (200 OK)
+
+```json
+{
+  "totalReferrals": 15,
+  "activeReferrals": 12,
+  "totalEarningsCents": 50000,
+  "pendingEarningsCents": 1500,
+  "averageConversionRate": 0.8
+}
+```
+
+### 3. Histórico de Indicações
+
+Lista detalhadamente as indicações realizadas com status e datas.
+
+**GET** `/api/referral/history`
+
+#### Parâmetros de Query
+
+| Parâmetro | Tipo | Descrição | Padrão |
+|-----------|------|-----------|--------|
+| `page` | number | Número da página | 1 |
+| `limit` | number | Itens por página | 20 |
+
+#### Resposta de Sucesso (200 OK)
+
+```json
+{
+  "data": [
+    {
+      "id": "uuid-123",
+      "referredName": "João Silva",
+      "status": "APPROVED",
+      "createdAt": "2024-01-15T10:30:00Z",
+      "commissionCents": 2000
+    }
+  ],
+  "pagination": {
+    "total": 1,
+    "page": 1,
+    "limit": 20
+  }
+}
+```
+
+## Status de Indicação
+
+- `PENDING`: Aguardando conclusão do cadastro/KYC do indicado.
+- `APPROVED`: Indicação concluída e bônus creditado.
+- `REJECTED`: Indicação inválida ou suspeita de fraude.
+- `EXPIRED`: Período de validade da indicação expirou.

@@ -1,0 +1,41 @@
+---
+title: "Referência"
+description: "Documentação completa da API de Saques (Withdrawals)"
+icon: "money-bill-transfer"
+---
+
+## Saques
+
+Gerencie suas solicitações de saque e consulte seu saldo disponível para retirada.
+
+## Endpoints Disponíveis
+
+Todos os endpoints requerem autenticação via Bearer Token.
+
+### Consulta de Saldo e Configurações
+
+- **GET** `/api/withdraws/balance` - Obter saldo disponível para saque
+- **GET** `/api/withdraws/providers` - Listar provedores de pagamento disponíveis
+- **GET** `/api/withdraws/methods` - Listar métodos de saque suportados (PIX, TED, etc)
+
+### Gerenciamento de Saques
+
+- **POST** `/api/withdraws` - Criar uma nova solicitação de saque
+- **GET** `/api/withdraws` - Listar todas as solicitações de saque
+- **GET** `/api/withdraws/{id}` - Obter detalhes de um saque específico
+- **POST** `/api/withdraws/{id}/process` - Processar um saque pendente
+- **POST** `/api/withdraws/{id}/cancel` - Cancelar uma solicitação de saque pendente
+
+## Autenticação
+
+Todos os endpoints requerem autenticação via **API Key**.
+
+```
+Authorization: Bearer SUA_API_KEY
+```
+
+## Base URL
+
+```
+https://upay-sistema-api.onrender.com
+```

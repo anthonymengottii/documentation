@@ -28,13 +28,13 @@ Antes de começar, você precisa:
 ### Requisição Básica
 
 ```bash
-curl -X POST "https://upay-sistema-api.onrender.com/api/webhooks/subscriptions" \
+curl -X POST "https://upay-sistema-api.onrender.com/api/v1/webhooks/subscriptions" \
   -H "Authorization: Bearer SUA_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "url": "https://meusite.com.br/webhooks/upay",
-    "events": ["payment.completed", "payment.failed"],
-    "description": "Webhook para notificações de pagamento"
+    "events": ["transaction.completed", "transaction.failed"],
+    "description": "Webhook para notificações de transação"
   }'
 ```
 
@@ -56,18 +56,37 @@ curl -X POST "https://upay-sistema-api.onrender.com/api/webhooks/subscriptions" 
 ```
 
 <Warning>
-  Guarde o `secret` em local seguro. Ele será usado para validar as requisições do webhook.
+  Guarde o `secret` em local seguro.O Gateway envia webhooks usando o método **POST** para a URL configurada. Cada envio inclui o cabeçalho `X-Webhook-Signature` para validação de integridade.
+
+### Cabeçalhos HTTP
+
+| Cabeçalho | Descrição |
+| :--- | :--- |
+| `Content-Type` | Sempre `application/json` |
+| `X-Webhook-Signature` | Assinatura HMAC-SHA256 (formato: `sha256=ASSINATURA`) |
+| `X-Webhook-Event` | Tipo do evento disparado |
+| `X-Webhook-Delivery` | ID único da entrega (UUID) |
+| `User-Agent` | `UPAY-Webhook/1.0` |
+
+### Eventos Suportados
+
+| Evento | Descrição |
+| :--- | :--- |
+| `transaction.created` | Uma nova transação foi gerada |
+| `transaction.updated` | Uma transação teve seus dados atualizados |
+| `transaction.completed` | Pagamento confirmado com sucesso |
+| `transaction.failed` | Pagamento falhou ou foi recusado |
+| `payment_link.created` | Um link de pagamento foi criado |
+| `payment_link.updated` | Um link de pagamento foi editado |
+| `balance.updated` | O saldo da conta foi alterado |
 </Warning>
 
-## Eventos disponíveis
+### Eventos de Transação (Transaction)
 
-### Eventos de Pagamento
-
-- `payment.completed` - Pagamento confirmado
-- `payment.failed` - Pagamento falhou
-- `payment.pending` - Pagamento pendente
-- `payment.refunded` - Pagamento reembolsado
-- `payment.cancelled` - Pagamento cancelado
+- `transaction.created` - Transação criada
+- `transaction.updated` - Status da transação atualizado
+- `transaction.completed` - Pagamento confirmado/concluído
+- `transaction.failed` - Pagamento falhou
 
 ### Eventos de Link de Pagamento
 
@@ -135,8 +154,8 @@ curl -X PUT "https://upay-sistema-api.onrender.com/api/webhooks/subscriptions/{i
   -H "Content-Type: application/json" \
   -d '{
     "url": "https://meusite.com.br/webhooks/upay-v2",
-    "events": ["payment.completed", "payment.failed", "payment.refunded"],
-    "status": "ACTIVE"
+    "events": ["transaction.completed", "transaction.failed"],
+    "isActive": true
   }'
 ```
 
@@ -147,35 +166,41 @@ curl -X DELETE "https://upay-sistema-api.onrender.com/api/webhooks/subscriptions
   -H "Authorization: Bearer SUA_API_KEY"
 ```
 
-## 🔐 Validando Webhooks
+### Validando a Assinatura
 
-### Assinatura HMAC
+Para garantir que o webhook foi enviado pela UPAY, você deve validar o header `X-Webhook-Signature`.
 
-Todas as requisições de webhook incluem um header `X-Upay-Signature` com uma assinatura HMAC-SHA256. Use o `secret` da assinatura para validar que a requisição veio da Upay.
+1. Obtenha o corpo bruto (raw body) da requisição.
+2. Gere um HMAC-SHA256 usando o corpo bruto e o seu `WEBHOOK_SECRET`.
+3. Compare o resultado (em hexadecimal) com o valor recebido no header (removendo o prefixo `sha256=`).
 
-### Exemplo de Validação (Node.js)
+Exemplo em Node.js:
 
 ```javascript
 const crypto = require('crypto');
 
-function validateWebhookSignature(payload, signature, secret) {
+function verifySignature(payload, signatureHeader, secret) {
+  const [algorithm, signature] = signatureHeader.split('=');
+  
+  if (algorithm !== 'sha256') return false;
+
   const expectedSignature = crypto
     .createHmac('sha256', secret)
-    .update(JSON.stringify(payload))
+    .update(payload)
     .digest('hex');
-  
+
   return crypto.timingSafeEqual(
     Buffer.from(signature),
     Buffer.from(expectedSignature)
   );
 }
-
+```
 // No seu endpoint de webhook
 app.post('/webhooks/upay', express.json(), (req, res) => {
   const signature = req.headers['x-upay-signature'];
   const secret = process.env.UPAY_WEBHOOK_SECRET;
   
-  if (!validateWebhookSignature(req.body, signature, secret)) {
+  if (!verifySignature(req.rawBody, signature, secret)) { // req.rawBody é necessário para a validação
     return res.status(401).json({ error: 'Invalid signature' });
   }
   
@@ -206,7 +231,7 @@ def validate_webhook_signature(payload, signature, secret):
 # No seu endpoint de webhook
 @app.route('/webhooks/upay', methods=['POST'])
 def webhook():
-    signature = request.headers.get('X-Upay-Signature')
+    signature = request.headers.get('X-Webhook-Signature', '').replace('sha256=', '')
     secret = os.getenv('UPAY_WEBHOOK_SECRET')
     
     if not validate_webhook_signature(request.json, signature, secret):
@@ -221,26 +246,26 @@ def webhook():
 
 ## Estrutura do payload
 
-### Exemplo: payment.completed
+### Exemplo: transaction.completed
 
 ```json
 {
-  "id": "evt_abc123",
-  "type": "payment.completed",
-  "createdAt": "2025-12-30T00:00:00.000Z",
+  "id": "evt_5f9d7a2b-1234-5678-90ab-cdef12345678",
+  "type": "transaction.completed",
+  "timestamp": "2024-03-15T10:30:00.000Z",
   "data": {
-    "transactionId": "550e8400-e29b-41d4-a716-446655440000",
-    "paymentLinkId": "550e8400-e29b-41d4-a716-446655440001",
-    "amount": 199.00,
-    "amountCents": 19900,
-    "currency": "BRL",
-    "paymentMethod": "pix",
-    "status": "COMPLETED",
-    "client": {
-      "id": "550e8400-e29b-41d4-a716-446655440002",
-      "name": "João Silva",
-      "email": "joao@example.com"
-    }
+    "id": "tx_240315_a7b2c9",
+    "userId": "usr_987654321",
+    "value": 150.00,
+    "amountCents": 15000,
+    "status": "PAID",
+    "paymentMethod": "PIX",
+    "paymentDate": "2024-03-15T10:29:55.000Z",
+    "completedAt": "2024-03-15T10:30:00.000Z"
+  },
+  "subscription": {
+    "id": "sub_12345678",
+    "url": "https://suaapiv1.com/webhooks"
   }
 }
 ```

@@ -8,7 +8,9 @@
     "dark": "#5B21B6"
   },
   "favicon": "/favicon.ico",
-  "css": ["custom.css"],
+  "css": [
+    "custom.css"
+  ],
   "navigation": {
     "tabs": [
       {
@@ -28,6 +30,7 @@
             "group": "Recursos",
             "icon": "lightbulb",
             "pages": [
+              "pages/referrals",
               "pages/troubleshooting",
               "pages/glossary",
               "pages/changelog"
@@ -99,11 +102,14 @@
             ]
           },
           {
-            "group": "Saldo",
+            "group": "Financeiro",
             "icon": "wallet",
             "pages": [
               "pages/balance/reference",
-              "pages/balance/get"
+              "pages/balance/get",
+              "pages/balance/fees",
+              "pages/withdrawals/reference",
+              "pages/withdrawals/create"
             ]
           },
           {
@@ -146,15 +152,15 @@
   },
   "contextual": {
     "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
   },
   "footer": {
     "socials": {

@@ -11,24 +11,20 @@ Todas as respostas de erro seguem o mesmo formato:
 
 ```json
 {
-  "error": {
-    "code": "VALIDATION_ERROR",
-    "message": "Erro de validação nos dados fornecidos",
-    "details": [
-      {
-        "field": "amount",
-        "message": "O valor deve ser maior que zero"
-      }
-    ]
-  }
+  "message": "Mensagem descritiva do erro",
+  "code": "VALIDATION_ERROR",
+  "timestamp": "2024-01-15T10:30:00.000Z",
+  "path": "/api/v1/resource"
 }
 ```
 
 ### Campos da resposta
 
-- **code**: Código único identificando o tipo de erro
-- **message**: Mensagem descritiva do erro em português
-- **details**: Array com detalhes adicionais (opcional, presente em erros de validação)
+- **message**: Mensagem descritiva do erro em português.
+- **code**: Código único identificando o tipo de erro (ex: `NOT_FOUND`).
+- **timestamp**: Data e hora do erro no formato ISO 8601.
+- **path**: O endpoint que originou o erro.
+- **details**: (Apenas em ambiente de desenvolvimento) Detalhes específicos sobre erros de validação.
 
 ## Códigos de status HTTP
 
@@ -61,17 +57,15 @@ Todas as respostas de erro seguem o mesmo formato:
   A autenticação falhou ou não foi fornecida. Verifique sua API Key.
   
   **Códigos comuns:**
-  - `AUTHENTICATION_FAILED`: API Key inválida ou ausente
-  - `INVALID_API_KEY`: API Key não encontrada ou revogada
-  - `API_KEY_EXPIRED`: API Key expirada
+  - `UNAUTHORIZED`: API Key inválida ou ausente
 </ResponseField>
 
 <ResponseField name="403 Forbidden" type="error">
   Você não tem permissão para acessar este recurso.
   
   **Códigos comuns:**
-  - `INSUFFICIENT_PERMISSIONS`: Permissões insuficientes
-  - `RESOURCE_ACCESS_DENIED`: Acesso negado ao recurso
+  - `FORBIDDEN`: Acesso negado
+  - `PAYMENT_METHOD_NOT_ALLOWED`: Método de pagamento desabilitado para sua conta
 </ResponseField>
 
 <ResponseField name="404 Not Found" type="error">
@@ -88,9 +82,8 @@ Todas as respostas de erro seguem o mesmo formato:
   A requisição conflita com o estado atual do recurso.
   
   **Códigos comuns:**
-  - `DUPLICATE_RESOURCE`: Recurso duplicado
-  - `SLUG_ALREADY_EXISTS`: Slug já está em uso
-  - `CONFLICT`: Conflito de estado
+  - `DUPLICATE_ENTRY`: O recurso (ou campo único) já existe
+  - `CONFLICT`: Conflito genérico de estado
 </ResponseField>
 
 <ResponseField name="422 Unprocessable Entity" type="error">

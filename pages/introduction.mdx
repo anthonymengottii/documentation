@@ -33,10 +33,12 @@ const response = await fetch('https://upay-sistema-api.onrender.com/api/v1/payme
   },
   body: JSON.stringify({
     title: 'Produto Premium',
-    amountCents: 9900,
+    amount: 10000,
     settings: {
-      pixEnabled: true,
-      creditCardEnabled: true
+      methods: {
+        pix: true,
+        card: true
+      }
     }
   })
 });
@@ -81,7 +83,7 @@ await fetch('/api/v1/payment-links', {
     "id": "550e8400-e29b-41d4-a716-446655440000",
     "slug": "produto-premium-abc123",
     "title": "Produto Premium",
-    "amount": 99.00,
+    "amount": 10000,
     "url": "https://app.upaybr.com/checkout/produto-premium-abc123",
     "status": "ACTIVE"
   }
