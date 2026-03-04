@@ -1,6 +1,6 @@
 ---
 title: "Produtos"
-api: "https://https://upay-sistema-api.onrender.com/"
+api: "https://upay-sistema-api.onrender.com"
 ---
 
 ## Produtos
@@ -16,7 +16,7 @@ Gerencie seu catálogo de produtos que podem ser associados a links de pagamento
 <RequestExample>
 
 ```bash
-curl -X GET "https://https://upay-sistema-api.onrender.com//api/products?page=1&limit=20" \
+curl -X GET "https://upay-sistema-api.onrender.com/api/products?page=1&limit=20" \
   -H "Authorization: Bearer SUA_API_KEY"
 ```
 
@@ -37,16 +37,17 @@ curl -X GET "https://https://upay-sistema-api.onrender.com//api/products?page=1&
 <RequestExample>
 
 ```bash
-curl -X POST "https://https://upay-sistema-api.onrender.com//api/products" \
+curl -X POST "https://upay-sistema-api.onrender.com/api/products" \
   -H "Authorization: Bearer SUA_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Curso de JavaScript",
     "description": "Curso completo de JavaScript",
-    "priceCents": 19900,
-    "currency": "BRL",
+    "price": 19900,
     "stockQuantity": 100,
-    "stockEnabled": true
+    "stockEnabled": true,
+    "isDigital": false,
+    "status": "ACTIVE"
   }'
 ```
 
@@ -58,17 +59,20 @@ curl -X POST "https://https://upay-sistema-api.onrender.com//api/products" \
 <ParamField body="description" type="string">
   Descrição detalhada do produto
 </ParamField>
-<ParamField body="priceCents" type="number">
-  Preço em centavos (ex: 19900 = R$ 199,00)
-</ParamField>
-<ParamField body="currency" type="string">
-  Moeda (padrão: "BRL")
+<ParamField body="price" type="number" required>
+  Preço em centavos (ex: 19900 = R$ 199,00). Deve ser inteiro positivo.
 </ParamField>
 <ParamField body="stockQuantity" type="number">
-  Quantidade em estoque
+  Quantidade em estoque. Obrigatório quando `stockEnabled` for true.
 </ParamField>
 <ParamField body="stockEnabled" type="boolean">
   Ativar controle de estoque (padrão: false)
+</ParamField>
+<ParamField body="isDigital" type="boolean">
+  Indica se o produto é digital (sem entrega física). Padrão: false.
+</ParamField>
+<ParamField body="imageUrl" type="string">
+  URL da imagem do produto. Deve ser uma URL válida.
 </ParamField>
 <ParamField body="status" type="enum">
   "ACTIVE" ou "INACTIVE" (padrão: "ACTIVE")
@@ -79,7 +83,7 @@ curl -X POST "https://https://upay-sistema-api.onrender.com//api/products" \
 <RequestExample>
 
 ```bash
-curl -X GET "https://https://upay-sistema-api.onrender.com//api/products/{id}" \
+curl -X GET "https://upay-sistema-api.onrender.com/api/products/{id}" \
   -H "Authorization: Bearer SUA_API_KEY"
 ```
 
@@ -90,11 +94,11 @@ curl -X GET "https://https://upay-sistema-api.onrender.com//api/products/{id}" \
 <RequestExample>
 
 ```bash
-curl -X PATCH "https://https://upay-sistema-api.onrender.com//api/products/{id}" \
+curl -X PATCH "https://upay-sistema-api.onrender.com/api/products/{id}" \
   -H "Authorization: Bearer SUA_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "priceCents": 17900
+    "price": 17900
   }'
 ```
 
@@ -105,7 +109,7 @@ curl -X PATCH "https://https://upay-sistema-api.onrender.com//api/products/{id}"
 <RequestExample>
 
 ```bash
-curl -X PATCH "https://https://upay-sistema-api.onrender.com//api/products/{id}/stock" \
+curl -X PATCH "https://upay-sistema-api.onrender.com/api/products/{id}/stock" \
   -H "Authorization: Bearer SUA_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -120,7 +124,7 @@ curl -X PATCH "https://https://upay-sistema-api.onrender.com//api/products/{id}/
 <RequestExample>
 
 ```bash
-curl -X DELETE "https://https://upay-sistema-api.onrender.com//api/products/{id}" \
+curl -X DELETE "https://upay-sistema-api.onrender.com/api/products/{id}" \
   -H "Authorization: Bearer SUA_API_KEY"
 ```
 

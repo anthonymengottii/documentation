@@ -1924,6 +1924,11 @@
           "updatedAt": {
             "type": "string",
             "format": "date-time"
+          },
+          "trackingParams": {
+            "type": "object",
+            "nullable": true,
+            "description": "Parâmetros de rastreamento (UTMs, etc)"
           }
         }
       },
@@ -1971,6 +1976,10 @@
           "dueDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "trackingParams": {
+            "type": "object",
+            "description": "Parâmetros de rastreamento (UTMs como utm_source, utm_medium, utm_campaign, ou identificadores como fbclid, gclid, src)"
           }
         }
       },

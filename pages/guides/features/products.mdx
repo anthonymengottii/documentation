@@ -17,7 +17,7 @@ Antes de começar, você precisa:
 ## Funcionalidades
 
 - **Catálogo completo**: Gerencie todos os seus produtos em um só lugar
-- **Preços flexíveis**: Defina preços em reais com conversão automática para centavos
+- **Preços em centavos**: Defina preços em centavos (ex: 19990 = R$ 199,90)
 - **Imagens**: Adicione URLs de imagens para seus produtos
 - **Controle de estoque**: Gerencie quantidade disponível (opcional)
 - **Descrições ricas**: Adicione descrições detalhadas para seus produtos
@@ -34,7 +34,7 @@ curl -X POST "https://upay-sistema-api.onrender.com/api/v1/products" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Curso de JavaScript Avançado",
-    "price": 199.90,
+    "price": 19990,
     "description": "Aprenda JavaScript do zero ao avançado"
   }'
 ```
@@ -47,10 +47,12 @@ curl -X POST "https://upay-sistema-api.onrender.com/api/v1/products" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Curso de JavaScript Avançado",
-    "price": 199.90,
+    "price": 19990,
     "description": "Aprenda JavaScript do zero ao avançado com projetos práticos",
     "imageUrl": "https://exemplo.com/imagens/curso-js.jpg",
-    "stock": 100,
+    "stockQuantity": 100,
+    "stockEnabled": true,
+    "isDigital": false,
     "status": "ACTIVE"
   }'
 ```
@@ -59,15 +61,16 @@ curl -X POST "https://upay-sistema-api.onrender.com/api/v1/products" \
 
 ```json
 {
-  "success": true,
-  "data": {
+  "message": "Produto criado com sucesso",
+  "product": {
     "id": "550e8400-e29b-41d4-a716-446655440000",
     "name": "Curso de JavaScript Avançado",
-    "price": 199.90,
-    "priceCents": 19990,
+    "price": 19990,
     "description": "Aprenda JavaScript do zero ao avançado com projetos práticos",
     "imageUrl": "https://exemplo.com/imagens/curso-js.jpg",
-    "stock": 100,
+    "stockQuantity": 100,
+    "stockEnabled": true,
+    "isDigital": false,
     "status": "ACTIVE",
     "createdAt": "2025-12-30T00:00:00.000Z",
     "updatedAt": "2025-12-30T00:00:00.000Z"
@@ -81,8 +84,8 @@ curl -X POST "https://upay-sistema-api.onrender.com/api/v1/products" \
 
 | Campo | Tipo | Descrição |
 |-------|------|-----------|
-| `name` | string | Nome do produto. Máximo 200 caracteres. |
-| `price` | number | Preço do produto em reais. Exemplo: 199.90. Mínimo: 0.01. |
+| `name` | string | Nome do produto. Máximo 255 caracteres. |
+| `price` | integer | Preço em centavos. Exemplo: 19990 = R$ 199,90. Mínimo: 1. |
 
 ### Campos opcionais
 
@@ -90,8 +93,10 @@ curl -X POST "https://upay-sistema-api.onrender.com/api/v1/products" \
 |-------|------|-----------|--------|
 | `description` | string | Descrição detalhada do produto. Máximo 1000 caracteres. | - |
 | `imageUrl` | string | URL da imagem do produto. Deve ser uma URL válida. | - |
-| `stock` | number | Quantidade em estoque. null = estoque ilimitado. Mínimo: 0. | null |
-| `status` | string | Status do produto. Valores: "ACTIVE" ou "INACTIVE". | "ACTIVE" |
+| `stockQuantity` | integer | Quantidade em estoque. Obrigatório quando `stockEnabled` for true. | null |
+| `stockEnabled` | boolean | Ativa controle de estoque. Quando true, `stockQuantity` é obrigatório. | false |
+| `isDigital` | boolean | Indica se o produto é digital (sem entrega física). | false |
+| `status` | string | Status do produto: "ACTIVE" ou "INACTIVE". | "ACTIVE" |
 
 ## Exemplos completos
 
@@ -106,11 +111,11 @@ const response = await fetch('https://upay-sistema-api.onrender.com/api/v1/produ
   },
   body: JSON.stringify({
     name: 'E-book: Guia Completo de Node.js',
-    price: 49.90,
+    price: 4990,
     description: 'E-book com 300 páginas sobre Node.js, incluindo exemplos práticos e projetos reais',
     imageUrl: 'https://exemplo.com/ebook-nodejs.jpg',
+    isDigital: true,
     status: 'ACTIVE'
-    // stock: null (padrão - produto digital sem limite)
   })
 });
 ```
@@ -126,10 +131,12 @@ const response = await fetch('https://upay-sistema-api.onrender.com/api/v1/produ
   },
   body: JSON.stringify({
     name: 'Camiseta Dev JavaScript',
-    price: 79.90,
+    price: 7990,
     description: 'Camiseta 100% algodão com estampa exclusiva para desenvolvedores JavaScript',
     imageUrl: 'https://exemplo.com/camiseta-js.jpg',
-    stock: 50,
+    stockQuantity: 50,
+    stockEnabled: true,
+    isDigital: false,
     status: 'ACTIVE'
   })
 });
@@ -146,7 +153,7 @@ const response = await fetch('https://upay-sistema-api.onrender.com/api/v1/produ
   },
   body: JSON.stringify({
     name: 'Consultoria de Arquitetura de Software - 1h',
-    price: 350.00,
+    price: 35000,
     description: 'Sessão de consultoria individual de 1 hora sobre arquitetura de software e boas práticas',
     status: 'ACTIVE'
   })
@@ -185,11 +192,12 @@ curl -X GET "https://upay-sistema-api.onrender.com/api/v1/products/{id}" \
     {
       "id": "550e8400-e29b-41d4-a716-446655440000",
       "name": "Curso de JavaScript Avançado",
-      "price": 199.90,
-      "priceCents": 19990,
+      "price": 19990,
       "description": "Aprenda JavaScript do zero ao avançado",
       "imageUrl": "https://exemplo.com/curso-js.jpg",
-      "stock": 100,
+      "stockQuantity": 100,
+      "stockEnabled": true,
+      "isDigital": false,
       "status": "ACTIVE",
       "createdAt": "2025-12-30T00:00:00.000Z",
       "updatedAt": "2025-12-30T00:00:00.000Z"
@@ -211,8 +219,8 @@ curl -X PATCH "https://upay-sistema-api.onrender.com/api/v1/products/{id}" \
   -H "Authorization: Bearer SUA_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "price": 179.90,
-    "stock": 75
+    "price": 17990,
+    "stockQuantity": 75
   }'
 ```
 
@@ -230,7 +238,7 @@ const response = await fetch(`https://upay-sistema-api.onrender.com/api/v1/produ
     'Content-Type': 'application/json'
   },
   body: JSON.stringify({
-    price: 149.90
+    price: 14990
   })
 });
 ```
@@ -260,7 +268,7 @@ const response = await fetch(`https://upay-sistema-api.onrender.com/api/v1/produ
     'Content-Type': 'application/json'
   },
   body: JSON.stringify({
-    stock: 25 // Novo estoque disponível
+    stockQuantity: 25 // Novo estoque disponível
   })
 });
 ```

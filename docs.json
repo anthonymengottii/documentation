@@ -41,6 +41,7 @@
             "icon": "map",
             "pages": [
               "pages/guides/features/payment-links",
+              "pages/guides/features/products",
               "pages/guides/features/customers",
               "pages/guides/features/coupons",
               "pages/guides/features/transactions",
@@ -109,7 +110,9 @@
               "pages/balance/get",
               "pages/balance/fees",
               "pages/withdrawals/reference",
-              "pages/withdrawals/create"
+              "pages/withdrawals/create",
+              "pages/withdrawals/list",
+              "pages/withdrawals/get"
             ]
           },
           {

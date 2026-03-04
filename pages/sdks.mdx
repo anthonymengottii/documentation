@@ -1,393 +1,409 @@
 ---
-title: SDKs oficiais
-description: Integre a Upay facilmente com nossos SDKs oficiais para JavaScript, Python, PHP e Java
+title: "SDKs e Clientes HTTP"
+description: "Exemplos prontos para integrar a Upay API em JavaScript/TypeScript, Python e PHP"
 ---
 
-<Card title="Repositório GitHub" icon="github" href="https://github.com/anthonymengottii/upay-sdks">
-  Acesse o repositório oficial dos SDKs Upay no GitHub
-</Card>
+<Note>
+  SDKs oficiais estão em desenvolvimento. Enquanto isso, use os exemplos abaixo — são simples, prontos para copiar e usar direto no seu projeto.
+</Note>
 
-A Upay oferece SDKs oficiais para facilitar a integração da plataforma de pagamentos em diferentes linguagens de programação. Todos os SDKs são open-source e mantidos pela equipe Upay.
+## URL Base
 
-<CardGroup cols={2}>
-  <Card title="JavaScript/TypeScript" icon="js" href="#javascripttypescript">
-    SDK para Node.js e TypeScript com suporte completo a tipos
-  </Card>
-  <Card title="Python" icon="python" href="#python">
-    SDK para Python 3.8+ com sintaxe simples e intuitiva
-  </Card>
-  <Card title="PHP" icon="php" href="#php">
-    SDK para PHP 8.0+ com suporte a named arguments
-  </Card>
-  <Card title="Java" icon="java" href="#java">
-    SDK para Java 17+ com Maven (em desenvolvimento)
-  </Card>
-</CardGroup>
-
-## Recursos disponíveis
-
-Todos os SDKs suportam os principais recursos da API Upay:
-
-- **Payment Links**: Criar e gerenciar links de pagamento
-- **Transações**: Listar e consultar transações
-- **Produtos**: Gerenciar produtos
-- **Clientes**: Gerenciar clientes
-- **Cupons**: Validar cupons de desconto
-- **Webhooks**: Verificar assinaturas de webhooks
-
-## JavaScript/TypeScript
-
-### Instalação
-
-<CodeGroup>
-```bash npm
-npm install @upay/upay-js
+```
+https://upay-sistema-api.onrender.com/api/v1
 ```
 
-```bash yarn
-yarn add @upay/upay-js
+Todas as requisições autenticadas usam o header:
+
+```
+Authorization: Bearer SUA_API_KEY
 ```
 
-```bash pnpm
-pnpm add @upay/upay-js
-```
-</CodeGroup>
+---
 
-### Uso básico
+## JavaScript / TypeScript
 
-```typescript
-import UpayClient from '@upay/upay-js';
+### Exemplo direto com `fetch`
 
-const upay = new UpayClient({
-  apiKey: 'sua_api_key_aqui',
-});
+```javascript
+const BASE_URL = 'https://upay-sistema-api.onrender.com/api/v1';
 
-// Criar um link de pagamento
-const paymentLink = await upay.paymentLinks.create({
+async function upay(method, path, body) {
+  const res = await fetch(`${BASE_URL}${path}`, {
+    method,
+    headers: {
+      'Authorization': `Bearer ${process.env.UPAY_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message ?? `HTTP ${res.status}`);
+  return data;
+}
+
+// Criar link de pagamento
+const link = await upay('POST', '/payment-links', {
   title: 'Produto Premium',
-  amount: 10000, // R$ 100,00 em centavos
-  description: 'Descrição do produto',
+  amount: 9900, // R$ 99,00 em centavos
+  description: 'Acesso vitalício',
 });
-
-console.log(`Link criado: ${upay.paymentLinks.getCheckoutUrl(paymentLink.slug)}`);
+console.log('Checkout:', link.data.url);
 
 // Listar transações
-const { data: transactions } = await upay.transactions.list({
-  page: 1,
-  limit: 10,
-});
+const { data } = await upay('GET', '/transactions?page=1&limit=20');
 ```
 
-### Recursos
+### Client reutilizável (TypeScript)
 
-- Suporte completo a TypeScript com tipos
-- Tratamento de erros específicos
-- Validação de webhooks
-- Exemplos completos incluídos
+Copie e cole no seu projeto:
 
-<Card title="Documentação completa" icon="book" href="https://github.com/anthonymengottii/upay-sdks/tree/main/packages/upay-js">
-  Veja a documentação completa do SDK JavaScript/TypeScript
-</Card>
+```typescript
+// upay-client.ts
+const BASE_URL = 'https://upay-sistema-api.onrender.com/api/v1';
+
+export class UpayClient {
+  constructor(private apiKey: string) {}
+
+  private async req<T>(method: string, path: string, body?: unknown): Promise<T> {
+    const res = await fetch(`${BASE_URL}${path}`, {
+      method,
+      headers: {
+        Authorization: `Bearer ${this.apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message ?? `HTTP ${res.status}`);
+    return data;
+  }
+
+  // Links de pagamento
+  createPaymentLink(title: string, amount: number, extra?: object) {
+    return this.req('POST', '/payment-links', { title, amount, ...extra });
+  }
+  listPaymentLinks(page = 1, limit = 20) {
+    return this.req('GET', `/payment-links?page=${page}&limit=${limit}`);
+  }
+  getPaymentLink(id: string) {
+    return this.req('GET', `/payment-links/${id}`);
+  }
+
+  // Transações
+  listTransactions(page = 1, limit = 20) {
+    return this.req('GET', `/transactions?page=${page}&limit=${limit}`);
+  }
+  getTransaction(id: string) {
+    return this.req('GET', `/transactions/${id}`);
+  }
+
+  // Produtos
+  createProduct(name: string, price: number, extra?: object) {
+    return this.req('POST', '/products', { name, price, ...extra });
+  }
+  listProducts(page = 1, limit = 20) {
+    return this.req('GET', `/products?page=${page}&limit=${limit}`);
+  }
+}
+```
+
+**Uso:**
+
+```typescript
+import { UpayClient } from './upay-client';
+
+const upay = new UpayClient(process.env.UPAY_API_KEY!);
+
+const link = await upay.createPaymentLink('Curso Node.js', 19900, {
+  description: 'Acesso vitalício ao curso',
+});
+console.log('Checkout:', link.data.url);
+
+const { data: transactions } = await upay.listTransactions();
+console.log(`${transactions.length} transações encontradas`);
+```
+
+---
 
 ## Python
 
-### Instalação
-
-```bash
-pip install upay-python
-```
-
-### Uso básico
+### Exemplo direto com `requests`
 
 ```python
-from upay import UpayClient
+import requests, os
 
-upay = UpayClient(api_key="sua_api_key_aqui")
+BASE_URL = 'https://upay-sistema-api.onrender.com/api/v1'
+HEADERS = {
+    'Authorization': f'Bearer {os.getenv("UPAY_API_KEY")}',
+    'Content-Type': 'application/json',
+}
 
-# Criar um link de pagamento
-payment_link = upay.payment_links.create({
-    "title": "Produto Premium",
-    "amount": 10000,  # R$ 100,00 em centavos
-    "description": "Descrição do produto"
+def upay(method, path, **kwargs):
+    r = requests.request(method, f'{BASE_URL}{path}', headers=HEADERS, **kwargs)
+    r.raise_for_status()
+    return r.json()
+
+# Criar link de pagamento
+link = upay('POST', '/payment-links', json={
+    'title': 'Produto Premium',
+    'amount': 9900,
+    'description': 'Acesso vitalício',
 })
-
-print(f"Link criado: {upay.payment_links.get_checkout_url(payment_link['slug'])}")
+print('Checkout:', link['data']['url'])
 
 # Listar transações
-transactions = upay.transactions.list(page=1, limit=10)
-print(f"Total de transações: {transactions['pagination']['total']}")
+result = upay('GET', '/transactions', params={'page': 1, 'limit': 20})
 ```
 
-### Recursos
+### Client reutilizável
 
-- Compatível com Python 3.8+
-- Sintaxe pythônica e intuitiva
-- Tratamento de exceções específicas
-- Suporte a webhooks
+Copie e cole no seu projeto:
 
-<Card title="Documentação completa" icon="book" href="https://github.com/anthonymengottii/upay-sdks/tree/main/packages/upay-python">
-  Veja a documentação completa do SDK Python
-</Card>
+```python
+# upay_client.py
+import os
+import requests
+
+class UpayClient:
+    BASE_URL = 'https://upay-sistema-api.onrender.com/api/v1'
+
+    def __init__(self, api_key: str):
+        self._session = requests.Session()
+        self._session.headers.update({
+            'Authorization': f'Bearer {api_key}',
+            'Content-Type': 'application/json',
+        })
+
+    def _req(self, method: str, path: str, **kwargs):
+        r = self._session.request(method, f'{self.BASE_URL}{path}', **kwargs)
+        r.raise_for_status()
+        return r.json()
+
+    # Links de pagamento
+    def create_payment_link(self, title: str, amount: int, **kwargs):
+        return self._req('POST', '/payment-links', json={'title': title, 'amount': amount, **kwargs})
+
+    def list_payment_links(self, page=1, limit=20):
+        return self._req('GET', '/payment-links', params={'page': page, 'limit': limit})
+
+    def get_payment_link(self, id: str):
+        return self._req('GET', f'/payment-links/{id}')
+
+    # Transações
+    def list_transactions(self, page=1, limit=20):
+        return self._req('GET', '/transactions', params={'page': page, 'limit': limit})
+
+    def get_transaction(self, id: str):
+        return self._req('GET', f'/transactions/{id}')
+
+    # Produtos
+    def create_product(self, name: str, price: int, **kwargs):
+        return self._req('POST', '/products', json={'name': name, 'price': price, **kwargs})
+
+    def list_products(self, page=1, limit=20):
+        return self._req('GET', '/products', params={'page': page, 'limit': limit})
+```
+
+**Uso:**
+
+```python
+from upay_client import UpayClient
+
+upay = UpayClient(os.getenv('UPAY_API_KEY'))
+
+link = upay.create_payment_link(
+    'Curso Python',
+    9900,
+    description='Acesso vitalício',
+)
+print('Checkout:', link['data']['url'])
+
+result = upay.list_transactions(page=1)
+print(f"{len(result['data'])} transações encontradas")
+```
+
+---
 
 ## PHP
 
-### Instalação
-
-```bash
-composer require upay/upay-php
-```
-
-### Uso básico
+Copie e cole no seu projeto:
 
 ```php
 <?php
+// UpayClient.php
 
-use Upay\UpayClient;
+class UpayClient
+{
+    private string $baseUrl = 'https://upay-sistema-api.onrender.com/api/v1';
 
-$upay = new UpayClient(apiKey: "sua_api_key_aqui");
+    public function __construct(private string $apiKey) {}
 
-// Criar um link de pagamento
-$paymentLink = $upay->paymentLinks->create([
-    'title' => 'Produto Premium',
-    'amount' => 10000,  // R$ 100,00 em centavos
-    'description' => 'Descrição do produto'
+    private function request(string $method, string $path, ?array $body = null): array
+    {
+        $ch = curl_init();
+        curl_setopt_array($ch, [
+            CURLOPT_URL            => $this->baseUrl . $path,
+            CURLOPT_CUSTOMREQUEST  => $method,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER     => [
+                "Authorization: Bearer {$this->apiKey}",
+                'Content-Type: application/json',
+            ],
+            CURLOPT_POSTFIELDS => $body ? json_encode($body) : null,
+        ]);
+
+        $response = curl_exec($ch);
+        $status   = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        $data = json_decode($response, true);
+        if ($status >= 400) {
+            throw new RuntimeException($data['message'] ?? "HTTP $status");
+        }
+        return $data;
+    }
+
+    // Links de pagamento
+    public function createPaymentLink(string $title, int $amount, array $extra = []): array
+    {
+        return $this->request('POST', '/payment-links', array_merge(
+            ['title' => $title, 'amount' => $amount], $extra
+        ));
+    }
+
+    public function listPaymentLinks(int $page = 1, int $limit = 20): array
+    {
+        return $this->request('GET', "/payment-links?page=$page&limit=$limit");
+    }
+
+    // Transações
+    public function listTransactions(int $page = 1, int $limit = 20): array
+    {
+        return $this->request('GET', "/transactions?page=$page&limit=$limit");
+    }
+
+    // Produtos
+    public function createProduct(string $name, int $price, array $extra = []): array
+    {
+        return $this->request('POST', '/products', array_merge(
+            ['name' => $name, 'price' => $price], $extra
+        ));
+    }
+}
+```
+
+**Uso:**
+
+```php
+<?php
+require 'UpayClient.php';
+
+$upay = new UpayClient($_ENV['UPAY_API_KEY']);
+
+$link = $upay->createPaymentLink('Produto Premium', 9900, [
+    'description' => 'Acesso vitalício',
 ]);
+echo 'Checkout: ' . $link['data']['url'] . "\n";
 
-echo "Link criado: " . $upay->paymentLinks->getCheckoutUrl($paymentLink['slug']) . "\n";
-
-// Listar transações
-$transactions = $upay->transactions->list(['page' => 1, 'limit' => 10]);
-echo "Total de transações: " . $transactions['pagination']['total'] . "\n";
+$result = $upay->listTransactions();
+echo count($result['data']) . " transações encontradas\n";
 ```
 
-### Recursos
-
-- Compatível com PHP 8.0+
-- Suporte a named arguments
-- Tratamento de exceções específicas
-- Validação de webhooks
-
-<Card title="Documentação completa" icon="book" href="https://github.com/anthonymengottii/upay-sdks/tree/main/packages/upay-php">
-  Veja a documentação completa do SDK PHP
-</Card>
-
-## Java
-
-<Note>
-  O SDK Java está em desenvolvimento ativo. Algumas funcionalidades podem estar limitadas.
-</Note>
-
-### Requisitos
-
-- Java 17+
-- Maven 3.8+
-
-### Uso básico
-
-```java
-import com.upay.sdk.UpayClient;
-import com.fasterxml.jackson.databind.JsonNode;
-
-String apiKey = "sua_api_key_aqui";
-String baseUrl = "https://upay-sistema-api.onrender.com";
-
-UpayClient upay = new UpayClient(apiKey, baseUrl, "v1", 30);
-
-// Criar Payment Link
-Map<String, Object> options = new HashMap<>();
-options.put("description", "Produto Premium");
-options.put("status", "ACTIVE");
-
-JsonNode link = upay.paymentLinks.create(
-    "Produto Premium",
-    10000, // R$ 100,00 em centavos
-    options
-);
-
-System.out.println("ID: " + link.get("id").asText());
-System.out.println("Slug: " + link.get("slug").asText());
-```
-
-### Recursos
-
-- Compatível com Java 17+
-- Integração com Maven
-- Validação de webhooks
-- Operações de leitura e listagem
-
-<Card title="Documentação completa" icon="book" href="https://github.com/anthonymengottii/upay-sdks/tree/main/packages/upay-java">
-  Veja a documentação completa do SDK Java
-</Card>
-
-## Obter API Key
-
-Para usar qualquer SDK, você precisa de uma API Key:
-
-1. Acesse o [Dashboard Upay](https://app.upaybr.com)
-2. Vá em **Configurações** > **API Keys**
-3. Crie uma nova API Key
-4. Copie e use no seu código
-
-<Warning>
-  Nunca compartilhe sua API Key publicamente ou a inclua em repositórios públicos. Use variáveis de ambiente para armazenar suas credenciais.
-</Warning>
+---
 
 ## Webhooks
 
-Todos os SDKs incluem utilitários para validar assinaturas de webhooks:
+A Upay envia eventos via webhook com assinatura HMAC-SHA256 no header `x-signature`. Sempre valide a assinatura antes de processar o evento.
 
 <CodeGroup>
-```typescript JavaScript/TypeScript
-import express from 'express';
+```javascript Node.js
+const crypto = require('crypto');
 
+// Express — use express.raw() para preservar o body original
 app.post('/webhook', express.raw({ type: 'application/json' }), (req, res) => {
-  const signature = upay.extractWebhookSignature(req.headers);
-  const secret = process.env.WEBHOOK_SECRET;
-  
-  if (!upay.verifyWebhookSignature(req.body, signature, secret)) {
+  const signature = req.headers['x-signature'];
+  const expected  = crypto
+    .createHmac('sha256', process.env.WEBHOOK_SECRET)
+    .update(req.body)
+    .digest('hex');
+
+  if (signature !== expected) {
     return res.status(401).json({ error: 'Assinatura inválida' });
   }
 
   const event = JSON.parse(req.body.toString());
-  // Processar evento
+  console.log('Evento recebido:', event.event);
+
   res.json({ received: true });
 });
 ```
 
 ```python Python
-from flask import Flask, request
+import hmac, hashlib, os
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
-    payload = request.data
-    signature = request.headers.get('X-Upay-Signature')
-    secret = "seu_webhook_secret"
-    
-    if upay.verify_webhook_signature(payload, signature, secret):
-        data = request.json
-        # Processar evento
-        return {"status": "ok"}, 200
-    else:
-        return {"error": "Invalid signature"}, 401
+    signature = request.headers.get('x-signature', '')
+    expected  = hmac.new(
+        os.getenv('WEBHOOK_SECRET').encode(),
+        request.data,
+        hashlib.sha256
+    ).hexdigest()
+
+    if not hmac.compare_digest(signature, expected):
+        return jsonify(error='Assinatura inválida'), 401
+
+    event = request.json
+    print('Evento recebido:', event['event'])
+    return jsonify(received=True)
 ```
 
 ```php PHP
-$payload = file_get_contents('php://input');
-$signature = $_SERVER['HTTP_X_UPAY_SIGNATURE'] ?? '';
-$secret = "seu_webhook_secret";
+<?php
+$payload   = file_get_contents('php://input');
+$signature = $_SERVER['HTTP_X_SIGNATURE'] ?? '';
+$expected  = hash_hmac('sha256', $payload, $_ENV['WEBHOOK_SECRET']);
 
-if ($upay->verifyWebhookSignature($payload, $signature, $secret)) {
-    $data = json_decode($payload, true);
-    // Processar evento
-    echo json_encode(['status' => 'ok']);
-} else {
+if (!hash_equals($expected, $signature)) {
     http_response_code(401);
-    echo json_encode(['error' => 'Invalid signature']);
+    echo json_encode(['error' => 'Assinatura inválida']);
+    exit;
 }
-```
 
-```java Java
-import com.upay.sdk.utils.WebhookUtils;
-
-String payload = requestBody;
-String signature = request.getHeader("X-Upay-Signature");
-String secret = "seu_webhook_secret";
-
-boolean valid = WebhookUtils.verifySignature(payload, signature, secret);
-if (!valid) {
-    response.setStatus(401);
-    return;
-}
-// Processar evento
+$event = json_decode($payload, true);
+// Processar evento...
+echo json_encode(['received' => true]);
 ```
 </CodeGroup>
 
-## Tratamento de erros
+<Tip>
+  O `WEBHOOK_SECRET` é configurado na seção **Webhooks** do Dashboard. Use sempre variáveis de ambiente para armazená-lo.
+</Tip>
 
-Todos os SDKs fornecem classes de erro específicas para facilitar o tratamento:
+---
 
-<CodeGroup>
-```typescript JavaScript/TypeScript
-import { 
-  UpayError,
-  UpayAuthenticationError,
-  UpayValidationError,
-  UpayNotFoundError,
-  UpayRateLimitError 
-} from '@upay/upay-js';
+## Variáveis de ambiente
 
-try {
-  await upay.paymentLinks.create({ title: 'Test' });
-} catch (error) {
-  if (error instanceof UpayAuthenticationError) {
-    console.error('Erro de autenticação:', error.message);
-  } else if (error instanceof UpayValidationError) {
-    console.error('Erro de validação:', error.message, error.details);
-  }
-}
+```env
+UPAY_API_KEY=sua_api_key_aqui
+UPAY_WEBHOOK_SECRET=seu_webhook_secret_aqui
 ```
 
-```python Python
-from upay import (
-    UpayError,
-    UpayAuthenticationError,
-    UpayValidationError,
-    UpayNotFoundError,
-)
+<Warning>
+  Nunca commite sua API Key ou Webhook Secret no código. Adicione `.env` ao `.gitignore`.
+</Warning>
 
-try:
-    link = upay.payment_links.create({"title": "Teste"})
-except UpayValidationError as e:
-    print(f"Erro de validação: {e.message}")
-    print(f"Detalhes: {e.details}")
-except UpayAuthenticationError as e:
-    print(f"Erro de autenticação: {e.message}")
-```
+## Obter API Key
 
-```php PHP
-use Upay\Utils\Exceptions\UpayError;
-use Upay\Utils\Exceptions\UpayAuthenticationError;
-use Upay\Utils\Exceptions\UpayValidationError;
-
-try {
-    $link = $upay->paymentLinks->create(['title' => 'Teste']);
-} catch (UpayValidationError $e) {
-    echo "Erro de validação: " . $e->getMessage() . "\n";
-    if ($e->details) {
-        print_r($e->details);
-    }
-} catch (UpayAuthenticationError $e) {
-    echo "Erro de autenticação: " . $e->getMessage() . "\n";
-}
-```
-
-```java Java
-import com.upay.sdk.utils.UpayException;
-
-try {
-    JsonNode links = upay.paymentLinks.list(1, 10);
-} catch (UpayException e) {
-    System.err.println("Erro na API Upay: " + e.getMessage());
-    System.err.println("Status: " + e.getStatus());
-    System.err.println("Code: " + e.getCode());
-}
-```
-</CodeGroup>
-
-## Contribuindo
-
-Todos os SDKs são open-source e aceitam contribuições:
-
-1. Faça um fork do [repositório](https://github.com/anthonymengottii/upay-sdks)
-2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`)
-3. Commit suas mudanças (`git commit -m 'Adiciona nova feature'`)
-4. Push para a branch (`git push origin feature/nova-feature`)
-5. Abra um Pull Request
+1. Acesse o [Dashboard Upay](https://app.upaybr.com)
+2. Vá em **Configurações → Credenciais de API**
+3. Clique em **Criar Nova API Key** e selecione as permissões necessárias
+4. Copie e guarde em local seguro — ela não será exibida novamente
 
 ## Suporte
 
-Se você encontrar algum problema ou tiver dúvidas:
-
-- Abra uma [Issue no GitHub](https://github.com/anthonymengottii/upay-sdks/issues)
-- Entre em contato: suporte@upaybr.com
-- Consulte a [documentação da API](/introduction)
+Dúvidas ou problemas? Entre em contato: [suporte@upay.com.br](mailto:suporte@upay.com.br)

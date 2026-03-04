@@ -22,7 +22,7 @@ Retorna o código único e o link de convite do usuário.
 ```json
 {
   "code": "UPAY-123-ABC",
-  "referralUrl": "https://app.upaybr.com/register?ref=UPAY-123-ABC"
+  "link": "https://app.upaybr.com/register?ref=UPAY-123-ABC"
 }
 ```
 
@@ -38,9 +38,7 @@ Obtém um resumo do desempenho das indicações.
 {
   "totalReferrals": 15,
   "activeReferrals": 12,
-  "totalEarningsCents": 50000,
-  "pendingEarningsCents": 1500,
-  "averageConversionRate": 0.8
+  "totalEarnings": 50000
 }
 ```
 
@@ -61,7 +59,7 @@ Lista detalhadamente as indicações realizadas com status e datas.
 
 ```json
 {
-  "data": [
+  "referrals": [
     {
       "id": "uuid-123",
       "referredName": "João Silva",

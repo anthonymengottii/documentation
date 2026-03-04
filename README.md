@@ -25,6 +25,7 @@ A **UPay Gateway API** é uma solução completa de processamento de pagamentos 
 - ✅ **Links de pagamento personalizados** - Crie e compartilhe links únicos com configurações flexíveis
 - ✅ **Gestão completa de produtos** - Catálogo integrado com controle de estoque
 - ✅ **Sistema de cupons** - Descontos percentuais ou valores fixos com regras configuráveis
+- ✅ **Advanced Sales Tracking (Utmify)** - Suporte completo para UTMs, fbclid, gclid e src
 - ✅ **Webhooks em tempo real** - Notificações instantâneas sobre eventos importantes
 - ✅ **Dashboard administrativo** - Interface completa para gerenciamento e relatórios
 - ✅ **Documentação interativa** - Exemplos práticos e referência completa da API
